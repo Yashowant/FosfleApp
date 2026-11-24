@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Headings Challenge: SEO Crawler Override</title>
+
+    <link href="/vendor/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/vendor/bootstrap-icons.min.css">
+
+    <style>
+        :root {
+            --terminal-bg: #111827; /* Gray 900 */
+            --terminal-text: #f43f5e; /* Neon Crimson/Rose */
+            --terminal-border: #9f1239; /* Deep Rose */
+            --terminal-alert: #fbbf24; /* Amber */
+            --terminal-glow: 0 0 12px rgba(244, 63, 94, 0.4);
+            --terminal-success: #10b981;
+        }
+
+        body { 
+            background-color: #f8f9fa; 
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.5s ease-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Hacker Terminal Theme */
+        .terminal-container {
+            background-color: var(--terminal-bg);
+            border: 2px solid var(--terminal-border);
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            color: #fecdd3;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            background-color: #4c0519;
+            border-bottom: 2px solid var(--terminal-border);
+            padding: 10px 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-editor {
+            background-color: transparent;
+            color: var(--terminal-text);
+            border: none;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.15rem;
+            width: 100%;
+            height: 400px;
+            resize: none;
+            outline: none;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* Fixed Placeholder */
+        .code-editor::placeholder { 
+            color: #e11d48; 
+            opacity: 0.6;
+        }
+        .code-editor:focus { box-shadow: inset var(--terminal-glow); }
+
+        /* Objective Checklist */
+        .objective-list { list-style: none; padding: 0; margin: 0; }
+        .objective-item {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: #4c0519;
+            border-left: 4px solid #9f1239;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .objective-item.complete {
+            border-left-color: var(--terminal-success);
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--terminal-success);
+            text-shadow: 0 0 5px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Timer Pulse */
+        .timer-warning { color: var(--terminal-alert) !important; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        /* Clean Text-Shadow Glitch Effect */
+        .glitch {
+            animation: clean-glitch 2.5s infinite;
+        }
+        @keyframes clean-glitch {
+            0%, 100% { transform: translate(0); text-shadow: none; }
+            10% { transform: translate(-2px, 1px); text-shadow: 2px 0px #fbbf24, -2px 0px #f43f5e; }
+            11% { transform: translate(0); text-shadow: none; }
+            30% { transform: translate(2px, -1px); text-shadow: -2px 0px #fbbf24, 2px 0px #f43f5e; }
+            31% { transform: translate(0); text-shadow: none; }
+            70% { transform: translate(-1px, 2px); text-shadow: 2px 0px #fbbf24, -2px 0px #f43f5e; }
+            71% { transform: translate(0); text-shadow: none; }
+        }
+    </style>
+</head>
+<body class="py-5 px-3">
+
+<div class="container" style="max-width: 1000px;">
+    <button class="btn btn-outline-secondary btn-lg px-4 mb-4" onclick="history.back()">
+        <i class="bi bi-arrow-counterclockwise me-2"></i> Exit Protocol
+    </button>
+
+    <div id="login-screen" class="screen active card border-0 shadow-lg p-5 rounded-4 text-center bg-dark text-white">
+        <i class="bi bi-robot display-1 text-danger mb-3 glitch"></i>
+        <h1 class="fw-bold mb-3 glitch text-uppercase" style="color: #f43f5e;">SEO Crawler Inbound</h1>
+        <p class="text-light text-opacity-75 fs-5 mb-4 max-w-2xl mx-auto">
+            Emergency! The document outline has been erased. A search engine crawler is scanning our site in <strong>2 minutes</strong>. You must rebuild a perfect semantic hierarchy, or our server will be blacklisted!
+        </p>
+        <div class="bg-black border border-secondary rounded p-3 mb-5 text-start font-monospace small mx-auto" style="max-width: 550px; color: #f43f5e;">
+            > OUTLINE SPECS:<br>
+            1. Create an H1 reading "Home". (Rule: Only use ONE H1 per page!)<br>
+            2. Below it, an H2 reading "News".<br>
+            3. Below that, an H3 reading "Local". (Don't skip levels!)<br>
+            4. Insert a thematic break (horizontal line).<br>
+            5. Below the break, an H2 reading "Sports".
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <input type="text" id="student-name" class="form-control form-control-lg mb-4 text-center bg-dark text-white border-secondary" placeholder="Enter Developer ID (Your Name)">
+                <button class="btn btn-lg w-100 fw-bold py-3 text-uppercase letter-spacing-1 text-white" style="background-color: #e11d48;" onclick="startChallenge()">
+                    <i class="bi bi-bar-chart-steps me-2"></i> Bypass Crawler
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="challenge-screen" class="screen">
+        <div class="row g-4">
+            
+            <div class="col-lg-7">
+                <div class="terminal-container h-100">
+                    <div class="terminal-header">
+                        <span><i class="bi bi-circle-fill text-danger me-2 small"></i> doc_outline.html</span>
+                        <span id="countdown" class="fs-5 text-warning"><i class="bi bi-stopwatch"></i> 02:00</span>
+                    </div>
+                    
+                    <textarea id="hacker-editor" class="code-editor" placeholder="Write the 5 outline elements here...&#10;&#10;> Awaiting hierarchy..." onkeyup="runDiagnostics()" spellcheck="false"></textarea>
+                    
+                    <div class="bg-black p-3 d-flex justify-content-between align-items-center border-top" style="border-color: var(--terminal-border) !important;">
+                        <span class="text-secondary small font-monospace" id="status-log">> Outline scanner active.</span>
+                        <button class="btn btn-success fw-bold px-4" id="deploy-btn" onclick="deployCode()" disabled>Submit Outline</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="terminal-container h-100 p-4" style="background-color: #2e0612;">
+                    <h4 class="fw-bold mb-4 text-white border-bottom border-secondary pb-2" style="color: #f43f5e !important;">
+                        <i class="bi bi-radar me-2"></i>Hierarchy Tracker
+                    </h4>
+                    
+                    <ul class="objective-list">
+                        <li class="objective-item" id="obj-h1">
+                            <i class="bi bi-x-circle-fill text-danger fs-5 status-icon"></i>
+                            <div>
+                                <strong class="d-block text-white">Main Topic</strong>
+                                <span class="small opacity-75">H1 containing "Home" (ONLY ONE!)</span>
+                            </div>
+                        </li>
+                        <li class="objective-item" id="obj-h2-1">
+                            <i class="bi bi-x-circle-fill text-danger fs-5 status-icon"></i>
+                            <div>
+                                <strong class="d-block text-white">Major Section</strong>
+                                <span class="small opacity-75">H2 containing "News"</span>
+                            </div>
+                        </li>
+                        <li class="objective-item" id="obj-h3">
+                            <i class="bi bi-x-circle-fill text-danger fs-5 status-icon"></i>
+                            <div>
+                                <strong class="d-block text-white">Subsection</strong>
+                                <span class="small opacity-75">H3 containing "Local"</span>
+                            </div>
+                        </li>
+                        <li class="objective-item" id="obj-hr">
+                            <i class="bi bi-x-circle-fill text-danger fs-5 status-icon"></i>
+                            <div>
+                                <strong class="d-block text-white">Thematic Break</strong>
+                                <span class="small opacity-75">Horizontal line inserted</span>
+                            </div>
+                        </li>
+                        <li class="objective-item" id="obj-h2-2">
+                            <i class="bi bi-x-circle-fill text-danger fs-5 status-icon"></i>
+                            <div>
+                                <strong class="d-block text-white">Second Section</strong>
+                                <span class="small opacity-75">H2 containing "Sports"</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="result-screen" class="screen card border-0 shadow-lg p-5 rounded-4 text-center bg-dark text-white">
+        <div id="result-icon-box" class="mb-4"></div>
+        <h2 class="fw-bold mb-2 text-uppercase" id="result-title">Crawler Passed</h2>
+        <p class="text-light text-opacity-75 fs-5 mb-4" id="result-message">Great job, Developer.</p>
+        
+        <div class="row g-3 justify-content-center mb-5">
+            <div class="col-6 col-md-4">
+                <div class="p-3 bg-black rounded-3 border border-secondary">
+                    <div class="fs-6 text-muted text-uppercase fw-bold font-monospace">Time Bonus</div>
+                    <div class="fs-2 fw-bold text-info" id="final-time">0s</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4">
+                <div class="p-3 bg-black rounded-3 border border-secondary">
+                    <div class="fs-6 text-muted text-uppercase fw-bold font-monospace">Score</div>
+                    <div class="fs-2 fw-bold text-success" id="final-score">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
+            <button class="btn btn-outline-light btn-lg px-5" onclick="location.reload()">
+                <i class="bi bi-arrow-counterclockwise me-2"></i> Restart Sim
+            </button>
+            <button class="btn btn-lg px-5 text-white fw-bold" style="background-color: #f43f5e;" id="share-btn" onclick="submitToGoogleSheets()">
+                <i class="bi bi-cloud-upload me-2"></i> Save Record
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- VARIABLES ---
+    let timeLeft = 120; // 2 minutes
+    let timerInterval;
+    let studentName = "";
+    let isComplete = false;
+    let finalScore = 0;
+
+    // --- LOGIC ---
+    function startChallenge() {
+        const nameInput = document.getElementById("student-name").value.trim();
+        if (nameInput === "") return alert("Developer ID required to begin sequence!");
+        studentName = nameInput;
+        
+        switchScreen("login-screen", "challenge-screen");
+        
+        const editor = document.getElementById("hacker-editor");
+        editor.value = ""; 
+        editor.focus();
+        
+        // Start Timer
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                triggerGameOver(false);
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        const display = document.getElementById("countdown");
+        
+        display.innerHTML = `<i class="bi bi-stopwatch"></i> ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (timeLeft <= 30) {
+            display.classList.add("timer-warning");
+        }
+    }
+
+    // --- THE REAL-TIME VALIDATION ENGINE ---
+    function runDiagnostics() {
+        if (isComplete) return;
+        
+        const rawCode = document.getElementById("hacker-editor").value;
+        const log = document.getElementById("status-log");
+        
+        // Normalize code: lower case, strip ALL spaces, convert single quotes to double
+        const code = rawCode.toLowerCase().replace(/\s+/g, '').replace(/'/g, '"');
+        
+        // SEO VALIDATION: Exactly ONE H1 tag
+        const h1Count = (code.match(/<h1/g) || []).length;
+        const hasH1Text = code.includes("<h1>home</h1>");
+        const objH1Met = hasH1Text && (h1Count === 1);
+        
+        const objH2News = code.includes("<h2>news</h2>");
+        const objH3Local = code.includes("<h3>local</h3>");
+        const objHr = code.includes("<hr>") || code.includes("<hr/>");
+        const objH2Sports = code.includes("<h2>sports</h2>");
+
+        // Update UI
+        updateObjective("obj-h1", objH1Met);
+        updateObjective("obj-h2-1", objH2News);
+        updateObjective("obj-h3", objH3Local);
+        updateObjective("obj-hr", objHr);
+        updateObjective("obj-h2-2", objH2Sports);
+
+        // Generate fake logs with a specific warning if they break the H1 rule
+        if (h1Count > 1) {
+            log.innerHTML = `<span class="text-warning">> SEO PENALTY: Multiple H1 tags detected!</span>`;
+            document.getElementById("deploy-btn").disabled = true;
+        } else if (rawCode.length > 0) {
+            log.innerText = `> Analyzing ${rawCode.length} hierarchy bytes...`;
+        } else {
+            log.innerText = `> Awaiting hierarchy...`;
+        }
+
+        // Check Win Condition
+        if (objH1Met && objH2News && objH3Local && objHr && objH2Sports) {
+            log.innerHTML = `<span class="text-success">> DOCUMENT OUTLINE PERFECT. READY TO SUBMIT.</span>`;
+            document.getElementById("deploy-btn").disabled = false;
+        } else if (h1Count <= 1) {
+            // Keep disabled if conditions aren't met, but don't overwrite the multiple H1 warning
+            document.getElementById("deploy-btn").disabled = true;
+        }
+    }
+
+    function updateObjective(id, isMet) {
+        const el = document.getElementById(id);
+        const icon = el.querySelector(".status-icon");
+        
+        if (isMet) {
+            el.classList.add("complete");
+            icon.classList.replace("bi-x-circle-fill", "bi-check-circle-fill");
+            icon.classList.replace("text-danger", "text-success");
+        } else {
+            el.classList.remove("complete");
+            icon.classList.replace("bi-check-circle-fill", "bi-x-circle-fill");
+            icon.classList.replace("text-success", "text-danger");
+        }
+    }
+
+    // --- GAME OVER / WIN LOGIC ---
+    function deployCode() {
+        clearInterval(timerInterval);
+        isComplete = true;
+        triggerGameOver(true);
+    }
+
+    function triggerGameOver(didWin) {
+        switchScreen("challenge-screen", "result-screen");
+        
+        const iconBox = document.getElementById("result-icon-box");
+        const titleBox = document.getElementById("result-title");
+        const msgBox = document.getElementById("result-message");
+        
+        if (didWin) {
+            // Base score 1000 + 10 points per second remaining
+            finalScore = 1000 + (timeLeft * 10);
+            
+            iconBox.innerHTML = '<i class="bi bi-globe-americas display-1 text-success"></i>';
+            titleBox.innerText = "Crawler Passed";
+            titleBox.className = "fw-bold mb-2 text-uppercase text-success";
+            msgBox.innerText = `Outstanding work, ${studentName}. The site ranks #1 on search engines!`;
+            
+            document.getElementById("final-time").innerText = `+${timeLeft}s`;
+            document.getElementById("final-score").innerText = finalScore;
+        } else {
+            finalScore = 0;
+            iconBox.innerHTML = '<i class="bi bi-robot display-1 text-danger"></i>';
+            titleBox.innerText = "Site Blacklisted";
+            titleBox.className = "fw-bold mb-2 text-uppercase text-danger";
+            msgBox.innerText = `Time expired, ${studentName}. The search engine blocked our page.`;
+            
+            document.getElementById("final-time").innerText = "0s";
+            document.getElementById("final-score").innerText = "0";
+            document.getElementById("share-btn").disabled = true; // Don't save zero scores
+        }
+    }
+
+    function switchScreen(hideId, showId) {
+        document.getElementById(hideId).classList.remove("active");
+        document.getElementById(showId).classList.add("active");
+    }
+
+    function submitToGoogleSheets() {
+        const btn = document.getElementById("share-btn");
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Saving...`;
+        btn.disabled = true;
+
+        const data = {
+            name: studentName,
+            score: finalScore,
+            total: "CHALLENGE 6: HEADINGS",
+            timestamp: new Date().toLocaleString()
+        };
+
+        fetch(GOOGLE_SCRIPT_URL1, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+        }).then(() => {
+            btn.innerHTML = `<i class="bi bi-check-circle me-2"></i> Record Saved!`;
+            btn.classList.replace("text-white", "text-dark");
+            btn.style.backgroundColor = "#10b981"; // Turn green
+        }).catch(() => {
+            alert('There was an error saving your record. Check config.js connection.');
+            btn.innerHTML = `<i class="bi bi-cloud-upload me-2"></i> Save Record`;
+            btn.disabled = false;
+        });
+    }
+</script>
+<script src="/js/config.js"></script>
+
+</body>
+</html>

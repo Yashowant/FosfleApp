@@ -1,0 +1,300 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link href="/vendor/bootstrap.min.css" rel="stylesheet"><link href="/vendor/bootstrap-icons.min.css" rel="stylesheet"><style>body{background:#f8f9fa}</style></head><body><div class="container-fluid p-0 animation-fade-in">
+    <div class="p-5 bg-dark text-white rounded-4 shadow-sm mb-5 position-relative overflow-hidden">
+        <i class="bi bi-text-paragraph position-absolute text-white opacity-10" style="font-size: 15rem; right: -20px; top: -30px; transform: rotate(-10deg);"></i>
+        <div class="position-relative z-1">
+            <span class="badge bg-primary mb-3 px-3 py-2 fw-semibold fs-6">Module 1 &bull; Chapter 7</span>
+            <h1 class="display-4 fw-bold mb-3">HTML Paragraphs</h1>
+            <p class="lead text-light text-opacity-75 max-w-3xl">
+                A paragraph always starts on a new line, and is usually a block of text. In this chapter, we will learn how browsers calculate spacing, why they ignore your "Enter" key, and how to format blocks of text perfectly.
+            </p>
+        </div>
+    </div>
+    
+    <div class="mb-5 mt-5">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">1</span>
+            <h2 class="fw-bold mb-0">The HTML &lt;p&gt; Element</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">The HTML <code>&lt;p&gt;</code> element defines a paragraph. Browsers automatically add an empty line (called a margin) before and after a paragraph to separate it from other elements.</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-header bg-black border-0 d-flex justify-content-between align-items-center py-3">
+                        <span class="badge bg-secondary px-3 py-2"><i class="bi bi-code-slash me-1"></i> paragraphs.html</span>
+                        <button class="btn btn-sm btn-outline-secondary text-white border-0" onclick="navigator.clipboard.writeText('<p>This is a paragraph.</p>\n<p>This is another paragraph.</p>'); alert('Code copied to clipboard!');">
+                            <i class="bi bi-clipboard"></i> Copy
+                        </button>
+                    </div>
+                    <div class="card-body font-monospace d-flex flex-column justify-content-center" style="font-size: 0.95rem;">
+<pre class="m-0 text-white w-100"><code><span class="text-info">&lt;p&gt;</span>This is a paragraph.<span class="text-info">&lt;/p&gt;</span>
+<span class="text-info">&lt;p&gt;</span>This is another paragraph.<span class="text-info">&lt;/p&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card bg-white border border-primary border-opacity-25 shadow-sm h-100 p-4">
+                    <span class="text-muted small text-uppercase fw-bold mb-3 border-bottom pb-2">Real Browser Output</span>
+                    <div class="bg-white text-dark rounded border h-100 p-3 shadow-sm overflow-auto" style="font-family: 'Times New Roman', Times, serif; font-size: 1.1rem;">
+                        <p>This is a paragraph.</p>
+                        <p>This is another paragraph.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">2</span>
+            <h2 class="fw-bold mb-0">HTML Display Behavior</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">You cannot be sure how HTML will be displayed. Large or small screens, and resized windows will create different results. However, the most important rule to remember is that <strong>browsers ignore extra spaces and new lines.</strong></p>
+        
+        <div class="row g-4 mb-4">
+            <div class="col-md-6">
+                <div class="p-4 bg-light border rounded-4 shadow-sm h-100 position-relative overflow-hidden">
+                    <div class="position-relative z-1">
+                        <i class="bi bi-arrows-collapse text-danger fs-2 mb-2 d-block"></i>
+                        <h4 class="fw-bold">The Whitespace Collapse</h4>
+                        <p class="text-secondary mb-0">If you put 10 empty spaces between two words in your HTML code, the browser will instantly delete 9 of them and only display 1 space. This is called "Whitespace Collapsing".</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-4 bg-light border rounded-4 shadow-sm h-100 position-relative overflow-hidden">
+                    <div class="position-relative z-1">
+                        <i class="bi bi-skip-end text-warning fs-2 mb-2 d-block"></i>
+                        <h4 class="fw-bold">Ignoring the "Enter" Key</h4>
+                        <p class="text-secondary mb-0">Pressing "Enter" or "Return" on your keyboard to create a new line in your text editor does absolutely nothing in the browser. The browser will print it all on one continuous line.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">3</span>
+            <h2 class="fw-bold mb-0">The Poem Problem</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">Because of the whitespace rules mentioned above, writing a poem or an address inside a single <code>&lt;p&gt;</code> tag will completely ruin the formatting. Look at what happens to this code:</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-header bg-danger bg-opacity-25 border-0 py-3">
+                        <span class="badge bg-danger px-3 py-2"><i class="bi bi-bug me-1"></i> broken-poem.html</span>
+                    </div>
+                    <div class="card-body font-monospace d-flex align-items-center" style="font-size: 0.95rem;">
+<pre class="m-0 text-white w-100"><code><span class="text-info">&lt;p&gt;</span>
+  My Bonnie lies over the ocean.
+  
+  My Bonnie lies over the sea.
+  
+  My Bonnie lies over the ocean.
+  
+  Oh, bring back my Bonnie to me.
+<span class="text-info">&lt;/p&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card bg-white border border-danger border-opacity-50 shadow-sm h-100 p-4">
+                    <span class="text-danger small text-uppercase fw-bold mb-3 border-bottom pb-2"><i class="bi bi-exclamation-triangle-fill me-1"></i> Broken Browser Output</span>
+                    <div class="bg-light text-dark rounded border h-100 p-3 shadow-sm overflow-auto" style="font-family: 'Times New Roman', Times, serif; font-size: 1.1rem;">
+                        <p>
+                          My Bonnie lies over the ocean.
+                          
+                          My Bonnie lies over the sea.
+                          
+                          My Bonnie lies over the ocean.
+                          
+                          Oh, bring back my Bonnie to me.
+                        </p>
+                    </div>
+                    <p class="text-muted small mt-3 fst-italic">Notice how the browser flattened all the lines and spaces into one single, continuous sentence!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">4</span>
+            <h2 class="fw-bold mb-0">HTML Line Breaks (&lt;br&gt;)</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">The HTML <code>&lt;br&gt;</code> element defines a line break. Use <code>&lt;br&gt;</code> if you want a new line (a carriage return) <strong>without</strong> starting a new paragraph.</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-header bg-black border-0 py-3">
+                        <span class="badge bg-secondary px-3 py-2"><i class="bi bi-arrow-return-left me-1"></i> breaks.html</span>
+                    </div>
+                    <div class="card-body font-monospace d-flex align-items-center" style="font-size: 0.95rem;">
+<pre class="m-0 text-white w-100"><code><span class="text-info">&lt;p&gt;</span>
+  This is<span class="text-warning">&lt;br&gt;</span>
+  a paragraph<span class="text-warning">&lt;br&gt;</span>
+  with line breaks.
+<span class="text-info">&lt;/p&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card bg-white border border-primary border-opacity-25 shadow-sm h-100 p-4">
+                    <span class="text-muted small text-uppercase fw-bold mb-3 border-bottom pb-2">Real Browser Output</span>
+                    <div class="bg-white text-dark rounded border h-100 p-3 shadow-sm overflow-auto" style="font-family: 'Times New Roman', Times, serif; font-size: 1.1rem;">
+                        <p>
+                          This is<br>
+                          a paragraph<br>
+                          with line breaks.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-info border-0 shadow-sm border-start border-4 border-info mt-4 d-flex align-items-start bg-info bg-opacity-10 text-dark">
+            <i class="bi bi-info-circle-fill fs-4 me-3 text-info"></i>
+            <div>
+                <strong class="d-block mb-1">Empty Elements:</strong>
+                The <code>&lt;br&gt;</code> tag is an empty element, which means that it has no end tag. You just type it and it immediately breaks the line!
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">5</span>
+            <h2 class="fw-bold mb-0">The &lt;pre&gt; Element</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">If you are displaying computer code, ascii art, or a poem, placing <code>&lt;br&gt;</code> tags everywhere is exhausting. The HTML <code>&lt;pre&gt;</code> element defines preformatted text!</p>
+        <p class="text-secondary fs-5 mb-4">Text inside a <code>&lt;pre&gt;</code> element is displayed in a fixed-width font (usually Courier), and it <strong>preserves both spaces and line breaks exactly as you type them</strong>.</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-header bg-success bg-opacity-25 border-0 py-3">
+                        <span class="badge bg-success px-3 py-2"><i class="bi bi-check-circle me-1"></i> fixed-poem.html</span>
+                    </div>
+                    <div class="card-body font-monospace d-flex align-items-center" style="font-size: 0.95rem;">
+<pre class="m-0 text-white w-100"><code><span class="text-warning">&lt;pre&gt;</span>
+  My Bonnie lies over the ocean.
+  
+  My Bonnie lies over the sea.
+  
+  My Bonnie lies over the ocean.
+  
+  Oh, bring back my Bonnie to me.
+<span class="text-warning">&lt;/pre&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card bg-white border border-success border-opacity-50 shadow-sm h-100 p-4">
+                    <span class="text-success small text-uppercase fw-bold mb-3 border-bottom pb-2"><i class="bi bi-check-circle-fill me-1"></i> Fixed Browser Output</span>
+                    <div class="bg-light text-dark rounded border h-100 p-3 shadow-sm overflow-auto">
+                        <pre style="margin: 0;">
+  My Bonnie lies over the ocean.
+  
+  My Bonnie lies over the sea.
+  
+  My Bonnie lies over the ocean.
+  
+  Oh, bring back my Bonnie to me.</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">6</span>
+            <h2 class="fw-bold mb-0">Thematic Breaks (&lt;hr&gt;)</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">If you want to separate paragraphs or sections visually without starting a new heading, use the <code>&lt;hr&gt;</code> tag. It draws a horizontal line across the page.</p>
+        
+        <div class="p-4 p-md-5 bg-white border border-primary border-opacity-25 rounded-4 shadow-sm position-relative text-center">
+            <div class="bg-white text-dark rounded border p-4 shadow-sm overflow-auto text-start" style="font-family: 'Times New Roman', Times, serif; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+                <p>This is the first paragraph of a story. It contains important details about the beginning.</p>
+                <hr>
+                <p>This is the second paragraph. The horizontal rule above indicates a shift in time or a change of scene.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">7</span>
+            <h2 class="fw-bold mb-0">The Beginner Spacing Mistake</h2>
+        </div>
+        
+        <div class="p-4 p-md-5 bg-white border border-secondary border-opacity-25 rounded-4 shadow-sm position-relative mt-4">
+            <i class="bi bi-x-octagon-fill position-absolute text-danger opacity-10" style="font-size: 10rem; right: -10px; bottom: -20px;"></i>
+            
+            <div class="position-relative z-1">
+                <p class="text-dark fs-5 mb-4">When a beginner wants to create extra blank space between two paragraphs on their website, they often try to cheat by spamming empty paragraph tags or line breaks like this:</p>
+                
+                <div class="bg-light p-4 rounded border font-monospace text-muted mb-4 border-danger border-opacity-50">
+                    &lt;p&gt;Paragraph 1&lt;/p&gt;<br>
+                    <span class="text-danger fw-bold">&lt;br&gt;&lt;br&gt;&lt;br&gt;</span><br>
+                    <span class="text-danger fw-bold">&lt;p&gt;&lt;/p&gt;</span><br>
+                    &lt;p&gt;Paragraph 2&lt;/p&gt;
+                </div>
+
+                <h5 class="fw-bold text-danger"><i class="bi bi-ban me-2"></i>Never do this!</h5>
+                <p class="text-secondary mb-0">HTML is purely for <strong>structure</strong>, not for visual styling. If you need 5 inches of blank space between two paragraphs, you must use <strong>CSS margins or padding</strong>. Screen readers get very confused when they read empty `<p>` tags out loud to visually impaired users.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">8</span>
+            <h2 class="fw-bold mb-0">Placeholder Text (Lorem Ipsum)</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">When professional developers are building a website, they often don't have the final text from the writers yet. Instead of leaving the webpage blank, they use a famous Latin placeholder text called <strong>Lorem Ipsum</strong> to test what the paragraphs will look like.</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-header bg-black border-0 py-3">
+                        <span class="badge bg-secondary px-3 py-2"><i class="bi bi-file-text me-1"></i> dummy-text.html</span>
+                    </div>
+                    <div class="card-body font-monospace d-flex align-items-center" style="font-size: 0.9rem;">
+<pre class="m-0 text-white w-100" style="white-space: pre-wrap;"><code><span class="text-info">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<span class="text-info">&lt;/p&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm bg-light h-100 p-4 d-flex flex-column justify-content-center text-center">
+                    <i class="bi bi-magic display-4 text-primary mb-3"></i>
+                    <h5 class="fw-bold text-dark">VS Code Cheat Code!</h5>
+                    <p class="text-secondary mb-0">
+                        If you are using a modern editor like VS Code, you don't need to copy and paste this from the internet. Just type <code>lorem</code> inside your <code>&lt;p&gt;</code> tag and hit the <strong>Tab</strong> key, and it will instantly generate a full paragraph for you!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-4 p-md-5 bg-gradient border border-primary border-opacity-25 rounded-4 shadow-sm position-relative overflow-hidden mt-5" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);">
+        <i class="bi bi-text-left position-absolute text-success opacity-10" style="font-size: 15rem; right: -20px; bottom: -50px; transform: rotate(15deg);"></i>
+        
+        <div class="position-relative z-1 text-center">
+            <div class="mb-4 d-flex justify-content-center">
+                <div class="bg-white p-3 rounded-circle shadow-sm">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                </div>
+            </div>
+            <h2 class="fw-bold text-success mb-3">Paragraphs Conquered!</h2>
+            <p class="text-dark text-opacity-75 fs-5 max-w-2xl mx-auto mb-4">
+                You now understand exactly how the browser's whitespace parser works, how to override it with preformatted text, and how to create clean, accessible blocks of text.
+            </p>
+        </div>
+    </div>
+</div><script src="/vendor/bootstrap.bundle.min.js"></script></body></html>

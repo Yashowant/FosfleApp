@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Colors: Chroma Core Lab</title>
+
+    <link href="/vendor/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/vendor/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --lab-bg:        #0a0512;
+            --panel-bg:      #130a21;
+            --panel-border:  #2d1b4e;
+            --neon-pink:     #ff2a85;
+            --neon-blue:     #00f0ff;
+            --neon-green:    #39ff14;
+            --neon-yellow:   #ffea00;
+            --text-main:     #e2e8f0;
+            --text-dim:      #8b7ba3;
+            
+            /* Color Challenge Specifics */
+            --c-hex:         #ff3366;
+            --c-rgb:         #00ff80;
+            --c-hsl:         #ffaa00;
+            --c-rgba:        rgba(0, 240, 255, 0.5);
+            --c-named:       dodgerblue;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            background-color: var(--lab-bg);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(255, 42, 133, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(0, 240, 255, 0.05), transparent 25%);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        /* HEXAGON GRID OVERLAY */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0l20 10v20L20 40 0 30V10z' fill-rule='evenodd' stroke='rgba(255,255,255,0.02)' fill='none'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wrap { position: relative; z-index: 1; }
+
+        /* ─── SCREENS ─── */
+        .screen { display: none; }
+        .screen.active { display: block; animation: bootUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes bootUp {
+            from { opacity: 0; transform: scale(0.98) translateY(10px); filter: brightness(0); }
+            to   { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); }
+        }
+
+        /* ─── PANEL BASE ─── */
+        .panel {
+            background: rgba(19, 10, 33, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        .panel-head {
+            background: linear-gradient(90deg, #180d2a, #23133f);
+            border-bottom: 1px solid var(--panel-border);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            color: var(--neon-pink);
+            text-transform: uppercase;
+        }
+
+        /* ─── LOGIN ─── */
+        .title-glow {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue), 0 0 80px var(--neon-pink);
+            letter-spacing: 0.04em;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(57, 255, 20, 0.1);
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+        }
+
+        .briefing-box {
+            background: rgba(0, 240, 255, 0.03);
+            border-left: 3px solid var(--neon-blue);
+            padding: 20px 24px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: #a79cbd;
+            border-radius: 0 8px 8px 0;
+        }
+        .briefing-box .highlight { color: #fff; font-weight: bold; text-shadow: 0 0 8px var(--neon-blue); }
+
+        .name-input {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--panel-border);
+            color: #fff;
+            font-family: 'Fira Code', monospace;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1rem;
+            padding: 14px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        .name-input:focus {
+            outline: none;
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 20px rgba(255, 42, 133, 0.2);
+        }
+
+        .go-btn {
+            background: linear-gradient(135deg, #ff2a85, #d9005a);
+            border: none;
+            color: #fff;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            padding: 16px 40px;
+            border-radius: 10px;
+            width: 100%;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 42, 133, 0.4);
+        }
+        .go-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(255, 42, 133, 0.6);
+        }
+
+        /* ─── CHALLENGE LAYOUT ─── */
+        .challenge-wrap { display: flex; flex-direction: column; gap: 20px; }
+
+        /* TOP BAR */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 12px 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .segment-tabs {
+            display: flex;
+            gap: 8px;
+        }
+        .seg-tab {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text-dim);
+            background: rgba(0,0,0,0.2);
+            text-transform: uppercase;
+        }
+        .seg-tab.active {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--neon-blue);
+            border-color: rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+        }
+
+        #countdown {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--neon-pink);
+            letter-spacing: 0.05em;
+            text-shadow: 0 0 10px rgba(255, 42, 133, 0.5);
+        }
+        #countdown.warn { color: #ff3333; animation: pulseRed 0.8s infinite alternate; }
+        @keyframes pulseRed { from { text-shadow: 0 0 10px #ff3333; } to { text-shadow: 0 0 30px #ff3333, 0 0 50px #ff3333; } }
+
+        .score-pill {
+            background: rgba(255, 234, 0, 0.1);
+            border: 1px solid rgba(255, 234, 0, 0.3);
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-family: 'Fira Code', monospace;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--neon-yellow);
+        }
+
+        /* ─── SEGMENT A: DRAG & DROP ─── */
+        .segment { display: none; }
+        .segment.active { display: block; animation: bootUp 0.4s ease-out; }
+
+        .dnd-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+        @media (max-width: 800px) { .dnd-layout { grid-template-columns: 1fr; } }
+
+        /* TAG PALETTE */
+        .color-palette {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .color-chip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            margin: 10px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: grab;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.2);
+            transition: all 0.2s;
+            user-select: none;
+            color: #fff;
+        }
+        .color-chip:active { cursor: grabbing; transform: scale(1.05); }
+        .color-chip.dragging { opacity: 0.5; border-color: var(--neon-blue); }
+        .color-chip.used { opacity: 0.2; filter: grayscale(100%); cursor: not-allowed; pointer-events: none; }
+        
+        .chip-swatch {
+            width: 20px; height: 20px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* DROP ZONES */
+        .drop-slots { display: flex; flex-direction: column; gap: 16px; }
+
+        .drop-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 20px;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        .drop-card.solved {
+            border-color: rgba(57, 255, 20, 0.4);
+            background: rgba(57, 255, 20, 0.03);
+        }
+
+        .target-swatch {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            background: transparent; /* Changed dynamically */
+            position: relative;
+            overflow: hidden;
+        }
+        .target-swatch::after {
+            content: '?';
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Orbitron'; color: rgba(255,255,255,0.2); font-size: 1.2rem;
+        }
+        .solved .target-swatch::after { content: ''; }
+
+        .text-sample {
+            font-size: 1rem;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+        .text-sample .hint-word {
+            font-family: 'Fira Code', monospace;
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            display: block;
+            margin-top: 6px;
+        }
+
+        .drop-zone {
+            min-width: 140px;
+            height: 48px;
+            border: 2px dashed rgba(255,255,255,0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.3);
+            transition: all 0.2s;
+            background: rgba(0,0,0,0.2);
+        }
+        .drop-zone.over {
+            border-color: var(--neon-pink);
+            background: rgba(255, 42, 133, 0.1);
+            color: var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 42, 133, 0.2);
+        }
+        .drop-zone.correct {
+            border-color: var(--neon-green);
+            background: rgba(57, 255, 20, 0.1);
+            color: var(--neon-green);
+            border-style: solid;
+        }
+        .drop-zone.wrong {
+            border-color: #ff3333;
+            background: rgba(255, 51, 51, 0.1);
+            animation: glitchShake 0.3s ease;
+        }
+        @keyframes glitchShake {
+            0%,100%{transform:translate(0)} 20%{transform:translate(-5px, 2px)} 40%{transform:translate(5px, -2px)} 60%{transform:translate(-5px, -2px)} 80%{transform:translate(5px, 2px)}
+        }
+
+        /* ─── SEGMENT B: CODE CHALLENGE ─── */
+        .code-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 20px;
+            align-items: start;
+        }
+        @media (max-width: 860px) { .code-layout { grid-template-columns: 1fr; } }
+
+        .editor-panel {
+            background: #06030a;
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+        .editor-bar {
+            background: #11091d;
+            border-bottom: 1px solid var(--panel-border);
+            padding: 10px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .mac-dots { display: flex; gap: 6px; }
+        .mac-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+        .code-ta {
+            width: 100%;
+            min-height: 220px;
+            background: transparent;
+            border: none;
+            outline: none;
+            resize: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: #d8b4fe;
+            padding: 20px;
+            line-height: 1.6;
+            caret-color: var(--neon-pink);
+        }
+        .code-ta::placeholder { color: rgba(216, 180, 254, 0.3); }
+
+        .render-panel {
+            background: #0f0b17;
+            border-top: 1px dashed var(--panel-border);
+            padding: 20px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(45deg, #161022 25%, transparent 25%, transparent 75%, #161022 75%, #161022), linear-gradient(45deg, #161022 25%, transparent 25%, transparent 75%, #161022 75%, #161022);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+        .render-label {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            padding: 10px 20px;
+            background: #0a0512;
+            border-top: 1px solid var(--panel-border);
+        }
+        
+        .editor-footer {
+            background: #11091d;
+            border-top: 1px solid var(--panel-border);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* OBJECTIVES PANEL */
+        .obj-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .obj-item {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+        }
+        .obj-item:last-child { border-bottom: none; }
+        .obj-icon {
+            width: 38px; height: 38px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            color: var(--text-dim);
+            font-family: 'Fira Code', monospace;
+        }
+        .obj-item.done { background: rgba(57, 255, 20, 0.05); }
+        .obj-item.done .obj-icon {
+            border-color: var(--neon-green);
+            background: rgba(57, 255, 20, 0.1);
+            color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+        }
+        .obj-text strong {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 3px;
+        }
+        .obj-text span {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            background: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* PROGRESS */
+        .prog-wrap { padding: 16px; background: #0a0512; }
+        .prog-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-family:'Orbitron',monospace; font-size:0.7rem; color:var(--text-dim); }
+        .prog-track { height: 6px; background: #1a0f2e; border-radius: 3px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); }
+        .prog-fill { height: 100%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink)); border-radius: 3px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); width: 0%; box-shadow: 0 0 10px var(--neon-pink); }
+
+        /* BUTTONS */
+        .submit-btn {
+            background: linear-gradient(135deg, #00f0ff, #0088ff);
+            border: none;
+            color: #000;
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .submit-btn:disabled { background: #2d1b4e; color: #5c4585; cursor: not-allowed; }
+        .submit-btn:not(:disabled):hover { box-shadow: 0 0 20px rgba(0, 240, 255, 0.5); transform: translateY(-1px); color: #fff; }
+
+        /* ─── RESULT ─── */
+        .result-shell {
+            background: var(--panel-bg);
+            border: 1px solid var(--neon-blue);
+            border-radius: 20px;
+            box-shadow: 0 0 60px rgba(0, 240, 255, 0.15), inset 0 0 30px rgba(0,0,0,0.8);
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .result-shell::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, rgba(255,42,133,0.1), transparent 30%);
+            animation: rotateBg 10s linear infinite; pointer-events: none;
+        }
+        @keyframes rotateBg { 100% { transform: rotate(360deg); } }
+
+        .stat-card {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px 12px;
+            backdrop-filter: blur(5px);
+        }
+        .stat-lbl { font-family:'Fira Code',monospace; font-size:0.7rem; color:var(--text-dim); margin-bottom:8px; }
+        .stat-val { font-family:'Orbitron',monospace; font-weight:900; font-size:2.2rem; text-shadow: 0 0 15px currentColor; }
+
+        /* TOAST */
+        .toast-msg {
+            position: fixed; bottom: 30px; right: 30px;
+            background: rgba(10, 5, 18, 0.95); border-left: 4px solid var(--neon-blue);
+            border-radius: 8px; padding: 16px 24px;
+            font-family: 'Fira Code', monospace; font-size: 0.9rem; color: #fff;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            z-index: 9999; transform: translateX(120%); opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .toast-msg.show { transform: translateX(0); opacity: 1; }
+        
+        /* SPARKS */
+        .spark {
+            position: fixed; pointer-events: none; border-radius: 50%;
+            animation: sparkOut 0.8s ease-out forwards; z-index: 9999; box-shadow: 0 0 10px currentColor;
+        }
+        @keyframes sparkOut { 0%{opacity:1;transform:scale(1) translate(0,0)} 100%{opacity:0;transform:scale(0) translate(var(--tx),var(--ty))} }
+    </style>
+</head>
+<body class="py-4 px-3">
+<div class="wrap">
+<div class="container" style="max-width:1150px;">
+
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <button class="btn btn-dark border-secondary px-4" onclick="history.back()" style="font-family:'Fira Code', monospace; font-size: 0.8rem;">
+            <i class="bi bi-box-arrow-left me-2"></i> ABORT
+        </button>
+        <span style="font-family:'Orbitron',monospace;font-size:0.75rem;color:var(--text-dim);letter-spacing: 0.2em;">
+            SYSTEM: CHROMA OS v2.4
+        </span>
+    </div>
+
+    <div id="login-screen" class="screen active">
+        <div class="panel p-5">
+            <div class="text-center mb-5">
+                <div class="mb-3">
+                    <span class="status-badge"><span class="spinner-grow spinner-grow-sm me-1" style="width: 10px; height:10px;"></span> SYSTEM ONLINE</span>
+                </div>
+                <div class="title-glow mb-2">CHROMA CORE</div>
+                <p style="font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:0.2em;color:var(--neon-pink);">
+                    LIGHT SYNTHESIS & CSS COLOR LAB
+                </p>
+            </div>
+
+            <div class="briefing-box mb-5" style="max-width:750px;margin:0 auto;">
+                <span style="color:var(--neon-blue);font-weight:bold;">// DIRECTIVE FROM COMMAND:</span><br><br>
+                Welcome, Synthesis Technician. Our central UI displays have lost their color configuration data. You have <span class="highlight">3 minutes</span> to recalibrate the system using HTML/CSS color syntax.
+                <br><br>
+                <strong>PHASE 1:</strong> Drag the correct syntax (Hex, RGB, HSL, Named, RGBA) to patch the broken UI swatches.<br>
+                <strong>PHASE 2:</strong> Access the terminal to manually code the missing style properties for the final display components.
+            </div>
+
+            <div style="max-width:400px;margin:0 auto;">
+                <input type="text" id="student-name" class="name-input mb-4" placeholder="[ Enter Technician ID ]" autocomplete="off">
+                <button class="go-btn" onclick="startChallenge()">
+                    <i class="bi bi-lightning-charge-fill me-2"></i> INITIALIZE LAB
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="challenge-screen" class="screen">
+        <div class="challenge-wrap">
+
+            <div class="top-bar">
+                <div class="segment-tabs">
+                    <button class="seg-tab active" id="tab-dnd" onclick="switchSeg('dnd')">
+                        <i class="bi bi-palette me-1"></i> 1. Calibrate
+                    </button>
+                    <button class="seg-tab" id="tab-code" onclick="switchSeg('code')">
+                        <i class="bi bi-terminal me-1"></i> 2. Terminal
+                    </button>
+                </div>
+
+                <div id="countdown"><i class="bi bi-clock-history me-2"></i>03:00</div>
+
+                <div class="score-pill">
+                    ENERGY: <span id="live-score" style="font-size:1.1rem;">0</span> kW
+                </div>
+            </div>
+
+            <div class="segment active" id="seg-dnd">
+                <div class="dnd-layout">
+
+                    <div class="color-palette">
+                        <div class="panel-head">
+                            <span><i class="bi bi-cpu me-2"></i>SYNTAX DATABANK</span>
+                        </div>
+
+                        <div draggable="true" class="color-chip" data-ans="hex" id="chip-hex">
+                            <span>#ff3366</span>
+                            <div class="chip-swatch" style="background: #ff3366;"></div>
+                        </div>
+                        <div draggable="true" class="color-chip" data-ans="rgb" id="chip-rgb">
+                            <span>rgb(0, 255, 128)</span>
+                            <div class="chip-swatch" style="background: rgb(0, 255, 128);"></div>
+                        </div>
+                        <div draggable="true" class="color-chip" data-ans="hsl" id="chip-hsl">
+                            <span>hsl(45, 100%, 50%)</span>
+                            <div class="chip-swatch" style="background: hsl(45, 100%, 50%);"></div>
+                        </div>
+                        <div draggable="true" class="color-chip" data-ans="rgba" id="chip-rgba">
+                            <span>rgba(0, 240, 255, 0.5)</span>
+                            <div class="chip-swatch" style="background: rgba(0, 240, 255, 0.5);"></div>
+                        </div>
+                        <div draggable="true" class="color-chip" data-ans="named" id="chip-named">
+                            <span>dodgerblue</span>
+                            <div class="chip-swatch" style="background: dodgerblue;"></div>
+                        </div>
+                        
+                        <div class="p-3" style="font-family:'Fira Code'; font-size:0.7rem; color:var(--text-dim); border-top:1px solid rgba(255,255,255,0.05);">
+                            > DRAG SYNTAX TO MATCH THE TARGET DESCRIPTION
+                        </div>
+                    </div>
+
+                    <div class="drop-slots">
+
+                        <div class="drop-card" id="card-1">
+                            <div class="target-swatch" id="swatch-1"></div>
+                            <div class="text-sample">
+                                <strong>Hexadecimal Code</strong>
+                                <span class="hint-word">6-character format starting with a hashtag (Neon Pink)</span>
+                            </div>
+                            <div class="drop-zone" id="dz-1" data-correct="hex" data-color="#ff3366"
+                                ondragover="onOver(event)" ondragleave="onLeave(event)" ondrop="onDrop(event,'dz-1', 1)">
+                                <span>[ Drop Here ]</span>
+                            </div>
+                        </div>
+
+                        <div class="drop-card" id="card-2">
+                            <div class="target-swatch" id="swatch-2"></div>
+                            <div class="text-sample">
+                                <strong>RGB Format</strong>
+                                <span class="hint-word">Red, Green, Blue function 0-255 (Spring Green)</span>
+                            </div>
+                            <div class="drop-zone" id="dz-2" data-correct="rgb" data-color="rgb(0, 255, 128)"
+                                ondragover="onOver(event)" ondragleave="onLeave(event)" ondrop="onDrop(event,'dz-2', 2)">
+                                <span>[ Drop Here ]</span>
+                            </div>
+                        </div>
+
+                        <div class="drop-card" id="card-3">
+                            <div class="target-swatch" id="swatch-3"></div>
+                            <div class="text-sample">
+                                <strong>HSL Format</strong>
+                                <span class="hint-word">Hue, Saturation, Lightness (Warm Yellow/Orange)</span>
+                            </div>
+                            <div class="drop-zone" id="dz-3" data-correct="hsl" data-color="hsl(45, 100%, 50%)"
+                                ondragover="onOver(event)" ondragleave="onLeave(event)" ondrop="onDrop(event,'dz-3', 3)">
+                                <span>[ Drop Here ]</span>
+                            </div>
+                        </div>
+
+                        <div class="drop-card" id="card-4">
+                            <div class="target-swatch" id="swatch-4"></div>
+                            <div class="text-sample">
+                                <strong>RGBA (Alpha Channel)</strong>
+                                <span class="hint-word">RGB with 50% opacity/transparency (Ghost Cyan)</span>
+                            </div>
+                            <div class="drop-zone" id="dz-4" data-correct="rgba" data-color="rgba(0, 240, 255, 0.5)"
+                                ondragover="onOver(event)" ondragleave="onLeave(event)" ondrop="onDrop(event,'dz-4', 4)">
+                                <span>[ Drop Here ]</span>
+                            </div>
+                        </div>
+
+                        <div class="drop-card" id="card-5">
+                            <div class="target-swatch" id="swatch-5"></div>
+                            <div class="text-sample">
+                                <strong>Named Color</strong>
+                                <span class="hint-word">A standard built-in HTML color word (Dodger Blue)</span>
+                            </div>
+                            <div class="drop-zone" id="dz-5" data-correct="named" data-color="dodgerblue"
+                                ondragover="onOver(event)" ondragleave="onLeave(event)" ondrop="onDrop(event,'dz-5', 5)">
+                                <span>[ Drop Here ]</span>
+                            </div>
+                        </div>
+
+                        <div style="text-align:right;margin-top:10px;">
+                            <button class="submit-btn" id="dnd-next-btn" onclick="switchSeg('code')" disabled>
+                                INITIATE TERMINAL <i class="bi bi-chevron-double-right ms-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="segment" id="seg-code">
+                <div class="code-layout">
+
+                    <div class="editor-panel">
+                        <div class="editor-bar">
+                            <div class="mac-dots">
+                                <div class="mac-dot" style="background:#ff5f56"></div>
+                                <div class="mac-dot" style="background:#ffbd2e"></div>
+                                <div class="mac-dot" style="background:#27c93f"></div>
+                            </div>
+                            <span style="font-family:'Fira Code',monospace;font-size:0.75rem;color:var(--text-dim);">styles.html — Live Server</span>
+                        </div>
+
+                        <textarea id="code-ta" class="code-ta"
+                            placeholder="&#10;<div style='...'>&#10;&#10;</div>"
+                            oninput="runCodeChecks()" spellcheck="false"></textarea>
+
+                        <div class="render-label"><i class="bi bi-eye me-2"></i> RENDER OUTPUT</div>
+                        <div class="render-panel" id="render-out">
+                            <span style="color:var(--text-dim);font-family:'Fira Code';font-size:0.85rem;">Awaiting markup...</span>
+                        </div>
+
+                        <div class="editor-footer">
+                            <span id="code-log" style="font-family:'Fira Code';font-size:0.75rem;color:var(--text-dim);">> Awaiting syntax...</span>
+                            <button class="submit-btn" id="code-submit" onclick="finishChallenge()" disabled>
+                                <i class="bi bi-power me-1"></i> POWER ON SYSTEM
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="obj-panel">
+                        <div class="panel-head">
+                            <span><i class="bi bi-check2-square me-2"></i>TERMINAL TASKS</span>
+                            <span id="obj-count" style="color:#fff">0 / 4</span>
+                        </div>
+
+                        <div class="obj-item" id="obj-txt">
+                            <div class="obj-icon"><i class="bi bi-type"></i></div>
+                            <div class="obj-text">
+                                <strong>Text Color</strong>
+                                <span>color: cyan;</span>
+                            </div>
+                        </div>
+                        <div class="obj-item" id="obj-bg">
+                            <div class="obj-icon"><i class="bi bi-square-fill"></i></div>
+                            <div class="obj-text">
+                                <strong>Background Color (Hex)</strong>
+                                <span>background-color: #ff00ff;</span>
+                            </div>
+                        </div>
+                        <div class="obj-item" id="obj-rgb">
+                            <div class="obj-icon"><i class="bi bi-palette-fill"></i></div>
+                            <div class="obj-text">
+                                <strong>RGB Text</strong>
+                                <span>color: rgb(255, 255, 255);</span>
+                            </div>
+                        </div>
+                        <div class="obj-item" id="obj-rgba">
+                            <div class="obj-icon"><i class="bi bi-layers-half"></i></div>
+                            <div class="obj-text">
+                                <strong>Transparent Background</strong>
+                                <span>background-color: rgba(0, 0, 0, 0.5);</span>
+                            </div>
+                        </div>
+
+                        <div class="prog-wrap">
+                            <div class="prog-row">
+                                <span style="color:var(--neon-blue)">TASK PROGRESS</span>
+                                <span id="code-pct" style="color:var(--neon-blue)">0%</span>
+                            </div>
+                            <div class="prog-track">
+                                <div class="prog-fill" id="code-prog"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="prog-wrap" style="border-top:1px solid #1a0f2e; background:#06030a;">
+                            <div class="prog-row">
+                                <span style="color:var(--neon-pink)">SYSTEM RESTORATION</span>
+                                <span id="total-count" style="color:var(--neon-pink)">0 / 9</span>
+                            </div>
+                            <div class="prog-track">
+                                <div class="prog-fill" id="total-prog" style="background:linear-gradient(90deg,var(--neon-pink),var(--neon-yellow)); box-shadow: 0 0 10px var(--neon-yellow)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="result-screen" class="screen">
+        <div class="result-shell">
+            <div style="font-size:5rem;margin-bottom:10px;text-shadow: 0 0 30px rgba(0, 240, 255, 0.6);" id="result-icon"><i class="bi bi-cpu"></i></div>
+            <div class="title-glow mb-2" id="result-title" style="font-size: clamp(2rem, 4vw, 3rem);"></div>
+            <p style="color:var(--text-dim);font-size:1.1rem;margin-bottom:40px;font-family:'Fira Code';" id="result-sub"></p>
+
+            <div class="row g-3 justify-content-center mb-5">
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Calibration</div>
+                        <div class="stat-val" id="stat-dnd" style="color:var(--neon-blue);">0/5</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Terminal Tasks</div>
+                        <div class="stat-val" id="stat-code" style="color:var(--neon-pink);">0/4</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Time Remaining</div>
+                        <div class="stat-val" id="stat-time" style="color:var(--neon-green);">0s</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card" style="background: rgba(255,234,0,0.1); border-color: rgba(255,234,0,0.3);">
+                        <div class="stat-lbl" style="color:var(--neon-yellow)">Energy Score</div>
+                        <div class="stat-val" id="stat-score" style="color:var(--neon-yellow);">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <button class="submit-btn" style="background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue);" onclick="location.reload()">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i> REBOOT SIMULATION
+                </button>
+                <button class="submit-btn" id="save-btn" onclick="submitToGoogleSheets()">
+                    <i class="bi bi-cloud-arrow-up-fill me-2"></i> UPLOAD TELEMETRY
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<div class="toast-msg" id="toast"><i class="bi bi-info-circle me-2"></i><span id="toast-txt"></span></div>
+
+<script>
+    // ─── STATE ───
+    let timeLeft = 180, timerInterval, studentName = '';
+    let isDone = false, finalScore = 0;
+    let dndSolved = new Set();   // dz-1 … dz-5
+    let codeSolved = new Set();  // obj-txt, obj-bg, obj-rgb, obj-rgba
+    let draggingAns = null;
+
+    // ─── START ───
+    function startChallenge() {
+        const n = document.getElementById('student-name').value.trim();
+        if (!n) {
+            showToast('ERROR: Technician ID required to initialize.', true);
+            return;
+        }
+        studentName = n;
+        sw('login-screen', 'challenge-screen');
+        startTimer();
+    }
+
+    function startTimer() {
+        updateClock();
+        timerInterval = setInterval(() => {
+            if (--timeLeft <= 0) { clearInterval(timerInterval); endGame(false); }
+            updateClock();
+        }, 1000);
+    }
+
+    function updateClock() {
+        const m = String(Math.floor(timeLeft/60)).padStart(2,'0');
+        const s = String(timeLeft%60).padStart(2,'0');
+        const el = document.getElementById('countdown');
+        el.innerHTML = `<i class="bi bi-clock-history me-2"></i>${m}:${s}`;
+        el.className = timeLeft <= 30 ? 'warn' : '';
+    }
+
+    // ─── SEGMENT SWITCH ───
+    function switchSeg(name) {
+        document.getElementById('seg-dnd').classList.toggle('active', name==='dnd');
+        document.getElementById('seg-code').classList.toggle('active', name==='code');
+        document.getElementById('tab-dnd').classList.toggle('active', name==='dnd');
+        document.getElementById('tab-code').classList.toggle('active', name==='code');
+        if (name==='code') document.getElementById('code-ta').focus();
+    }
+
+    // ═══════════════════════════════
+    // ─── DRAG & DROP ENGINE ───
+    // ═══════════════════════════════
+    document.querySelectorAll('.color-chip').forEach(chip => {
+        chip.addEventListener('dragstart', e => {
+            draggingAns = chip.dataset.ans;
+            chip.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', draggingAns);
+        });
+        chip.addEventListener('dragend', () => {
+            chip.classList.remove('dragging');
+        });
+    });
+
+    function onOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        e.currentTarget.classList.add('over');
+    }
+    function onLeave(e) { e.currentTarget.classList.remove('over'); }
+
+    function onDrop(e, zoneId, num) {
+        e.preventDefault();
+        const zone = document.getElementById(zoneId);
+        zone.classList.remove('over');
+        if (zone.classList.contains('correct')) return; // already solved
+
+        const dropped = e.dataTransfer.getData('text/plain') || draggingAns;
+        const correct = zone.dataset.correct;
+        const colorVal = zone.dataset.color;
+
+        if (dropped === correct) {
+            // CORRECT
+            zone.classList.add('correct');
+            zone.innerHTML = `<i class="bi bi-check-circle-fill me-2"></i> ACCEPTED`;
+            
+            const card = document.getElementById('card-'+num);
+            card.classList.add('solved');
+
+            // Light up target swatch
+            const swatch = document.getElementById('swatch-'+num);
+            swatch.style.background = colorVal;
+            swatch.style.boxShadow = `0 0 20px ${colorVal}`;
+            swatch.style.border = `2px solid #fff`;
+
+            // Mark chip as used
+            const chip = document.getElementById('chip-'+dropped);
+            if (chip) chip.classList.add('used');
+
+            dndSolved.add(zoneId);
+            spawnSparks(swatch, [colorVal, '#ffffff']);
+            showToast(`Match confirmed: ${dropped.toUpperCase()} format accepted.`);
+            updateTotals();
+
+            if (dndSolved.size === 5) {
+                document.getElementById('dnd-next-btn').disabled = false;
+                showToast('PHASE 1 COMPLETE. Proceed to Terminal.', false, 3000);
+            }
+        } else {
+            // WRONG
+            zone.classList.add('wrong');
+            setTimeout(() => zone.classList.remove('wrong'), 300);
+            showToast(`INCOMPATIBLE FORMAT. Check parameters.`, true);
+        }
+    }
+
+    // ═══════════════════════════════
+    // ─── CODE VALIDATION ENGINE ───
+    // ═══════════════════════════════
+    const stripAll = str => str.toLowerCase().replace(/\s+/g,'').replace(/'/g,'"');
+
+    function runCodeChecks() {
+        if (isDone) return;
+        const raw = document.getElementById('code-ta').value;
+        const c = stripAll(raw);
+
+        // We are checking for specific inline CSS logic.
+        const checks = {
+            'obj-txt':   c.includes('color:cyan') || c.includes('color:"cyan"'),
+            'obj-bg':    c.includes('background-color:#ff00ff') || c.includes('background:#ff00ff'),
+            'obj-rgb':   c.includes('color:rgb(255,255,255)'),
+            'obj-rgba':  c.includes('background-color:rgba(0,0,0,0.5)') || c.includes('background:rgba(0,0,0,0.5)'),
+        };
+
+        let done = 0;
+        for (const [id, met] of Object.entries(checks)) {
+            const wasAlready = codeSolved.has(id);
+            if (met) {
+                codeSolved.add(id);
+                if (!wasAlready) spawnSparksFromId(id);
+            } else {
+                codeSolved.delete(id);
+            }
+            updateObj(id, met);
+            if (met) done++;
+        }
+
+        const pct = Math.round(done/4*100);
+        document.getElementById('code-prog').style.width = pct+'%';
+        document.getElementById('code-pct').textContent = pct+'%';
+        document.getElementById('obj-count').textContent = `${done} / 4`;
+
+        // Live render safely
+        document.getElementById('render-out').innerHTML = raw || '<span style="color:var(--text-dim);font-family:\'Fira Code\';font-size:0.85rem;">Awaiting markup...</span>';
+
+        // Log
+        const log = document.getElementById('code-log');
+        if (done === 4) {
+            log.innerHTML = `<span style="color:var(--neon-green)">> ALL STYLES VALIDATED — READY FOR POWER ON</span>`;
+            document.getElementById('code-submit').disabled = false;
+        } else {
+            log.innerHTML = `> Executing CSS parsing... ${done}/4 rules met.`;
+            document.getElementById('code-submit').disabled = true;
+        }
+
+        updateTotals();
+    }
+
+    function updateObj(id, met) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const icon = el.querySelector('.obj-icon');
+        if (met) {
+            el.classList.add('done');
+            if(!icon.dataset.orig) icon.dataset.orig = icon.innerHTML;
+            icon.innerHTML = '<i class="bi bi-check2"></i>';
+        } else {
+            el.classList.remove('done');
+            if(icon.dataset.orig) icon.innerHTML = icon.dataset.orig;
+        }
+    }
+
+    function updateTotals() {
+        const total = dndSolved.size + codeSolved.size;
+        const pct = Math.round(total/9*100);
+        document.getElementById('total-prog').style.width = pct+'%';
+        document.getElementById('total-count').textContent = `${total} / 9`;
+        document.getElementById('live-score').textContent = calcScore();
+    }
+
+    function calcScore() {
+        return (dndSolved.size * 100) + (codeSolved.size * 150) + (timeLeft * 2);
+    }
+
+    // ─── FINISH ───
+    function finishChallenge() {
+        clearInterval(timerInterval);
+        isDone = true;
+        endGame(true);
+    }
+
+    function endGame(won) {
+        isDone = true;
+        clearInterval(timerInterval);
+        const total = dndSolved.size + codeSolved.size;
+        finalScore = (dndSolved.size * 100) + (codeSolved.size * 150) + (won ? timeLeft * 2 : 0);
+
+        sw('challenge-screen', 'result-screen');
+
+        const ranks = [
+            [9, 'Lead Architect', 'Systems fully operational and saturated.'],
+            [7, 'Senior Tech', 'Minor color desaturation, but stable.'],
+            [5, 'Junior Coder', 'Acceptable logic, visual glitches remain.'],
+            [3, 'Trainee', 'Incomplete synthesis. Study syntax and return.'],
+            [0, 'Offline', 'Total cascade failure. Simulation aborted.'],
+        ];
+        const [,rankLabel, rankDesc] = ranks.find(([min]) => total >= min);
+
+        document.getElementById('result-icon').innerHTML = won ? '<i class="bi bi-cpu" style="color:var(--neon-green)"></i>' : '<i class="bi bi-exclamation-triangle" style="color:#ff3333"></i>';
+        document.getElementById('result-title').innerHTML = won 
+            ? `<span style="color:var(--neon-green)">SYNTHESIS COMPLETE</span>`
+            : `<span style="color:#ff3333">SYSTEM FAILURE</span>`;
+        document.getElementById('result-sub').textContent = `Rank: ${rankLabel} — ${rankDesc} (${studentName})`;
+
+        document.getElementById('stat-dnd').textContent   = `${dndSolved.size}/5`;
+        document.getElementById('stat-code').textContent  = `${codeSolved.size}/4`;
+        document.getElementById('stat-time').textContent  = won ? `${timeLeft}s` : '0s';
+        document.getElementById('stat-score').textContent = finalScore;
+
+        if (finalScore === 0) document.getElementById('save-btn').disabled = true;
+    }
+
+    // ─── SPARKS ───
+    function spawnSparks(anchor, colours) {
+        const rect = anchor.getBoundingClientRect();
+        const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+        for (let i = 0; i < 12; i++) {
+            const p = document.createElement('div');
+            p.className = 'spark';
+            const sz = 3 + Math.random()*6;
+            p.style.cssText = `width:${sz}px;height:${sz}px;left:${cx}px;top:${cy}px;
+                background:${colours[Math.floor(Math.random()*colours.length)]};
+                color:${colours[Math.floor(Math.random()*colours.length)]};
+                --tx:${(Math.random()-.5)*180}px;--ty:${(Math.random()-.5)*150}px;`;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 800);
+        }
+    }
+    function spawnSparksFromId(id) {
+        const el = document.getElementById(id);
+        if (el) spawnSparks(el, ['#00f0ff','#ff2a85','#39ff14','#ffea00']);
+    }
+
+    // ─── TOAST ───
+    let toastTimer;
+    function showToast(msg, isErr=false, time=2000) {
+        const t = document.getElementById('toast');
+        document.getElementById('toast-txt').textContent = msg;
+        t.style.borderLeftColor = isErr ? '#ff3333' : 'var(--neon-blue)';
+        t.style.color = isErr ? '#ffaaaa' : '#fff';
+        t.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => t.classList.remove('show'), time);
+    }
+
+    // ─── HELPERS ───
+    function sw(a, b) {
+        document.getElementById(a).classList.remove('active');
+        document.getElementById(b).classList.add('active');
+    }
+
+    // ─── SUBMIT ───
+    function submitToGoogleSheets() {
+        const btn = document.getElementById('save-btn');
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> UPLOADING...`;
+        btn.disabled = true;
+        
+        // Ensure config.js is linked properly in your environment if you use this.
+        if (typeof GOOGLE_SCRIPT_URL === 'undefined') {
+            setTimeout(() => {
+                alert('Telemetry disconnected. GOOGLE_SCRIPT_URL is not defined in config.js.');
+                btn.innerHTML = `<i class="bi bi-cloud-arrow-up-fill me-2"></i> UPLOAD TELEMETRY`;
+                btn.disabled = false;
+            }, 1000);
+            return;
+        }
+
+        fetch(GOOGLE_SCRIPT_URL1, {
+            method: 'POST',
+            body: JSON.stringify({ name:studentName, score:finalScore, total:'CHALLENGE: HTML COLORS', timestamp:new Date().toLocaleString() }),
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+        }).then(() => {
+            btn.innerHTML = `<i class="bi bi-check-circle-fill me-2"></i> UPLOAD SUCCESS`;
+            btn.style.background = 'linear-gradient(135deg, #39ff14, #2eb810)';
+            btn.style.color = '#000';
+            btn.style.borderColor = 'var(--neon-green)';
+        }).catch(() => {
+            alert('Upload failed. Check connection.');
+            btn.innerHTML = `<i class="bi bi-cloud-arrow-up-fill me-2"></i> UPLOAD TELEMETRY`;
+            btn.disabled = false;
+        });
+    }
+</script>
+<script src="/js/config.js"></script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Basics Quiz</title>
+
+    <link href="/vendor/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/vendor/bootstrap-icons.min.css">
+
+    <style>
+        body { background-color: #f8f9fa; }
+        
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .option-btn {
+            text-align: left;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            transition: 0.2s;
+            border: 2px solid #dee2e6;
+            background: white;
+            font-weight: 500;
+        }
+
+        .option-btn:hover {
+            border-color: #0d6efd;
+            background-color: #f1f5f9;
+        }
+
+        .option-btn.correct { background-color: #d1e7dd; border-color: #198754; color: #0f5132; }
+        .option-btn.wrong { background-color: #f8d7da; border-color: #dc3545; color: #842029; }
+
+        .timer-bar {
+            height: 10px;
+            border-radius: 5px;
+            background-color: #0d6efd;
+            transition: width 1s linear, background-color 0.3s;
+        }
+        
+        .timer-warning { background-color: #dc3545; }
+    </style>
+</head>
+<body class="py-5 px-3">
+
+<div class="container quiz-container">
+    <button class="btn btn-outline-secondary btn-lg px-5" onclick="history.back()">
+                <i class="bi bi-arrow-counterclockwise me-2"></i> Go Back
+            </button>
+
+    <div id="login-screen" class="screen active card border-0 shadow-lg p-5 rounded-4 text-center">
+        <i class="bi bi-person-badge display-1 text-primary mb-3"></i>
+        
+        <h2 class="fw-bold mb-3">Student Login</h2>
+        <p class="text-muted mb-4">Enter your name to start the HTML Basics test. You have 20 seconds per question!</p>
+        
+        <input type="text" id="student-name" class="form-control form-control-lg mb-4 text-center" placeholder="Enter your full name">
+        
+        <button class="btn btn-primary btn-lg w-100 fw-bold py-3" onclick="startQuiz()">
+            Start Excercise <i class="bi bi-arrow-right ms-2"></i>
+        </button>
+    </div>
+
+    <div id="quiz-screen" class="screen card border-0 shadow-lg p-4 p-md-5 rounded-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <span class="badge bg-primary fs-6 px-3 py-2" id="question-counter">Question 1 of 10</span>
+            <div class="text-end fw-bold fs-5 text-secondary">
+                <i class="bi bi-stopwatch"></i> <span id="time-text">20</span>s
+            </div>
+        </div>
+
+        <div class="progress mb-5" style="height: 10px;">
+            <div id="timer-bar" class="timer-bar" style="width: 100%;"></div>
+        </div>
+
+        <h4 id="question-text" class="fw-bold mb-4 line-height-base">Loading question...</h4>
+
+        <div id="options-container" class="d-flex flex-column mb-4">
+            </div>
+
+        <div class="text-end">
+            <button id="next-btn" class="btn btn-dark px-4" onclick="nextQuestion()" disabled>Next Question</button>
+        </div>
+    </div>
+
+    <div id="result-screen" class="screen card border-0 shadow-lg p-5 rounded-4 text-center">
+        <i class="bi bi-trophy-fill display-1 text-warning mb-3"></i>
+        <h2 class="fw-bold mb-2">Test Complete!</h2>
+        <p class="text-muted fs-5 mb-4" id="result-name">Great job, Student.</p>
+        
+        <div class="row g-3 justify-content-center mb-5">
+            <div class="col-6 col-md-4">
+                <div class="p-3 bg-light rounded-3 border">
+                    <div class="fs-6 text-muted text-uppercase fw-bold">Score</div>
+                    <div class="fs-2 fw-bold text-primary" id="final-score">0/10</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4">
+                <div class="p-3 bg-light rounded-3 border">
+                    <div class="fs-6 text-muted text-uppercase fw-bold">Accuracy</div>
+                    <div class="fs-2 fw-bold text-success" id="final-accuracy">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
+            <button class="btn btn-outline-dark btn-lg px-5" onclick="location.reload()">
+                <i class="bi bi-arrow-counterclockwise me-2"></i> Go Back
+            </button>
+            <button class="btn btn-success btn-lg px-5" id="share-btn" onclick="submitToGoogleSheets()">
+                <i class="bi bi-cloud-upload me-2"></i> Share Score
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- QUIZ DATA ---
+    const quizData = [
+        { q: "What does HTML stand for?", options: ["Hyper Text Preprocessor", "Hyper Text Markup Language", "Hyper Tool Multi Language", "Hyperlink Text Markup Language"], answer: 1 },
+        { q: "Who invented HTML?", options: ["Bill Gates", "Steve Jobs", "Tim Berners-Lee", "Mark Zuckerberg"], answer: 2 },
+        { q: "In what year was HTML invented?", options: ["1989", "1995", "2001", "1980"], answer: 0 },
+        { q: "Which tag is used to create a hyperlink?", options: ["<link>", "<a>", "<href>", "<hyper>"], answer: 1 },
+        { q: "Which tag contains the metadata of a webpage?", options: ["<body>", "<footer>", "<head>", "<meta-data>"], answer: 2 },
+        { q: "What is the correct HTML element for the largest heading?", options: ["<heading>", "<h1>", "<h6>", "<head>"], answer: 1 },
+        { q: "What does the <img> tag require to display a picture?", options: ["The src attribute", "A closing tag", "The link attribute", "CSS styling"], answer: 0 },
+        { q: "Which version of HTML introduced native audio and video support?", options: ["HTML 2.0", "HTML 4.01", "XHTML", "HTML5"], answer: 3 },
+        { q: "What is the purpose of the <!DOCTYPE html> declaration?", options: ["To style the page", "To link JavaScript", "To tell the browser it is HTML5", "To create a table"], answer: 2 },
+        { q: "Think of the mental model: If HTML is the framing of a house, what is CSS?", options: ["The plumbing", "The foundation", "The paint and design", "The roof"], answer: 2 }
+    ];
+
+    // --- VARIABLES ---
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let timeLeft = 20;
+    let timerInterval;
+    let studentName = "";
+    let isAnswered = false;
+
+    // --- LOGIC ---
+    function startQuiz() {
+        const nameInput = document.getElementById("student-name").value.trim();
+        if (nameInput === "") {
+            alert("Please enter your name to start!");
+            return;
+        }
+        studentName = nameInput;
+        
+        switchScreen("login-screen", "quiz-screen");
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        isAnswered = false;
+        timeLeft = 20;
+        document.getElementById("next-btn").disabled = true;
+        
+        const qData = quizData[currentQuestionIndex];
+        
+        // Update UI Text
+        document.getElementById("question-counter").innerText = `Question ${currentQuestionIndex + 1} of ${quizData.length}`;
+        document.getElementById("question-text").innerText = qData.q;
+        
+        // Generate Options
+        const optionsBox = document.getElementById("options-container");
+        optionsBox.innerHTML = "";
+        
+        qData.options.forEach((opt, index) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt;
+            btn.onclick = () => selectOption(btn, index, qData.answer);
+            optionsBox.appendChild(btn);
+        });
+
+        startTimer();
+    }
+
+    function startTimer() {
+        clearInterval(timerInterval);
+        updateTimerUI();
+        
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerUI();
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                autoSkipQuestion();
+            }
+        }, 1000);
+    }
+
+    function updateTimerUI() {
+        document.getElementById("time-text").innerText = timeLeft;
+        const bar = document.getElementById("timer-bar");
+        const percentage = (timeLeft / 20) * 100;
+        bar.style.width = percentage + "%";
+        
+        if (timeLeft <= 5) {
+            bar.classList.add("timer-warning");
+        } else {
+            bar.classList.remove("timer-warning");
+        }
+    }
+
+    function selectOption(selectedBtn, selectedIndex, correctIndex) {
+        if (isAnswered) return; // Prevent double clicking
+        isAnswered = true;
+        clearInterval(timerInterval); // Stop timer
+
+        const allButtons = document.querySelectorAll(".option-btn");
+        
+        // Disable all buttons
+        allButtons.forEach(btn => btn.style.pointerEvents = "none");
+
+        // Check if correct
+        if (selectedIndex === correctIndex) {
+            selectedBtn.classList.add("correct");
+            score++;
+        } else {
+            selectedBtn.classList.add("wrong");
+            allButtons[correctIndex].classList.add("correct"); // Show correct answer
+        }
+
+        document.getElementById("next-btn").disabled = false;
+    }
+
+    function autoSkipQuestion() {
+        isAnswered = true;
+        const allButtons = document.querySelectorAll(".option-btn");
+        allButtons.forEach(btn => btn.style.pointerEvents = "none");
+        
+        // Show correct answer since time ran out
+        const correctIndex = quizData[currentQuestionIndex].answer;
+        allButtons[correctIndex].classList.add("correct");
+        
+        document.getElementById("next-btn").disabled = false;
+        
+        // Optional: Auto move to next after 2 seconds
+        setTimeout(nextQuestion, 2000);
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            loadQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        switchScreen("quiz-screen", "result-screen");
+        
+        document.getElementById("result-name").innerText = `Great job, ${studentName}!`;
+        document.getElementById("final-score").innerText = `${score}/${quizData.length}`;
+        
+        const accuracy = Math.round((score / quizData.length) * 100);
+        document.getElementById("final-accuracy").innerText = `${accuracy}%`;
+    }
+
+    function switchScreen(hideId, showId) {
+        document.getElementById(hideId).classList.remove("active");
+        document.getElementById(showId).classList.add("active");
+    }
+
+    function submitToGoogleSheets() {
+        const btn = document.getElementById("share-btn");
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Saving...`;
+        btn.disabled = true;
+
+        const data = {
+            name: studentName,
+            score: score,
+            total: quizData.length,
+            timestamp: new Date().toLocaleString()
+        };
+
+        // Notice: No URL hardcoded here! 
+        // It is pulling 'GOOGLE_SCRIPT_URL' straight from your config.js file.
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8',
+            }
+        }).then(response => {
+            btn.innerHTML = `<i class="bi bi-check-circle me-2"></i> Score Saved!`;
+            btn.classList.replace("btn-success", "btn-secondary");
+        }).catch(error => {
+            console.error('Error!', error.message);
+            alert('There was an error saving your score.');
+            btn.innerHTML = `<i class="bi bi-cloud-upload me-2"></i> Share Score`;
+            btn.disabled = false;
+        });
+    }
+</script>
+<script src="/js/config.js"></script>
+
+</body>
+</html>

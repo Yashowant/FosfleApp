@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Block and Inline · The Master Blueprint</title>
+
+    <link href="/vendor/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/vendor/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Blueprint Theme */
+            --ink:        #0f172a; /* Slate 900 */
+            --ink-mid:    #334155; /* Slate 700 */
+            --ink-light:  #64748b; /* Slate 500 */
+            --canvas:     #f8fafc; /* Slate 50 */
+            --canvas-warm:#f1f5f9; /* Slate 100 */
+            --border:     #e2e8f0; /* Slate 200 */
+            
+            --accent-red: #ef4444;
+            --accent-blue:#2563eb;
+            --accent-teal:#0d9488;
+            --accent-purple:#8b5cf6;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            background-color: var(--canvas);
+            font-family: 'DM Sans', system-ui, sans-serif;
+            color: var(--ink);
+            line-height: 1.7;
+        }
+
+        /* ── SECTION NUMBERING ── */
+        .sec-num {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 0.7rem;
+            font-style: italic;
+            letter-spacing: 0.15em;
+            color: var(--ink-light);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .sec-num::after { content:''; flex:1; height:1px; background:var(--border); }
+
+        .sec-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(1.5rem, 3vw, 2.1rem);
+            color: var(--ink);
+            margin-bottom: 14px;
+            line-height: 1.25;
+        }
+
+        .sec-body {
+            font-size: 1.05rem;
+            color: var(--ink-mid);
+            max-width: 720px;
+        }
+
+        section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+        section:last-of-type { border-bottom: none; }
+
+        /* ── HERO ── */
+        .hero {
+            background: #0f172a;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #fff;
+            padding: 80px 40px;
+            border-radius: 20px;
+            margin-bottom: 64px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(15,23,42,0.15);
+        }
+        
+        .hero-graphic {
+            position: absolute;
+            right: 40px; top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0.2;
+            width: 280px;
+        }
+        .hero-graphic .block-box { background: var(--accent-blue); height: 40px; width: 100%; border-radius: 4px; border: 2px dashed #fff; }
+        .hero-graphic .inline-box { background: var(--accent-purple); height: 40px; width: 40%; border-radius: 4px; display: inline-block; margin-right: 10px; }
+
+        .hero-badge {
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            padding: 4px 14px;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            font-family: 'DM Mono', monospace;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.3);
+        }
+        .hero-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero-sub { font-size: 1.1rem; color: rgba(255,255,255,0.65); max-width: 560px; }
+
+        /* ── CODE BLOCKS ── */
+        .code-block {
+            background: var(--ink);
+            border-radius: 12px;
+            overflow: hidden;
+            font-family: 'DM Mono', monospace;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .code-block-head {
+            background: #1e293b;
+            padding: 10px 18px;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .code-block pre {
+            margin: 0;
+            padding: 20px 18px;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #e2e8f0;
+        }
+        .code-block code .cm-tag   { color: #f472b6; }
+        .code-block code .cm-attr  { color: #38bdf8; }
+        .code-block code .cm-val   { color: #a3e635; }
+        .code-block code .cm-text  { color: #e2e8f0; }
+        .code-block code .cm-cmt   { color: #64748b; font-style: italic; }
+
+        /* ── PREVIEW CARD ── */
+        .preview-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            height: 100%;
+        }
+        .preview-card-head {
+            background: var(--canvas-warm);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 18px;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            color: var(--ink-light);
+            text-transform: uppercase;
+            font-family: 'DM Mono', monospace;
+        }
+        .preview-card-body { padding: 24px 20px; font-size: 1.05rem; }
+
+        /* Visual Demo Styling */
+        .demo-block {
+            display: block;
+            background-color: #fee2e2;
+            border: 2px dashed #ef4444;
+            padding: 10px;
+            margin-bottom: 10px;
+            color: #991b1b;
+            font-weight: 500;
+        }
+        .demo-inline {
+            display: inline;
+            background-color: #eff6ff;
+            border: 2px dashed #3b82f6;
+            padding: 2px 6px;
+            color: #1e40af;
+            font-weight: 500;
+        }
+
+        /* ── ALERT VARIANTS ── */
+        .tip-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .tip-box-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+        .tip-box-body { flex: 1; }
+        .tip-box-body strong { display: block; margin-bottom: 4px; }
+        .tip-info   { background: #eff6ff; border: 1px solid #bfdbfe; }
+        .tip-warn   { background: #fffbeb; border: 1px solid #fde68a; }
+        .tip-danger { background: #fef2f2; border: 1px solid #fecaca; }
+        .tip-ok     { background: #f0fdf4; border: 1px solid #bbf7d0; }
+
+        /* ── SUMMARY ── */
+        .summary-shell {
+            background: linear-gradient(135deg, var(--ink) 0%, #1e293b 100%);
+            border-radius: 20px;
+            padding: 56px 40px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .summary-shell::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(37,99,235,0.1) 0%, rgba(13,148,136,0.1) 100%);
+        }
+        .summary-shell > * { position: relative; z-index: 1; }
+        .summary-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 8px;
+        }
+        .summary-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .summary-item:last-child { border-bottom: none; }
+        .summary-dot {
+            width: 8px; height: 8px; border-radius: 50%; margin-top: 7px; flex-shrink: 0;
+            background: var(--accent-blue);
+        }
+        .summary-item p { margin: 0; color: rgba(255,255,255,0.75); font-size: 0.98rem; }
+
+        /* Local Table Styling for References */
+        .styled-table {
+            width: 100%; border-collapse: collapse; font-size: 0.95rem; margin-bottom: 0; background: #fff;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid var(--border); padding: 12px 16px; text-align: left;
+        }
+        .styled-table th { background: var(--canvas-warm); font-weight: 600; color: var(--ink); }
+        .styled-table code { font-family: 'DM Mono', monospace; background: var(--canvas-warm); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity:0; transform:translateY(18px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        .animation-fade-in { animation: fadeUp 0.6s ease-out; }
+
+        @media (max-width: 768px) {
+            .hero-graphic { display: none; }
+            .hero { padding: 48px 28px; }
+            .summary-shell { padding: 40px 24px; }
+        }
+    </style>
+</head>
+<body class="py-4 px-3 px-md-4">
+<div class="container animation-fade-in" style="max-width:960px;">
+
+    <!-- ═══ HERO ═══ -->
+    <div class="hero mb-5">
+        <div class="hero-graphic" aria-hidden="true">
+            <div class="block-box"></div>
+            <div class="block-box"></div>
+            <div>
+                <div class="inline-box"></div>
+                <div class="inline-box" style="background:var(--accent-teal); width:30%;"></div>
+            </div>
+        </div>
+        <div style="position:relative;z-index:1;">
+            <div class="hero-badge">Module 1 · Chapter 12 · HTML Block & Inline</div>
+            <h1 class="hero-title">HTML Block and Inline Elements</h1>
+            <p class="hero-sub">
+                Every HTML element has a default display value, depending on what type of element it is. The two most common display values are <strong>block</strong> and <strong>inline</strong>.
+            </p>
+        </div>
+    </div>
+
+    <!-- ═══ 1. BLOCK ELEMENTS ═══ -->
+    <section>
+        <div class="sec-num">Section 01</div>
+        <h2 class="sec-title">Block-level Elements</h2>
+        <p class="sec-body mb-3">
+            A block-level element always starts on a new line, and the browsers automatically add some space (a margin) before and after the element.
+        </p>
+        <p class="sec-body mb-4">
+            A block-level element always takes up the <strong>full width available</strong> (stretches out to the left and right as far as it can).
+        </p>
+        <p class="sec-body mb-4">
+            Two commonly used block elements are: <code>&lt;p&gt;</code> and <code>&lt;div&gt;</code>. The <code>&lt;p&gt;</code> element defines a paragraph in an HTML document. The <code>&lt;div&gt;</code> element defines a division or a section in an HTML document.
+        </p>
+
+        <div class="row g-3 mb-5">
+            <div class="col-lg-6">
+                <div class="code-block h-100">
+                    <div class="code-block-head"><span>Example</span><span>HTML</span></div>
+                    <pre><code><span class="cm-tag">&lt;p&gt;</span><span class="cm-text">Hello World</span><span class="cm-tag">&lt;/p&gt;</span>
+<span class="cm-tag">&lt;div&gt;</span><span class="cm-text">Hello World</span><span class="cm-tag">&lt;/div&gt;</span></code></pre>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="preview-card h-100">
+                    <div class="preview-card-head">Browser Output</div>
+                    <div class="preview-card-body pb-0">
+                        <div class="demo-block">Hello World</div>
+                        <div class="demo-block">Hello World</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-danger border-opacity-25 shadow-sm mt-4">
+            <div class="card-header bg-danger bg-opacity-10 text-danger fw-bold border-bottom-0 py-3">
+                <i class="bi bi-bricks me-2"></i> Here are the block-level elements in HTML:
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap gap-2 font-monospace small">
+                    <span class="badge bg-light text-dark border p-2">&lt;address&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;article&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;aside&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;blockquote&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;canvas&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;dd&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;div&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;dl&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;dt&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;fieldset&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;figcaption&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;figure&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;footer&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;form&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;h1&gt;-&lt;h6&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;header&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;hr&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;li&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;main&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;nav&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;noscript&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;ol&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;p&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;pre&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;section&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;table&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;tfoot&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;ul&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;video&gt;</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 2. INLINE ELEMENTS ═══ -->
+    <section>
+        <div class="sec-num">Section 02</div>
+        <h2 class="sec-title">Inline Elements</h2>
+        <p class="sec-body mb-3">
+            An inline element does not start on a new line. An inline element only takes up as much width as necessary.
+        </p>
+        <p class="sec-body mb-4">
+            This is a <code>&lt;span&gt;</code> element inside a paragraph.
+        </p>
+
+        <div class="row g-3 mb-4">
+            <div class="col-lg-6">
+                <div class="code-block h-100">
+                    <div class="code-block-head"><span>Example</span><span>HTML</span></div>
+                    <pre><code><span class="cm-tag">&lt;span&gt;</span><span class="cm-text">Hello World</span><span class="cm-tag">&lt;/span&gt;</span></code></pre>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="preview-card h-100">
+                    <div class="preview-card-head">Browser Output</div>
+                    <div class="preview-card-body pb-0">
+                        <div style="background:#f1f5f9; padding: 20px; border: 1px solid #cbd5e1; border-radius: 6px;">
+                            <span class="demo-inline">Hello World</span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tip-box tip-danger mt-4 mb-5">
+            <div class="tip-box-icon">🚫</div>
+            <div class="tip-box-body">
+                <strong>Note:</strong>
+                An inline element cannot contain a block-level element!
+            </div>
+        </div>
+        
+        <div class="card border-primary border-opacity-25 shadow-sm mt-4">
+            <div class="card-header bg-primary bg-opacity-10 text-primary fw-bold border-bottom-0 py-3">
+                <i class="bi bi-cursor-text me-2"></i> Here are the inline elements in HTML:
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap gap-2 font-monospace small">
+                    <span class="badge bg-light text-dark border p-2">&lt;a&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;abbr&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;acronym&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;b&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;bdo&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;big&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;br&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;button&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;cite&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;code&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;dfn&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;em&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;i&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;img&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;input&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;kbd&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;label&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;map&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;object&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;output&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;q&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;samp&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;script&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;select&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;small&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;span&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;strong&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;sub&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;sup&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;textarea&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;time&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;tt&gt;</span>
+                    <span class="badge bg-light text-dark border p-2">&lt;var&gt;</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 3. THE DIV ELEMENT ═══ -->
+    <section>
+        <div class="sec-num">Section 03</div>
+        <h2 class="sec-title">The &lt;div&gt; Element</h2>
+        <p class="sec-body mb-3">
+            The <code>&lt;div&gt;</code> element is often used as a container for other HTML elements. The <code>&lt;div&gt;</code> element has no required attributes, but style, class and id are common.
+        </p>
+        <p class="sec-body mb-4">
+            When used together with CSS, the <code>&lt;div&gt;</code> element can be used to style blocks of content:
+        </p>
+
+        <div class="preview-card bg-light border-0">
+            <div class="row g-0">
+                <div class="col-md-6 border-end">
+                    <div class="p-4 h-100 font-monospace text-muted" style="font-size: 0.9rem;">
+                        <span style="color: #0d6efd;">&lt;div style="background-color:black;color:white;padding:20px;"&gt;</span><br>
+                        &nbsp;&nbsp;&lt;h2&gt;London&lt;/h2&gt;<br>
+                        &nbsp;&nbsp;&lt;p&gt;London is the capital city of England. It is the most populous city in the United Kingdom, with a metropolitan area of over 13 million inhabitants.&lt;/p&gt;<br>
+                        <span style="color: #0d6efd;">&lt;/div&gt;</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 h-100 d-flex align-items-center justify-content-center bg-white">
+                        <div style="background-color:black; color:white; padding:20px; width:100%;">
+                            <h2 style="margin-top:0;">London</h2>
+                            <p style="margin-bottom:0;">London is the capital city of England. It is the most populous city in the United Kingdom, with a metropolitan area of over 13 million inhabitants.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <p class="text-muted mt-3 fst-italic">You will learn more about the &lt;div&gt; element in the next chapter.</p>
+    </section>
+
+    <!-- ═══ 4. THE SPAN ELEMENT ═══ -->
+    <section>
+        <div class="sec-num">Section 04</div>
+        <h2 class="sec-title">The &lt;span&gt; Element</h2>
+        <p class="sec-body mb-3">
+            The <code>&lt;span&gt;</code> element is an inline container used to mark up a part of a text, or a part of a document. The <code>&lt;span&gt;</code> element has no required attributes, but style, class and id are common.
+        </p>
+        <p class="sec-body mb-4">
+            When used together with CSS, the <code>&lt;span&gt;</code> element can be used to style parts of the text:
+        </p>
+
+        <div class="preview-card bg-light border-0">
+            <div class="row g-0">
+                <div class="col-md-6 border-end">
+                    <div class="p-4 h-100 font-monospace text-muted d-flex align-items-center" style="font-size: 0.9rem;">
+                        &lt;p&gt;My mother has <span style="color: #0d6efd;">&lt;span style="color:blue;font-weight:bold;"&gt;</span>blue<span style="color: #0d6efd;">&lt;/span&gt;</span> eyes and my father has <span style="color: #0d6efd;">&lt;span style="color:darkolivegreen;font-weight:bold;"&gt;</span>dark green<span style="color: #0d6efd;">&lt;/span&gt;</span> eyes.&lt;/p&gt;
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 h-100 d-flex align-items-center justify-content-center bg-white">
+                        <p class="fs-5 text-center mb-0">My mother has <span style="color:blue;font-weight:bold;">blue</span> eyes and my father has <span style="color:darkolivegreen;font-weight:bold;">dark green</span> eyes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ SUMMARY ═══ -->
+    <div class="summary-shell mb-5 mt-5">
+        <div class="text-center mb-5">
+            <div class="summary-title">Chapter Summary</div>
+            <p style="color:rgba(255,255,255,0.5);font-style:italic;font-family:'DM Sans',sans-serif;">
+                Everything that stuck to the blueprint
+            </p>
+        </div>
+        <div class="mb-5" style="max-width:680px; margin:0 auto;">
+            <div class="summary-item">
+                <div class="summary-dot"></div>
+                <p>A block-level element always starts on a new line and takes up the full width available</p>
+            </div>
+            <div class="summary-item">
+                <div class="summary-dot"></div>
+                <p>An inline element does not start on a new line and it only takes up as much width as necessary</p>
+            </div>
+            <div class="summary-item">
+                <div class="summary-dot"></div>
+                <p>The <code>&lt;div&gt;</code> element is a block-level element and is often used as a container for other HTML elements</p>
+            </div>
+            <div class="summary-item">
+                <div class="summary-dot"></div>
+                <p>The <code>&lt;span&gt;</code> element is an inline container used to mark up a part of a text, or a part of a document</p>
+            </div>
+        </div>
+        
+        <h4 class="text-white mt-5 mb-3 font-monospace fs-5 text-center">HTML Tags</h4>
+        <div class="preview-card mt-3" style="box-shadow: none; max-width: 680px; margin: 0 auto;">
+            <div class="preview-card-body" style="padding: 0; overflow-x: auto;">
+                <table class="styled-table" style="border:none; min-width: 500px;">
+                    <thead>
+                        <tr>
+                            <th style="border-top:none; border-left:none;">Tag</th>
+                            <th style="border-top:none; border-right:none;">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border-left:none;"><code>&lt;div&gt;</code></td>
+                            <td style="border-right:none; color: black;">Defines a section in a document (block-level)</td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom:none; border-left:none;"><code>&lt;span&gt;</code></td>
+                            <td style="border-bottom:none; border-right:none; color: black;">Defines a section in a document (inline)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /container -->
+
+</body>
+</html>

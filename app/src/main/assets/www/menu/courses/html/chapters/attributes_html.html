@@ -1,0 +1,366 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link href="/vendor/bootstrap.min.css" rel="stylesheet"><link href="/vendor/bootstrap-icons.min.css" rel="stylesheet"><style>body{background:#f8f9fa}</style></head><body><div class="container-fluid p-0 animation-fade-in">
+    <div class="p-5 bg-dark text-white rounded-4 shadow-sm mb-5 position-relative overflow-hidden">
+        <i class="bi bi-tags position-absolute text-white opacity-10" style="font-size: 15rem; right: -30px; top: -30px; transform: rotate(-15deg);"></i>
+        <div class="position-relative z-1">
+            <span class="badge bg-primary mb-3 px-3 py-2 fw-semibold fs-6">Module 1 &bull; Chapter 5</span>
+            <h1 class="display-4 fw-bold mb-3">HTML Attributes</h1>
+            <p class="lead text-light text-opacity-75 max-w-3xl">
+                HTML attributes provide additional information about HTML elements. In this chapter, we will master how attributes work, explore the most common use cases, and look at the essential properties that configure your webpage layout.
+            </p>
+        </div>
+    </div>
+    
+    <div class="mb-5 mt-5">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">1</span>
+            <h2 class="fw-bold mb-0">The Golden Rules of Attributes</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">Before writing them out, there are four absolute rules every developer must memorize about HTML attributes:</p>
+        
+        <div class="row g-4 mb-4 text-center">
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 bg-white border rounded-4 shadow-sm h-100">
+                    <i class="bi bi-info-circle display-5 text-primary mb-3"></i>
+                    <h5 class="fw-bold">Extra Info</h5>
+                    <p class="text-muted small mb-0">All HTML elements can have <strong>attributes</strong> to configure or modify their behavior.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 bg-white border rounded-4 shadow-sm h-100">
+                    <i class="bi bi-box-arrow-in-right display-5 text-success mb-3"></i>
+                    <h5 class="fw-bold">Start Tag Only</h5>
+                    <p class="text-muted small mb-0">Attributes are <strong>always</strong> specified inside the opening/start tag.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 bg-white border rounded-4 shadow-sm h-100">
+                    <i class="bi bi-key display-5 text-warning mb-3"></i>
+                    <h5 class="fw-bold">Name/Value Pairs</h5>
+                    <p class="text-muted small mb-0">They usually come in name/value pairs like: <code>name="value"</code>.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 bg-white border rounded-4 shadow-sm h-100">
+                    <i class="bi bi-quote display-5 text-danger mb-3"></i>
+                    <h5 class="fw-bold">Quote Values</h5>
+                    <p class="text-muted small mb-0">Attribute values should almost always be enclosed in double quotes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">2</span>
+            <h2 class="fw-bold mb-0">The href Attribute</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">The <code>&lt;a&gt;</code> tag defines a hyperlink. The <code>href</code> attribute specifies the URL of the page the link goes to:</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-header bg-black border-0 py-3 d-flex justify-content-between align-items-center">
+                        <span class="badge bg-secondary px-3 py-2"><i class="bi bi-link-45deg me-1"></i> link.html</span>
+                    </div>
+                    <div class="card-body font-monospace d-flex align-items-center" style="font-size: 0.95rem;">
+<pre class="m-0 text-white w-100"><code><span class="text-info">&lt;a</span> <span class="text-warning">href</span>=<span class="text-success">"https://fosfle.netlify.app"</span><span class="text-info">&gt;</span>Visit Fosfle<span class="text-info">&lt;/a&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card bg-white border border-primary border-opacity-25 shadow-sm h-100 p-4 d-flex flex-column justify-content-center align-items-center">
+                    <span class="text-muted small mb-2 text-uppercase fw-bold">Live Link Output</span>
+                    <a href="#" onclick="event.preventDefault(); alert('Redirecting to your application root context!');" class="fs-4 text-primary fw-bold text-decoration-underline">Visit Fosfle</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">3</span>
+            <h2 class="fw-bold mb-0">The src, width, and height Attributes</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">The <code>&lt;img&gt;</code> tag embeds an image. The <code>src</code> attribute points to the file path, while <code>width</code> and <code>height</code> specify sizes in pixels:</p>
+        
+        <div class="card bg-dark text-light border-0 shadow-sm mb-4 overflow-hidden">
+            <div class="card-body font-monospace fs-5 py-4">
+<pre class="m-0 text-white"><code><span class="text-info">&lt;img</span> <span class="text-warning">src</span>=<span class="text-success">"img_girl.jpg"</span> <span class="text-warning">width</span>=<span class="text-success">"500"</span> <span class="text-warning">height</span>=<span class="text-success">"600"</span><span class="text-info">&gt;</span></code></pre>
+            </div>
+        </div>
+
+        <div class="p-3 bg-light border-start border-4 border-secondary rounded mb-4">
+            <i class="bi bi-lightbulb-fill text-warning me-2"></i> <strong>Pro Tip:</strong> Always specify both width and height attributes for images. It reserves space on the screen for the image, preventing layout shifts while the page loads!
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">4</span>
+            <h2 class="fw-bold mb-0">The alt Attribute</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">The required <code>alt</code> attribute specifies alternative text for an image if it cannot be displayed (due to slow internet, an error in the src, or if the user relies on a screen reader).</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-body font-monospace d-flex align-items-center" style="font-size: 0.95rem;">
+<pre class="m-0 text-white w-100"><code><span class="text-info">&lt;img</span> <span class="text-warning">src</span>=<span class="text-success">"wrong_filename.jpg"</span> <span class="text-warning">alt</span>=<span class="text-success">"Girl with a jacket"</span><span class="text-info">&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card bg-white border border-danger border-opacity-25 shadow-sm h-100 p-4 text-center d-flex flex-column justify-content-center align-items-center">
+                    <span class="badge bg-danger bg-opacity-10 text-danger mb-2">Simulated Broken Image Output</span>
+                    <div class="border border-dashed p-3 rounded bg-light text-secondary">
+                        <i class="bi bi-image-alt fs-3 d-block mb-1 text-muted"></i>
+                        <span class="fw-bold">Girl with a jacket</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">5</span>
+            <h2 class="fw-bold mb-0">The style Attribute</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">The <code>style</code> attribute is used to add inline styles to an element, such as color, font, size, and layout properties.</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-body font-monospace d-flex align-items-center" style="font-size: 0.95rem;">
+<pre class="m-0 text-white w-100"><code><span class="text-info">&lt;p</span> <span class="text-warning">style</span>=<span class="text-success">"color:red; font-size:24px;"</span><span class="text-info">&gt;</span>This is a stylized paragraph.<span class="text-info">&lt;/p&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card bg-white border border-primary border-opacity-25 shadow-sm h-100 p-4 d-flex justify-content-center align-items-center">
+                    <p class="mb-0" style="color:red; font-size:24px; font-family: sans-serif;">This is a stylized paragraph.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">6</span>
+            <h2 class="fw-bold mb-0">The lang Attribute</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">You should always include the <code>lang</code> attribute inside the <code>&lt;html&gt;</code> tag to declare the default language of the webpage. This guides search engines and screen readers.</p>
+        
+        <div class="card bg-dark text-light border-0 shadow-sm mb-4">
+            <div class="card-body font-monospace">
+<pre class="m-0 text-white"><code><span class="text-primary">&lt;html</span> <span class="text-warning">lang</span>=<span class="text-success">"en"</span><span class="text-primary">&gt;</span>
+<span class="text-warning">&lt;body&gt;</span>
+  ...
+<span class="text-warning">&lt;/body&gt;</span>
+<span class="text-primary">&lt;/html&gt;</span></code></pre>
+            </div>
+        </div>
+        <p class="text-secondary">Country codes can also be appended: <code>lang="en-US"</code> configurations tell the engine it is American English.</p>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">7</span>
+            <h2 class="fw-bold mb-0">The title Attribute</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">The <code>title</code> attribute adds extra information about an element. It is displayed as a small tooltip popup when a user hovers their mouse cursor over the element.</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-body font-monospace d-flex align-items-center" style="font-size: 0.95rem;">
+<pre class="m-0 text-white w-100"><code><span class="text-info">&lt;p</span> <span class="text-warning">title</span>=<span class="text-success">"I am a generic tooltip description!"</span><span class="text-info">&gt;</span>Hover over this text to see the tooltip.<span class="text-info">&lt;/p&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card bg-white border border-primary border-opacity-25 shadow-sm h-100 p-4 d-flex justify-content-center align-items-center text-center">
+                    <p class="mb-0 text-primary fw-semibold p-3 border rounded bg-light cursor-pointer" title="I am a generic tooltip description!" style="cursor: help;">
+                        <i class="bi bi-mouse2 me-2"></i> Hover over me!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">8</span>
+            <h2 class="fw-bold mb-0">Single or Double Quotes?</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">Double quotes around attribute values are the industry standard, but single quotes can be used. However, single quotes become <strong>mandatory</strong> if your attribute value itself contains double quotes inside it!</p>
+        
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="p-4 bg-light border rounded shadow-sm h-100 font-monospace">
+                    <span class="badge bg-success mb-2">Example 1 (Single Outer)</span>
+                    <p class="mb-0 text-dark">&lt;p title='John "Shotgun" Nelson'&gt;</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-4 bg-light border rounded shadow-sm h-100 font-monospace">
+                    <span class="badge bg-primary mb-2">Example 2 (Double Outer)</span>
+                    <p class="mb-0 text-dark">&lt;p title="John 'Shotgun' Nelson"&gt;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">9</span>
+            <h2 class="fw-bold mb-0">Boolean Attributes</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">Some attributes don't need a <code>name="value"</code> pair because their mere presence means <strong>True</strong>, and their absence means <strong>False</strong>. These are called Boolean attributes.</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-header bg-black border-0 py-3">
+                        <span class="badge bg-secondary px-3 py-2"><i class="bi bi-toggle-on me-1"></i> boolean.html</span>
+                    </div>
+                    <div class="card-body font-monospace d-flex flex-column justify-content-center" style="font-size: 0.95rem;">
+<pre class="m-0 text-white w-100"><code><span class="text-comment">&lt;!-- This button is normal --&gt;</span>
+<span class="text-info">&lt;button&gt;</span>Submit Form<span class="text-info">&lt;/button&gt;</span>
+
+<span class="text-comment">&lt;!-- The 'disabled' attribute locks the element --&gt;</span>
+<span class="text-info">&lt;button</span> <span class="text-warning">disabled</span><span class="text-info">&gt;</span>Cannot Click Me<span class="text-info">&lt;/button&gt;</span>
+
+<span class="text-comment">&lt;!-- The 'checked' attribute pre-selects a checkbox --&gt;</span>
+<span class="text-info">&lt;input</span> <span class="text-warning">type</span>=<span class="text-success">"checkbox"</span> <span class="text-warning">checked</span><span class="text-info">&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card bg-white border border-primary border-opacity-25 shadow-sm h-100 p-4 d-flex flex-column justify-content-center gap-3">
+                    <span class="text-muted small text-uppercase fw-bold text-center mb-2">Browser Output Preview</span>
+                    <div>
+                        <button class="btn btn-primary w-100 mb-2">Submit Form</button>
+                        <button class="btn btn-primary w-100" disabled>Cannot Click Me</button>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center gap-2 mt-2">
+                        <input type="checkbox" id="ex-check" checked class="form-check-input fs-5">
+                        <label for="ex-check" class="text-dark fw-medium">Pre-checked box</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">10</span>
+            <h2 class="fw-bold mb-0">Global Attributes (id & class)</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">While some attributes only work on specific tags (like <code>href</code> on anchors), certain attributes can be used on **any HTML element** on earth. These are known as **Global Attributes**.</p>
+        
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="p-4 bg-white border rounded-4 shadow-sm h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 p-2 rounded me-3 text-primary">
+                            <i class="bi bi-fingerprint fs-4"></i>
+                        </div>
+                        <h4 class="fw-bold mb-0">The class Attribute</h4>
+                    </div>
+                    <p class="text-secondary">Used to point to a specific style rule in a stylesheet (CSS). Multiple elements can share the exact same class identifier name.</p>
+                    <div class="bg-dark text-light p-3 rounded font-monospace small">
+                        &lt;p <span class="text-warning">class="error-text"</span>&gt;Warning!&lt;/p&gt;
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-4 bg-white border rounded-4 shadow-sm h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success bg-opacity-10 p-2 rounded me-3 text-success">
+                            <i class="bi bi-key-fill fs-4"></i>
+                        </div>
+                        <h4 class="fw-bold mb-0">The id Attribute</h4>
+                    </div>
+                    <p class="text-secondary">Specifies a <strong>completely unique</strong> ID for an HTML element. The ID value must never be duplicated on the same webpage document!</p>
+                    <div class="bg-dark text-light p-3 rounded font-monospace small">
+                        &lt;div <span class="text-warning">id="main-navigation"</span>&gt;...&lt;/div&gt;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">11</span>
+            <h2 class="fw-bold mb-0">The target Attribute</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">By default, when a user clicks an HTML link, it opens in the exact same tab. To force a link to open cleanly inside a brand new browser tab, pass the <code>target="_blank"</code> attribute configuration:</p>
+        
+        <div class="card bg-dark text-light border-0 shadow-sm mb-4 overflow-hidden">
+            <div class="card-body font-monospace fs-5 py-4">
+<pre class="m-0 text-white"><code><span class="text-info">&lt;a</span> <span class="text-warning">href</span>=<span class="text-success">"https://google.com"</span> <span class="text-warning">target</span>=<span class="text-success">"_blank"</span><span class="text-info">&gt;</span>Open Google in New Tab<span class="text-info">&lt;/a&gt;</span></code></pre>
+            </div>
+        </div>
+
+        <div class="alert alert-info border-0 shadow-sm border-start border-4 border-info d-flex align-items-start bg-info bg-opacity-10 text-dark">
+            <i class="bi bi-shield-lock-fill fs-4 me-3 text-info"></i>
+            <div>
+                <strong class="d-block mb-1">Security Best Practice:</strong>
+                When utilizing <code>target="_blank"</code>, modern standards recommend attaching a secondary safety attribute called <code>rel="noopener"</code>. This prevents the newly opened external page from maliciously hijacking or running performance-heavy processes on your original webpage tab!
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">12</span>
+            <h2 class="fw-bold mb-0">Custom Data Attributes (data-*)</h2>
+        </div>
+        <p class="text-secondary fs-5 mb-4">What if you want to store your own custom hidden information inside an element for a JavaScript app to read? HTML allows you to invent any attribute you want as long as it starts with the prefix <code>data-</code>.</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-header bg-black border-0 py-3">
+                        <span class="badge bg-primary px-3 py-2"><i class="bi bi-database me-1"></i> metadata.html</span>
+                    </div>
+                    <div class="card-body font-monospace d-flex align-items-center" style="font-size: 0.95rem;">
+<pre class="m-0 text-white w-100"><code><span class="text-comment">&lt;!-- Storing a database product ID and category safely --&gt;</span>
+<span class="text-info">&lt;div</span> <span class="text-warning">class</span>=<span class="text-success">"shop-item"</span> 
+     <span class="text-warning">data-product-id</span>=<span class="text-success">"98321"</span> 
+     <span class="text-warning">data-category</span>=<span class="text-success">"shoes"</span><span class="text-info">&gt;</span>
+     Nike Air Sneakers
+<span class="text-info">&lt;/div&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm bg-light h-100 p-4 d-flex flex-column justify-content-center">
+                    <h5 class="fw-bold text-dark mb-2"><i class="bi bi-gear-fill text-secondary me-2"></i>Why use data-attributes?</h5>
+                    <p class="text-secondary mb-0">
+                        The user won't see <code>data-product-id="98321"</code> on the screen, but when they click the item, your backend code or Javascript analytics tools can instantly extract that specific number to add the correct shoe directly to their shopping cart database context!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-4 p-md-5 bg-gradient border border-primary border-opacity-25 rounded-4 shadow-sm position-relative overflow-hidden mt-5" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);">
+        <i class="bi bi-patch-check position-absolute text-success opacity-10" style="font-size: 15rem; right: -20px; bottom: -50px; transform: rotate(15deg);"></i>
+        
+        <div class="position-relative z-1 text-center">
+            <div class="mb-4 d-flex justify-content-center">
+                <div class="bg-white p-3 rounded-circle shadow-sm">
+                    <i class="bi bi-tags text-success" style="font-size: 3rem;"></i>
+                </div>
+            </div>
+            <h2 class="fw-bold text-success mb-3">Attributes Completed!</h2>
+            <p class="text-dark text-opacity-75 fs-5 max-w-2xl mx-auto mb-4">
+                You now know how to give elements specific values, control image sizes, configure languages, add tooltips, and apply inline CSS styling!
+            </p>
+        </div>
+    </div>
+</div><script src="/vendor/bootstrap.bundle.min.js"></script></body></html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Styles Exercise</title>
+
+    <link href="/vendor/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/vendor/bootstrap-icons.min.css">
+
+    <style>
+        body { background-color: #f8f9fa; }
+        
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* MCQ Styles */
+        .option-btn {
+            text-align: left;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            transition: 0.2s;
+            border: 2px solid #dee2e6;
+            background: white;
+            font-weight: 500;
+            width: 100%;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: #0d6efd;
+            background-color: #f1f5f9;
+        }
+
+        .option-btn.correct { background-color: #d1e7dd; border-color: #198754; color: #0f5132; }
+        .option-btn.wrong { background-color: #f8d7da; border-color: #dc3545; color: #842029; }
+
+        /* Timer Styles */
+        .timer-container { transition: opacity 0.3s; }
+        .timer-bar {
+            height: 10px;
+            border-radius: 5px;
+            background-color: #0d6efd;
+            transition: width 1s linear, background-color 0.3s;
+        }
+        .timer-warning { background-color: #dc3545; }
+
+        /* Code Editor Styles */
+        .code-input {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #212529;
+            color: #f8f9fa;
+            border-radius: 8px;
+            border: 2px solid #dee2e6;
+            resize: none;
+        }
+        .code-input:focus {
+            background-color: #2b3035;
+            color: #fff;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .trial-badge { transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="py-5 px-3">
+
+<div class="container quiz-container">
+    <button class="btn btn-outline-secondary btn-lg px-5 mb-4" onclick="history.back()">
+        <i class="bi bi-arrow-counterclockwise me-2"></i> Go Back
+    </button>
+
+    <div id="login-screen" class="screen active card border-0 shadow-lg p-5 rounded-4 text-center">
+        <i class="bi bi-brush display-1 text-primary mb-3"></i>
+        <h2 class="fw-bold mb-3">HTML Styles Masterclass</h2>
+        <p class="text-muted mb-4">
+            Test your knowledge on inline CSS! Prove you know how to add color, align text, and build beautiful borders using the style attribute.
+        </p>
+        <input type="text" id="student-name" class="form-control form-control-lg mb-4 text-center" placeholder="Enter your full name">
+        <button class="btn btn-primary btn-lg w-100 fw-bold py-3" onclick="startQuiz()">
+            Start Challenge <i class="bi bi-arrow-right ms-2"></i>
+        </button>
+    </div>
+
+    <div id="quiz-screen" class="screen card border-0 shadow-lg p-4 p-md-5 rounded-4">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <span class="badge bg-primary fs-6 px-3 py-2" id="question-counter">Question 1 of 10</span>
+            
+            <div id="timer-display" class="text-end fw-bold fs-5 text-secondary timer-container">
+                <i class="bi bi-stopwatch"></i> <span id="time-text">20</span>s
+            </div>
+            <div id="code-badge" class="badge bg-dark fs-6 px-3 py-2 d-none">
+                <i class="bi bi-keyboard me-1"></i> Untimed Coding
+            </div>
+        </div>
+
+        <div class="progress mb-5 timer-container" id="progress-container" style="height: 10px;">
+            <div id="timer-bar" class="timer-bar" style="width: 100%;"></div>
+        </div>
+
+        <h4 id="question-text" class="fw-bold mb-4 line-height-base">Loading question...</h4>
+
+        <div id="interaction-container" class="mb-4"></div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <div id="feedback-text" class="fw-bold fs-5"></div>
+            <button id="next-btn" class="btn btn-dark px-4" onclick="nextQuestion()" disabled>Next Question</button>
+        </div>
+    </div>
+
+    <div id="result-screen" class="screen card border-0 shadow-lg p-5 rounded-4 text-center">
+        <i class="bi bi-trophy-fill display-1 text-warning mb-3"></i>
+        <h2 class="fw-bold mb-2">Challenge Complete!</h2>
+        <p class="text-muted fs-5 mb-4" id="result-name">Great job!</p>
+        
+        <div class="row g-3 justify-content-center mb-5">
+            <div class="col-6 col-md-4">
+                <div class="p-3 bg-light rounded-3 border">
+                    <div class="fs-6 text-muted text-uppercase fw-bold">Score</div>
+                    <div class="fs-2 fw-bold text-primary" id="final-score">0/10</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4">
+                <div class="p-3 bg-light rounded-3 border">
+                    <div class="fs-6 text-muted text-uppercase fw-bold">Accuracy</div>
+                    <div class="fs-2 fw-bold text-success" id="final-accuracy">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
+            <button class="btn btn-outline-dark btn-lg px-5" onclick="location.reload()">
+                <i class="bi bi-arrow-counterclockwise me-2"></i> Try Again
+            </button>
+            <button class="btn btn-success btn-lg px-5" id="share-btn" onclick="submitToGoogleSheets()">
+                <i class="bi bi-cloud-upload me-2"></i> Share Score
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- HELPER FUNCTION FOR FORGIVING VALIDATION ---
+    const normalizeCode = (str) => str.toLowerCase().replace(/\s+/g, '').replace(/'/g, '"');
+
+    // --- QUIZ DATA (MIXED MCQ & CODE) ---
+    const quizData = [
+        { 
+            type: "mcq", 
+            q: "What is the correct HTML syntax for adding a background color?", 
+            options: ["<p background=\"yellow\">", "<p style=\"background-color: yellow;\">", "<p styles=\"bg-color: yellow;\">", "<p color=\"yellow\">"], 
+            answer: 1 
+        },
+        { 
+            type: "code", 
+            q: "Write a paragraph <p> with the exact text 'Red' and set its text color to red using the style attribute.", 
+            correctText: "<p style=\"color: red;\">Red</p>",
+            validate: (input) => {
+                const clean = normalizeCode(input);
+                return clean.includes("<p") && clean.includes("color:red") && clean.includes(">red</p>");
+            }
+        },
+        { 
+            type: "mcq", 
+            q: "Which CSS property changes the font of an HTML element?", 
+            options: ["font-style", "font-weight", "font-family", "text-font"], 
+            answer: 2 
+        },
+        { 
+            type: "code", 
+            q: "Write an <h1> tag with the text 'Big' and set its font-size to 50px.", 
+            correctText: "<h1 style=\"font-size: 50px;\">Big</h1>",
+            validate: (input) => {
+                const clean = normalizeCode(input);
+                return clean.includes("<h1") && clean.includes("font-size:50px") && clean.includes(">big</h1>");
+            }
+        },
+        { 
+            type: "mcq", 
+            q: "How do you combine multiple CSS properties inside a single style attribute?", 
+            options: ["Separate them with a comma (,)", "Separate them with a semicolon (;)", "Separate them with a space", "You cannot combine them"], 
+            answer: 1 
+        },
+        { 
+            type: "code", 
+            q: "Write a <p> tag with the text 'Center' that is aligned to the center using inline styles.", 
+            correctText: "<p style=\"text-align: center;\">Center</p>",
+            validate: (input) => {
+                const clean = normalizeCode(input);
+                return clean.includes("<p") && clean.includes("text-align:center") && clean.includes(">center</p>");
+            }
+        },
+        { 
+            type: "mcq", 
+            q: "What is the difference between Padding and Margin?", 
+            options: ["They are the exact same thing", "Padding creates space outside the border; Margin creates space inside", "Padding creates space inside the border; Margin creates space outside", "Padding changes the text color; Margin changes the background"], 
+            answer: 2 
+        },
+        { 
+            type: "code", 
+            q: "Write a <div> tag containing the text 'Box' with a solid black border of 2px.", 
+            correctText: "<div style=\"border: 2px solid black;\">Box</div>",
+            validate: (input) => {
+                const clean = normalizeCode(input);
+                return clean.includes("<div") && clean.includes("border:2pxsolidblack") && clean.includes(">box</div>");
+            }
+        },
+        { 
+            type: "mcq", 
+            q: "Which CSS property makes an HTML element partially transparent?", 
+            options: ["visibility", "opacity", "transparent", "clear"], 
+            answer: 1 
+        },
+        { 
+            type: "mcq", 
+            q: "Which CSS property creates rounded corners on an element's border?", 
+            options: ["border-radius", "corner-curve", "border-style", "round-corners"], 
+            answer: 0 
+        }
+    ];
+
+    // --- VARIABLES ---
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let timeLeft = 20;
+    let timerInterval;
+    let studentName = "";
+    let isAnswered = false;
+    let trialsLeft = 3;
+
+    // --- LOGIC ---
+    function startQuiz() {
+        const nameInput = document.getElementById("student-name").value.trim();
+        if (nameInput === "") return alert("Please enter your name to start!");
+        studentName = nameInput;
+        switchScreen("login-screen", "quiz-screen");
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        isAnswered = false;
+        document.getElementById("next-btn").disabled = true;
+        document.getElementById("feedback-text").innerHTML = "";
+        
+        const qData = quizData[currentQuestionIndex];
+        document.getElementById("question-counter").innerText = `Question ${currentQuestionIndex + 1} of ${quizData.length}`;
+        document.getElementById("question-text").innerText = qData.q;
+        
+        const interactionBox = document.getElementById("interaction-container");
+        interactionBox.innerHTML = "";
+
+        if (qData.type === "mcq") {
+            setupMCQ(qData, interactionBox);
+        } else if (qData.type === "code") {
+            setupCodeExercise(qData, interactionBox);
+        }
+    }
+
+    // --- MCQ LOGIC ---
+    function setupMCQ(qData, container) {
+        document.getElementById("timer-display").classList.remove("d-none");
+        document.getElementById("progress-container").classList.remove("d-none");
+        document.getElementById("code-badge").classList.add("d-none");
+
+        qData.options.forEach((opt, index) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt;
+            btn.onclick = () => handleMCQAnswer(btn, index, qData.answer);
+            container.appendChild(btn);
+        });
+
+        timeLeft = 20;
+        startTimer();
+    }
+
+    function handleMCQAnswer(selectedBtn, selectedIndex, correctIndex) {
+        if (isAnswered) return;
+        isAnswered = true;
+        clearInterval(timerInterval);
+
+        const allButtons = document.querySelectorAll(".option-btn");
+        allButtons.forEach(btn => btn.disabled = true);
+
+        if (selectedIndex === correctIndex) {
+            selectedBtn.classList.add("correct");
+            document.getElementById("feedback-text").innerHTML = `<span class="text-success"><i class="bi bi-check-circle-fill"></i> Correct!</span>`;
+            score++;
+        } else {
+            selectedBtn.classList.add("wrong");
+            allButtons[correctIndex].classList.add("correct");
+            document.getElementById("feedback-text").innerHTML = `<span class="text-danger"><i class="bi bi-x-circle-fill"></i> Incorrect!</span>`;
+        }
+        document.getElementById("next-btn").disabled = false;
+    }
+
+    // --- CODE LOGIC ---
+    function setupCodeExercise(qData, container) {
+        trialsLeft = 3;
+        
+        document.getElementById("timer-display").classList.add("d-none");
+        document.getElementById("progress-container").classList.add("d-none");
+        document.getElementById("code-badge").classList.remove("d-none");
+        clearInterval(timerInterval); 
+
+        container.innerHTML = `
+            <textarea id="code-input" class="form-control code-input p-4 fs-5" rows="3" placeholder="Type your HTML code here..."></textarea>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <span id="trial-counter" class="badge bg-warning text-dark fs-6 trial-badge"><i class="bi bi-arrow-repeat"></i> ${trialsLeft} Tries Left</span>
+                <button id="submit-code-btn" class="btn btn-primary px-4 fw-bold" onclick="checkCodeAnswer()">Run Code</button>
+            </div>
+        `;
+    }
+
+    function checkCodeAnswer() {
+        if (isAnswered) return;
+        
+        const qData = quizData[currentQuestionIndex];
+        const inputStr = document.getElementById("code-input").value;
+        const isCorrect = qData.validate(inputStr);
+        const feedbackDiv = document.getElementById("feedback-text");
+        const codeTextarea = document.getElementById("code-input");
+
+        if (isCorrect) {
+            isAnswered = true;
+            score++;
+            codeTextarea.style.borderColor = "#198754";
+            document.getElementById("submit-code-btn").disabled = true;
+            feedbackDiv.innerHTML = `<span class="text-success"><i class="bi bi-check-circle-fill"></i> Perfect Code!</span>`;
+            document.getElementById("next-btn").disabled = false;
+        } else {
+            trialsLeft--;
+            document.getElementById("trial-counter").innerHTML = `<i class="bi bi-arrow-repeat"></i> ${trialsLeft} Tries Left`;
+            
+            if (trialsLeft > 0) {
+                codeTextarea.classList.add("border-danger");
+                feedbackDiv.innerHTML = `<span class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Not quite right. Try again!</span>`;
+                setTimeout(() => codeTextarea.classList.remove("border-danger"), 1000);
+            } else {
+                isAnswered = true;
+                codeTextarea.disabled = true;
+                codeTextarea.style.borderColor = "#dc3545";
+                document.getElementById("submit-code-btn").disabled = true;
+                document.getElementById("trial-counter").classList.replace("bg-warning", "bg-danger");
+                document.getElementById("trial-counter").classList.replace("text-dark", "text-white");
+                
+                feedbackDiv.innerHTML = `<span class="text-danger mb-2 d-block"><i class="bi bi-x-circle-fill"></i> Out of tries! The correct code is:</span>
+                                         <code class="bg-light text-dark px-2 py-1 rounded border">${qData.correctText.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code>`;
+                document.getElementById("next-btn").disabled = false;
+            }
+        }
+    }
+
+    // --- TIMER & NAVIGATION ---
+    function startTimer() {
+        clearInterval(timerInterval);
+        updateTimerUI();
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerUI();
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                autoSkipMCQ();
+            }
+        }, 1000);
+    }
+
+    function updateTimerUI() {
+        document.getElementById("time-text").innerText = timeLeft;
+        const bar = document.getElementById("timer-bar");
+        bar.style.width = ((timeLeft / 20) * 100) + "%";
+        if (timeLeft <= 5) bar.classList.add("timer-warning");
+        else bar.classList.remove("timer-warning");
+    }
+
+    function autoSkipMCQ() {
+        isAnswered = true;
+        const allButtons = document.querySelectorAll(".option-btn");
+        allButtons.forEach(btn => btn.disabled = true);
+        
+        const correctIndex = quizData[currentQuestionIndex].answer;
+        allButtons[correctIndex].classList.add("correct");
+        document.getElementById("feedback-text").innerHTML = `<span class="text-danger"><i class="bi bi-alarm-fill"></i> Time's up!</span>`;
+        document.getElementById("next-btn").disabled = false;
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) loadQuestion();
+        else showResults();
+    }
+
+    function showResults() {
+        switchScreen("quiz-screen", "result-screen");
+        document.getElementById("result-name").innerText = `Great job, ${studentName}!`;
+        document.getElementById("final-score").innerText = `${score}/${quizData.length}`;
+        document.getElementById("final-accuracy").innerText = `${Math.round((score / quizData.length) * 100)}%`;
+    }
+
+    function switchScreen(hideId, showId) {
+        document.getElementById(hideId).classList.remove("active");
+        document.getElementById(showId).classList.add("active");
+    }
+
+    function submitToGoogleSheets() {
+        const btn = document.getElementById("share-btn");
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Saving...`;
+        btn.disabled = true;
+
+        const data = {
+            name: studentName,
+            score: score,
+            total: quizData.length,
+            timestamp: new Date().toLocaleString()
+        };
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+        }).then(() => {
+            btn.innerHTML = `<i class="bi bi-check-circle me-2"></i> Score Saved!`;
+            btn.classList.replace("btn-success", "btn-secondary");
+        }).catch(() => {
+            alert('There was an error saving your score.');
+            btn.innerHTML = `<i class="bi bi-cloud-upload me-2"></i> Share Score`;
+            btn.disabled = false;
+        });
+    }
+</script>
+<script src="/js/config.js"></script>
+
+</body>
+</html>
