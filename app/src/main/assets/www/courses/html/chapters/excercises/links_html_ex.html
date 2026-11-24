@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Links Exercise · The Wayfinder's Station</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ink: #0f172a;
+            --ink-dim: #334155;
+            --ink-light: #64748b;
+            --canvas: #f8fafc;
+            --canvas2: #f1f5f9;
+            --border: #e2e8f0;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0ea5e9;
+            --green: #059669;
+            --green-light: #d1fae5;
+            --yellow: #d97706;
+            --red: #e11d48;
+            --red-light: #ffe4e6;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            background-color: var(--canvas);
+            background-image:
+                radial-gradient(circle at 15% 25%, rgba(37, 99, 235, 0.04) 0%, transparent 45%),
+                radial-gradient(circle at 85% 70%, rgba(14, 165, 233, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 50% 90%, rgba(5, 150, 105, 0.03) 0%, transparent 40%);
+            font-family: 'DM Sans', system-ui, sans-serif;
+            color: var(--ink);
+            min-height: 100vh;
+            padding: 40px 16px 60px;
+        }
+
+        /* Subtle grid background */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: linear-gradient(rgba(15, 23, 42, 0.02) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(15, 23, 42, 0.02) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none; z-index: 0;
+        }
+
+        .wrap { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; }
+
+        /* ─── SCREENS ─── */
+        .screen { display: none; }
+        .screen.active { display: block; animation: slideUp 0.45s cubic-bezier(0.34,1.2,0.64,1); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── BACK BUTTON ─── */
+        .back-btn {
+            background: #fff;
+            border: 1.5px solid var(--border);
+            color: var(--ink-dim);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            padding: 9px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            margin-bottom: 24px;
+        }
+        .back-btn:hover { border-color: var(--ink-light); color: var(--ink); transform: translateX(-2px); }
+
+        /* ─── LOGIN CARD ─── */
+        .login-card {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px rgba(15,23,42,0.02), 0 20px 50px rgba(15,23,42,0.06);
+            padding: 52px 48px;
+            text-align: center;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Wayfinder decorations */
+        .login-card::before {
+            content: '';
+            position: absolute;
+            width: 250px; height: 250px;
+            background: radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%);
+            top: -80px; right: -80px;
+        }
+        .login-card::after {
+            content: '';
+            position: absolute;
+            width: 150px; height: 150px;
+            background: radial-gradient(circle, rgba(14,165,233,0.06) 0%, transparent 70%);
+            bottom: -40px; left: -40px;
+        }
+
+        .station-icon {
+            font-size: 3.5rem;
+            margin-bottom: 12px;
+            display: block;
+            color: var(--primary);
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)}
+        }
+
+        .studio-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--ink);
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .color-streak {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 16px 0 24px;
+        }
+        .streak-dot {
+            width: 8px; height: 8px;
+            border-radius: 2px;
+            background: var(--border);
+            opacity: 0.85;
+        }
+        .streak-dot.active { background: var(--primary); transform: scale(1.2); }
+
+        .desc-text {
+            color: var(--ink-dim);
+            font-size: 1rem;
+            line-height: 1.65;
+            max-width: 480px;
+            margin: 0 auto 32px;
+        }
+
+        .name-field {
+            background: var(--canvas);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            padding: 14px 20px;
+            width: 100%;
+            transition: all 0.25s;
+            color: var(--ink);
+            margin-bottom: 16px;
+        }
+        .name-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+        .name-field::placeholder { color: #94a3b8; }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: #fff;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-style: italic;
+            padding: 14px 40px;
+            border-radius: 14px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.25s;
+            letter-spacing: 0.02em;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+        }
+        .start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35); }
+        .start-btn:active { transform: translateY(0); }
+
+        /* ─── QUIZ CARD ─── */
+        .quiz-card {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px rgba(15,23,42,0.02), 0 20px 50px rgba(15,23,42,0.06);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        /* Header strip */
+        .quiz-header {
+            padding: 20px 28px 16px;
+            border-bottom: 1px solid var(--canvas2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .q-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.78rem;
+            font-weight: 500;
+            background: var(--canvas2);
+            border: 1px solid var(--border);
+            color: var(--ink-dim);
+            padding: 5px 14px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        /* Timer */
+        .timer-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+        .timer-track {
+            flex: 1;
+            height: 8px;
+            background: var(--canvas2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .timer-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 1s linear, background-color 0.3s;
+        }
+        .timer-fill.safe { background: linear-gradient(90deg, #10b981, #059669); }
+        .timer-text {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--ink-dim);
+            white-space: nowrap;
+        }
+        .timer-text.danger { color: var(--red); font-weight: 600; }
+
+        .code-badge {
+            background: var(--ink);
+            color: #fff;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        /* Question body */
+        .quiz-body { padding: 28px 28px 20px; }
+
+        .q-text {
+            font-size: 1.12rem;
+            font-weight: 600;
+            color: var(--ink);
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        /* ─── MCQ BUTTONS ─── */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        @media (max-width: 540px) { .options-grid { grid-template-columns: 1fr; } }
+
+        .swatch-btn {
+            position: relative;
+            text-align: left;
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 2px solid var(--border);
+            background: var(--canvas);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--ink);
+            cursor: pointer;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+        
+        .swatch-btn:hover:not(:disabled) {
+            border-color: #cbd5e1;
+            background: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(15,23,42,0.04);
+        }
+        .swatch-btn.correct {
+            border-color: var(--green) !important;
+            background: var(--green-light) !important;
+            color: #065f46 !important;
+        }
+        .swatch-btn.wrong {
+            border-color: var(--red) !important;
+            background: var(--red-light) !important;
+            color: #9f1239 !important;
+            animation: wrongShake 0.4s ease;
+        }
+        @keyframes wrongShake {
+            0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)}
+        }
+
+        /* ─── CODE EDITOR ─── */
+        .code-block {
+            background: #0f172a;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+        }
+        .code-topbar {
+            background: #1e293b;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .code-dots { display: flex; gap: 6px; }
+        .code-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .code-file { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em; }
+
+        .code-ta {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            resize: none;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.95rem;
+            color: #38bdf8;
+            padding: 18px 20px;
+            line-height: 1.7;
+            caret-color: #f43f5e;
+            min-height: 90px;
+        }
+        .code-ta::placeholder { color: rgba(255,255,255,0.2); }
+
+        /* HTML Live Render Preview */
+        .color-preview-strip {
+            background: #fff;
+            padding: 16px 20px;
+            min-height: 60px;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        #swatch-live { width: 100%; }
+        #swatch-live a { color: var(--primary); text-decoration: underline; font-weight: 500; }
+        
+        /* Tries */
+        .tries-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+        .tries-pill {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.78rem;
+            background: var(--canvas2);
+            border: 1px solid var(--border);
+            color: var(--ink-dim);
+            padding: 5px 14px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        .tries-pill.danger { background: var(--red-light); border-color: #fda4af; color: #9f1239; }
+
+        .run-btn {
+            background: var(--ink);
+            color: #fff;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 9px 22px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .run-btn:hover { background: var(--primary-dark); }
+        .run-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        /* ─── FEEDBACK & NEXT ─── */
+        .quiz-footer {
+            padding: 16px 28px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--canvas2);
+        }
+
+        .feedback-msg { font-weight: 600; font-size: 1rem; }
+        .feedback-msg.ok  { color: var(--green); }
+        .feedback-msg.err { color: var(--red); }
+
+        .next-btn {
+            background: var(--ink);
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .next-btn:hover:not(:disabled) { background: var(--primary-dark); transform: translateX(2px); }
+        .next-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* ─── RESULT CARD ─── */
+        .result-card {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px rgba(15,23,42,0.02), 0 20px 50px rgba(15,23,42,0.06);
+            border: 1px solid var(--border);
+            padding: 52px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--ink);
+            margin-bottom: 6px;
+        }
+
+        .stat-card {
+            background: var(--canvas);
+            border: 1.5px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 12px;
+        }
+        .stat-lbl {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-dim);
+            margin-bottom: 4px;
+        }
+        .stat-val {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .retry-btn {
+            background: var(--canvas);
+            border: 2px solid var(--border);
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 12px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .retry-btn:hover { border-color: var(--ink-light); }
+
+        .share-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 12px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+        }
+        .share-btn:hover { box-shadow: 0 6px 20px rgba(37,99,235,0.35); transform: translateY(-1px); }
+        .share-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ─── CONFETTI PARTICLES ─── */
+        .confetti-piece {
+            position: fixed;
+            pointer-events: none;
+            animation: confettiFly 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            z-index: 9999;
+        }
+        @keyframes confettiFly {
+            0%   { opacity: 1; transform: scale(1) translate(0,0) rotate(0deg); }
+            100% { opacity: 0; transform: scale(0.5) translate(var(--tx), var(--ty)) rotate(var(--rot)); }
+        }
+
+        /* ─── PROGRESS DOTS ─── */
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 20px;
+        }
+        .p-dot {
+            width: 8px; height: 8px;
+            border-radius: 2px;
+            background: var(--border);
+            transition: all 0.3s;
+        }
+        .p-dot.answered { background: var(--primary); }
+        .p-dot.current  { background: var(--secondary); transform: scale(1.3) rotate(45deg); }
+    </style>
+
+<link rel="stylesheet" href="../../../../css/fosfle-lesson-bridge.css" />
+<script src="../../../../js/fosfle-lesson-bridge.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+    <button class="back-btn" id="btn-back">
+        <i class="bi bi-arrow-left"></i> Exit Station
+    </button>
+
+    <!-- ═══ LOGIN ═══ -->
+    <div id="login-screen" class="screen active">
+        <div class="login-card">
+            <i class="bi bi-compass station-icon"></i>
+            <div class="studio-title">HTML Links Quiz</div>
+            <p style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.14em;color:var(--ink-light);margin-bottom:14px;text-transform:uppercase;">
+                THE WAYFINDER'S STATION · KNOWLEDGE TEST
+            </p>
+
+            <div class="color-streak">
+                <div class="streak-dot active"></div>
+                <div class="streak-dot"></div>
+                <div class="streak-dot"></div>
+            </div>
+
+            <p class="desc-text">
+                Hyperlinks connect the entire web. Prove your ability to map out URLs, target new tabs, and construct proper anchor tags. 10 questions — timed and interactive.
+            </p>
+
+            <input type="text" id="student-name" class="name-field" placeholder="Your name, Navigator...">
+            <button class="start-btn" id="btn-start">
+                Begin Journey →
+            </button>
+        </div>
+
+        <!-- Progress preview dots -->
+        <div class="progress-dots mt-4">
+            <div class="p-dot current"></div>
+            <div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div>
+            <div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div>
+            <div class="p-dot"></div>
+        </div>
+    </div>
+
+    <!-- ═══ QUIZ ═══ -->
+    <div id="quiz-screen" class="screen">
+        <div class="quiz-card">
+            <div class="quiz-header">
+                <span class="q-badge" id="q-counter">Q 1 / 10</span>
+
+                <div class="timer-wrap" id="timer-wrap">
+                    <div class="timer-track">
+                        <div class="timer-fill safe" id="timer-fill" style="width:100%"></div>
+                    </div>
+                    <span class="timer-text" id="timer-text">20s</span>
+                </div>
+
+                <div class="code-badge d-none" id="code-badge">
+                    <i class="bi bi-code-slash me-1"></i> Live Editor
+                </div>
+            </div>
+
+            <div class="quiz-body">
+                <div class="q-text" id="q-text">Loading…</div>
+                <div id="interaction-box"></div>
+            </div>
+
+            <div class="quiz-footer">
+                <div id="feedback-msg" class="feedback-msg"></div>
+                <button class="next-btn" id="btn-next" disabled>
+                    Next <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="progress-dots" id="progress-dots"></div>
+    </div>
+
+    <!-- ═══ RESULT ═══ -->
+    <div id="result-screen" class="screen">
+        <div class="result-card" id="result-card">
+            <div style="font-size:3.5rem;margin-bottom:12px;" id="result-icon">🏆</div>
+            <div class="result-title" id="result-title">Journey Complete!</div>
+            <p style="color:var(--ink-dim);font-size:1rem;margin-bottom:36px;" id="result-sub">Great work, Navigator!</p>
+
+            <div class="row g-3 justify-content-center mb-5">
+                <div class="col-5 col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Score</div>
+                        <div class="stat-val" id="stat-score" style="color:var(--primary)">0/10</div>
+                    </div>
+                </div>
+                <div class="col-5 col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Accuracy</div>
+                        <div class="stat-val" id="stat-acc" style="color:var(--green)">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <button class="retry-btn" id="btn-retry">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i> Retake Test
+                </button>
+                <button class="share-btn" id="btn-share">
+                    <i class="bi bi-cloud-upload me-2"></i> Save Score
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /wrap -->
+
+<script>
+    // ─── HELPERS ───
+    const norm = s => s.toLowerCase().replace(/\s+/g,'').replace(/'/g,'"');
+
+    // ─── QUIZ DATA ───
+    const quizData = [
+        {
+            type: "mcq",
+            q: "Which HTML tag is used to define a hyperlink?",
+            options: ["<link>", "<a>", "<href>", "<nav>"],
+            answer: 1
+        },
+        {
+            type: "code",
+            q: "Write a basic link that goes to \"https://example.com\" with the clickable text \"Click here\".",
+            correctText: '<a href="https://example.com">Click here</a>',
+            validate: i => {
+                const c = norm(i);
+                return c.includes('<a') && c.includes('href="https://example.com"') && c.includes('>clickhere</a>');
+            }
+        },
+        {
+            type: "mcq",
+            q: "What attribute specifies the destination address of a link?",
+            options: ["src", "link", "href", "dest"],
+            answer: 2
+        },
+        {
+            type: "code",
+            q: "Write a link that opens \"https://google.com\" in a NEW tab, with the text \"Google\".",
+            correctText: '<a href="https://google.com" target="_blank">Google</a>',
+            validate: i => {
+                const c = norm(i);
+                return c.includes('<a') && c.includes('href="https://google.com"') && c.includes('target="_blank"') && c.includes('>google</a>');
+            }
+        },
+        {
+            type: "mcq",
+            q: "Which of the following is an example of a relative URL?",
+            options: [
+                "https://mysite.com/about", 
+                "/about.html", 
+                "http://about.html", 
+                "www.mysite.com/about"
+            ],
+            answer: 1
+        },
+        {
+            type: "code",
+            q: "Write an email link targeting \"hello@test.com\" with the text \"Email us\".",
+            correctText: '<a href="mailto:hello@test.com">Email us</a>',
+            validate: i => {
+                const c = norm(i);
+                return c.includes('<a') && c.includes('href="mailto:hello@test.com"') && c.includes('>emailus</a>');
+            }
+        },
+        {
+            type: "mcq",
+            q: "How do you create a link that dials a phone number on a mobile device?",
+            options: [
+                'href="call:..."', 
+                'href="tel:..."', 
+                'href="phone:..."', 
+                'href="dial:..."'
+            ],
+            answer: 1
+        },
+        {
+            type: "code",
+            q: "Write a jump link (bookmark) that targets an element with the ID \"section2\", using the text \"Jump\".",
+            correctText: '<a href="#section2">Jump</a>',
+            validate: i => {
+                const c = norm(i);
+                return c.includes('<a') && c.includes('href="#section2"') && c.includes('>jump</a>');
+            }
+        },
+        {
+            type: "mcq",
+            q: "If an <a> tag lacks an href attribute, what happens?",
+            options: [
+                "It acts like plain text/placeholder", 
+                "It goes to the homepage", 
+                "It throws a browser error", 
+                "It reloads the page"
+            ],
+            answer: 0
+        },
+        {
+            type: "code",
+            q: "Write a relative link to \"/contact\" with a title attribute set to \"Contact Page\", and the text \"Contact\".",
+            correctText: '<a href="/contact" title="Contact Page">Contact</a>',
+            validate: i => {
+                const c = norm(i);
+                return c.includes('<a') && c.includes('href="/contact"') && c.includes('title="contactpage"') && c.includes('>contact</a>');
+            }
+        }
+    ];
+
+    // ─── STATE ───
+    let idx = 0, score = 0, studentName = '', isAnswered = false;
+    let trialsLeft = 3, timerInterval, timeLeft = 20;
+
+    // ─── INITIALIZATION ───
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('btn-back')?.addEventListener('click', () => history.back());
+        document.getElementById('btn-start')?.addEventListener('click', startQuiz);
+        document.getElementById('btn-next')?.addEventListener('click', nextQuestion);
+        document.getElementById('btn-retry')?.addEventListener('click', () => location.reload());
+        document.getElementById('btn-share')?.addEventListener('click', submitToGoogleSheets);
+        
+        // Listen for "Enter" key on name input
+        document.getElementById('student-name')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') startQuiz();
+        });
+    });
+
+    // ─── START ───
+    function startQuiz() {
+        const n = document.getElementById('student-name').value.trim();
+        if (!n) return alert('Please enter your name to begin!');
+        studentName = n;
+        buildDots();
+        sw('login-screen', 'quiz-screen');
+        loadQ();
+    }
+
+    function buildDots() {
+        const wrap = document.getElementById('progress-dots');
+        wrap.innerHTML = quizData.map((_, i) =>
+            `<div class="p-dot${i===0?' current':''}" id="dot-${i}"></div>`
+        ).join('');
+    }
+
+    function updateDots() {
+        quizData.forEach((_, i) => {
+            const d = document.getElementById('dot-'+i);
+            if (!d) return;
+            d.className = 'p-dot' + (i < idx ? ' answered' : i === idx ? ' current' : '');
+        });
+    }
+
+    // ─── LOAD QUESTION ───
+    function loadQ() {
+        isAnswered = false;
+        document.getElementById('btn-next').disabled = true;
+        document.getElementById('feedback-msg').innerHTML = '';
+        document.getElementById('q-counter').textContent = `Q ${idx+1} / ${quizData.length}`;
+        document.getElementById('q-text').textContent = quizData[idx].q;
+        updateDots();
+
+        const box = document.getElementById('interaction-box');
+        box.innerHTML = '';
+
+        if (quizData[idx].type === 'mcq') setupMCQ(quizData[idx], box);
+        else setupCode(quizData[idx], box);
+    }
+
+    // ─── MCQ ───
+    function setupMCQ(q, box) {
+        showTimer(); hideCodeBadge();
+        const grid = document.createElement('div');
+        grid.className = 'options-grid';
+        
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'swatch-btn';
+            
+            // Format code tags properly for visual display
+            const displayOpt = escHTML(opt).replace(/&lt;/g, '<span style="color:var(--primary)">&lt;').replace(/&gt;/g, '&gt;</span>');
+            
+            btn.innerHTML = `<span style="font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--ink-light);margin-right:8px;font-weight:600;">${String.fromCharCode(65+i)}.</span>${displayOpt}`;
+            
+            btn.addEventListener('click', () => handleMCQ(btn, i, q.answer));
+            grid.appendChild(btn);
+        });
+        
+        box.appendChild(grid);
+        startTimer();
+    }
+
+    function handleMCQ(btn, sel, correct) {
+        if (isAnswered) return;
+        isAnswered = true;
+        clearInterval(timerInterval);
+        document.querySelectorAll('.swatch-btn').forEach(b => b.disabled = true);
+
+        if (sel === correct) {
+            btn.classList.add('correct');
+            setFeedback('✓ Correct!', true);
+            score++;
+            burstConfetti(btn, ['#2563eb','#0ea5e9','#059669']);
+        } else {
+            btn.classList.add('wrong');
+            document.querySelectorAll('.swatch-btn')[correct].classList.add('correct');
+            setFeedback('✗ Incorrect path.', false);
+            burstConfetti(btn, ['#e11d48','#f43f5e']);
+        }
+        document.getElementById('btn-next').disabled = false;
+    }
+
+    // ─── CODE ───
+    function setupCode(q, box) {
+        trialsLeft = 3;
+        hideTimer(); showCodeBadge();
+        clearInterval(timerInterval);
+
+        box.innerHTML = `
+            <div class="code-block">
+                <div class="code-topbar">
+                    <div class="code-dots">
+                        <div class="code-dot" style="background:#f43f5e"></div>
+                        <div class="code-dot" style="background:#fbbf24"></div>
+                        <div class="code-dot" style="background:#10b981"></div>
+                    </div>
+                    <span class="code-file">index.html</span>
+                </div>
+                <textarea id="code-ta" class="code-ta" rows="3" placeholder="Write your HTML anchor tag here…"></textarea>
+                <div class="color-preview-strip">
+                    <div id="swatch-live" style="flex-grow:1; display:flex; align-items:center;"></div>
+                    <span id="preview-label" style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--ink-light);">Type HTML to preview your link here</span>
+                </div>
+            </div>
+            <div class="tries-row">
+                <span class="tries-pill" id="tries-pill">
+                    <i class="bi bi-arrow-repeat me-1"></i>${trialsLeft} tries left
+                </span>
+                <button class="run-btn" id="btn-run">
+                    <i class="bi bi-play-fill me-1"></i> Run Code
+                </button>
+            </div>
+        `;
+
+        const ta = document.getElementById('code-ta');
+        ta.addEventListener('input', () => livePreview(ta));
+        document.getElementById('btn-run').addEventListener('click', checkCode);
+    }
+
+    function livePreview(ta) {
+        const swatch = document.getElementById('swatch-live');
+        const label  = document.getElementById('preview-label');
+        swatch.innerHTML = ta.value;
+        
+        // Safety: Prevent links from actually navigating away in the preview
+        const links = swatch.querySelectorAll('a');
+        links.forEach(l => l.addEventListener('click', e => e.preventDefault()));
+        
+        if (ta.value.trim() !== '') {
+            label.style.display = 'none';
+        } else {
+            label.style.display = 'inline';
+        }
+    }
+
+    function checkCode() {
+        if (isAnswered) return;
+        const q = quizData[idx];
+        const val = document.getElementById('code-ta').value;
+        const ok  = q.validate(val);
+        const fb  = document.getElementById('feedback-msg');
+        const ta  = document.getElementById('code-ta');
+        const runBtn = document.getElementById('btn-run');
+
+        if (ok) {
+            isAnswered = true;
+            score++;
+            ta.style.border = '2px solid #059669';
+            setFeedback('✓ Valid syntax!', true);
+            runBtn.disabled = true;
+            document.getElementById('btn-next').disabled = false;
+            burstConfetti(runBtn, ['#059669','#2563eb','#0ea5e9']);
+        } else {
+            trialsLeft--;
+            const pill = document.getElementById('tries-pill');
+            pill.innerHTML = `<i class="bi bi-arrow-repeat me-1"></i>${trialsLeft} tries left`;
+            if (trialsLeft <= 1) pill.classList.add('danger');
+
+            if (trialsLeft > 0) {
+                setFeedback('✗ Syntax error — check your attributes.', false);
+                ta.style.outline = '2px solid #e11d48';
+                setTimeout(() => ta.style.outline = '', 600);
+            } else {
+                isAnswered = true;
+                ta.disabled = true;
+                runBtn.disabled = true;
+                pill.innerHTML = `<i class="bi bi-x-circle me-1"></i> Out of tries`;
+                fb.innerHTML = `<span class="feedback-msg err">✗ Answer: <code style="background:#fef2f2;color:#e11d48;padding:2px 8px;border-radius:6px;font-size:0.82rem;">${escHTML(q.correctText)}</code></span>`;
+                document.getElementById('btn-next').disabled = false;
+            }
+        }
+    }
+
+    // ─── TIMER ───
+    function startTimer() {
+        timeLeft = 20;
+        updateTimerUI();
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerUI();
+            if (timeLeft <= 0) { clearInterval(timerInterval); autoSkip(); }
+        }, 1000);
+    }
+    function updateTimerUI() {
+        const fill = document.getElementById('timer-fill');
+        const txt  = document.getElementById('timer-text');
+        fill.style.width = (timeLeft/20*100)+'%';
+        fill.className   = 'timer-fill' + (timeLeft > 8 ? ' safe' : '');
+        txt.textContent  = timeLeft+'s';
+        txt.className    = 'timer-text' + (timeLeft <= 5 ? ' danger' : '');
+    }
+    function autoSkip() {
+        isAnswered = true;
+        document.querySelectorAll('.swatch-btn').forEach(b => b.disabled = true);
+        const correct = quizData[idx].answer;
+        document.querySelectorAll('.swatch-btn')[correct].classList.add('correct');
+        setFeedback("⏱ Time's up!", false);
+        document.getElementById('btn-next').disabled = false;
+    }
+    function showTimer() { document.getElementById('timer-wrap').classList.remove('d-none'); }
+    function hideTimer() { document.getElementById('timer-wrap').classList.add('d-none'); }
+    function showCodeBadge() { document.getElementById('code-badge').classList.remove('d-none'); }
+    function hideCodeBadge() { document.getElementById('code-badge').classList.add('d-none'); }
+
+    // ─── NAVIGATION ───
+    function nextQuestion() {
+        idx++;
+        if (idx < quizData.length) loadQ();
+        else showResult();
+    }
+
+    // ─── RESULT ───
+    function showResult() {
+        sw('quiz-screen', 'result-screen');
+        const pct = Math.round(score/quizData.length*100);
+
+        document.getElementById('result-title').textContent =
+            pct === 100 ? 'Flawless Navigation!' : pct >= 70 ? 'Waypoints Connected!' : 'Lost Signal…';
+        document.getElementById('result-sub').textContent =
+            pct === 100 ? `Perfect code, ${studentName}. You're a master wayfinder.` :
+            pct >= 70  ? `Great work, ${studentName}! Your linking skills are strong.` :
+            `Keep exploring, ${studentName}. Read up on the anchor tag and try again.`;
+        document.getElementById('result-icon').textContent = pct >= 70 ? '🧭' : '🗺️';
+        document.getElementById('stat-score').textContent = `${score}/${quizData.length}`;
+        document.getElementById('stat-acc').textContent   = `${pct}%`;
+    }
+
+    // ─── CONFETTI BURST ───
+    function burstConfetti(anchor, colours) {
+        const r = anchor.getBoundingClientRect();
+        const cx = r.left + r.width/2, cy = r.top + r.height/2;
+        for (let i = 0; i < 16; i++) {
+            const p = document.createElement('div');
+            p.className = 'confetti-piece';
+            const sz = 6 + Math.random()*8;
+            p.style.cssText = `
+                width:${sz}px;height:${sz}px;
+                left:${cx}px;top:${cy}px;
+                background:${colours[Math.floor(Math.random()*colours.length)]};
+                --tx:${(Math.random()-.5)*200}px;
+                --ty:${(Math.random()-.5)*150}px;
+                --rot:${Math.random()*360}deg;
+                border-radius:${Math.random()>.5?'50%':'2px'};
+            `;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 800);
+        }
+    }
+
+    // ─── FEEDBACK ───
+    function setFeedback(msg, ok) {
+        const el = document.getElementById('feedback-msg');
+        el.className = 'feedback-msg ' + (ok ? 'ok' : 'err');
+        el.innerHTML = msg;
+    }
+
+    // ─── UTILS ───
+    function escHTML(s) {
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function sw(a, b) {
+        document.getElementById(a).classList.remove('active');
+        document.getElementById(b).classList.add('active');
+    }
+
+    // ─── SUBMIT ───
+    function submitToGoogleSheets() {
+        const btn = document.getElementById('btn-share');
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Saving…`;
+        btn.disabled = true;
+        
+        if (typeof GOOGLE_SCRIPT_URL === 'undefined') {
+            console.warn("GOOGLE_SCRIPT_URL not found. Bypassing network call.");
+            setTimeout(() => {
+                btn.innerHTML = `<i class="bi bi-check-circle me-2"></i> Saved locally!`;
+                btn.style.background = 'linear-gradient(135deg,#059669,#047857)';
+            }, 800);
+            return;
+        }
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({ name: studentName, score, total: quizData.length, timestamp: new Date().toLocaleString() }),
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+        }).then(() => {
+            btn.innerHTML = `<i class="bi bi-check-circle me-2"></i> Saved!`;
+            btn.style.background = 'linear-gradient(135deg,#059669,#047857)';
+        }).catch(() => {
+            alert('Error saving score. Check your network or config.js.');
+            btn.innerHTML = `<i class="bi bi-cloud-upload me-2"></i> Save Score`;
+            btn.disabled = false;
+        });
+    }
+</script>
+<script src="/js/config.js"></script>
+</body>
+</html>

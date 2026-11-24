@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Fosfle" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/fosfle_cobalt</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="android:windowBackground">@color/fosfle_paper</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Theme.Fosfle.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/fosfle_navy</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_fosfle_brand</item>
+        <item name="postSplashScreenTheme">@style/Theme.Fosfle</item>
+        <item name="android:windowBackground">@color/fosfle_navy</item>
+        <item name="android:statusBarColor">@color/fosfle_navy</item>
+        <item name="android:navigationBarColor">@color/fosfle_navy</item>
+    </style>
+</resources>

@@ -1,0 +1,183 @@
+
+<link rel="stylesheet" href="../../../css/fosfle-lesson-bridge.css" />
+<script src="../../../js/fosfle-lesson-bridge.js"></script>
+<div class="container-fluid p-0 animation-fade-in">
+    <div class="d-flex align-items-center mb-4">
+        <div class="bg-primary bg-opacity-10 p-3 rounded-3 me-3">
+            <i class="bi bi-textarea-t text-primary fs-3"></i>
+        </div>
+        <div>
+            <h1 class="fw-bold mb-0">HTML Editors</h1>
+            <p class="text-muted mb-0">Write your first lines of code.</p>
+        </div>
+    </div>
+    
+    <p class="lead text-secondary">A simple text editor is all you need to learn HTML.</p>
+    
+    <div class="alert alert-info border-0 shadow-sm border-start border-4 border-info mb-5 d-flex align-items-start">
+        <i class="bi bi-info-circle-fill fs-5 me-3 text-info mt-1"></i>
+        <div>
+            <strong class="d-block mb-1">Learn HTML Using Notepad or TextEdit</strong>
+            Web pages can be created and modified using professional HTML editors. However, for learning HTML, we recommend a simple text editor like Notepad (PC) or TextEdit (Mac). We believe that starting simple is the best way to grasp the fundamentals without getting distracted by complex software.
+        </div>
+    </div>
+
+    <div class="mb-5">
+        <h3 class="fw-bold mb-3 d-flex align-items-center">
+            <span class="badge bg-primary rounded-circle p-2 me-2 shadow-sm" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">1</span> 
+            Open Notepad (PC) or TextEdit (Mac)
+        </h3>
+        
+        <div class="row g-4 mt-2">
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm bg-white">
+                    <div class="card-body">
+                        <h5 class="fw-bold"><i class="bi bi-windows me-2 text-primary"></i>Windows:</h5>
+                        <p class="mb-0 text-secondary">Open the <strong>Start Screen</strong> (the window symbol at the bottom left on your screen). Type <strong>Notepad</strong> and hit Enter.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm bg-white">
+                    <div class="card-body">
+                        <h5 class="fw-bold"><i class="bi bi-apple me-2 text-dark"></i>Mac:</h5>
+                        <p class="mb-2 text-secondary">Open <strong>Finder > Applications > TextEdit</strong>.</p>
+                        <div class="p-2 bg-danger bg-opacity-10 text-danger rounded small fw-medium">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> Important: You must set TextEdit to plain text. Go to <strong>Format > Make Plain Text</strong>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5">
+    <h3 class="fw-bold mb-3 d-flex align-items-center">
+        <span class="badge bg-primary rounded-circle p-2 me-2 shadow-sm" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">2</span> 
+        Write Some HTML
+    </h3>
+    <p class="text-secondary">Write or copy the following HTML code into your text editor:</p>
+    
+    <div class="card bg-dark text-light border-0 shadow-sm mb-4 overflow-hidden">
+        <div class="card-header bg-black border-0 d-flex justify-content-between align-items-center py-3">
+            <div class="d-flex align-items-center">
+                    <div class="bg-danger rounded-circle me-2" style="width:12px;height:12px;"></div>
+                    <div class="bg-warning rounded-circle me-2" style="width:12px;height:12px;"></div>
+                    <div class="bg-success rounded-circle me-3" style="width:12px;height:12px;"></div>
+                    <span class="badge bg-primary px-3 py-2">
+                        <i class="bi bi-file-earmark-code me-1"></i>
+                        index.html
+                    </span>
+                </div>
+            <button class="btn btn-sm btn-outline-secondary text-white border-0" onclick="navigator.clipboard.writeText('<!DOCTYPE html>\n<html>\n<body>\n\n<h1>My First Heading</h1>\n<p>My first paragraph.</p>\n\n<' + '/body>\n<' + '/html>'); alert('Code copied to clipboard!');">
+    <i class="bi bi-clipboard"></i> Copy
+</button>
+        </div>
+        <div class="card-body font-monospace" style="overflow-x: auto;">
+<pre class="m-0 text-white"><code><span class="text-secondary">&lt;!DOCTYPE html&gt;</span>
+<span class="text-primary">&lt;html&gt;</span>
+<span class="text-primary">&lt;body&gt;</span>
+
+<span class="text-info">&lt;h1&gt;</span>My First Heading<span class="text-info">&lt;/h1&gt;</span>
+<span class="text-info">&lt;p&gt;</span>My first paragraph.<span class="text-info">&lt;/p&gt;</span>
+
+<span class="text-primary">&lt;/body&gt;</span>
+<span class="text-primary">&lt;/html&gt;</span></code></pre>
+        </div>
+    </div>
+</div>
+
+    <div class="mb-5">
+        <h3 class="fw-bold mb-3 d-flex align-items-center">
+            <span class="badge bg-primary rounded-circle p-2 me-2 shadow-sm" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">3</span> 
+            Save the HTML Page
+        </h3>
+        <p class="text-secondary">Save the file on your computer. Select <strong>File > Save as</strong> in the Notepad menu.</p>
+        <p class="text-secondary">Name the file <code>index.html</code> and set the encoding to <strong>UTF-8</strong> (which is the preferred encoding for HTML files).</p>
+        
+        <div class="row g-3 mt-3">
+            <div class="col-md-6">
+                <div class="p-3 bg-light border-start border-4 border-secondary rounded h-100">
+                    <i class="bi bi-lightbulb-fill text-warning me-2"></i> <strong>Tip:</strong> You can use either <code>.htm</code> or <code>.html</code> as a file extension. There is no difference, it is up to you.
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 bg-danger bg-opacity-10 border-start border-4 border-danger rounded h-100 text-danger">
+                    <i class="bi bi-exclamation-octagon-fill me-2"></i> <strong>Windows Users:</strong> Ensure "Save as type" is set to <strong>All Files (*.*)</strong>. Otherwise, Notepad might save it as <code>index.html.txt</code>, which won't work!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5">
+        <h3 class="fw-bold mb-3 d-flex align-items-center">
+            <span class="badge bg-primary rounded-circle p-2 me-2 shadow-sm" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">4</span> 
+            View & Edit the HTML Page
+        </h3>
+        <p class="text-secondary">Open the saved HTML file in your favorite browser (double-click on the file, or right-click and choose "Open with"). The result will look like this:</p>
+        
+        <div class="card border-0 shadow-sm p-4 mt-3 mb-4 bg-white">
+            <h1 class="text-dark" style="font-family: 'Times New Roman', Times, serif;">My First Heading</h1>
+            <p class="text-dark" style="font-family: 'Times New Roman', Times, serif;">My first paragraph.</p>
+        </div>
+
+        <div class="alert alert-secondary border-0 shadow-sm d-flex align-items-start">
+            <i class="bi bi-arrow-repeat fs-5 me-3 text-secondary mt-1"></i>
+            <div>
+                <strong class="d-block mb-1">How to edit your file again:</strong>
+                If you double-click your file, it will open in your browser, not your editor. To edit the code again, <strong>right-click</strong> the file, select <strong>Open with...</strong>, and choose Notepad or TextEdit. After making changes, save the file and simply refresh your browser to see the updates!
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-5">
+        <div class="col-lg-7">
+            <div class="p-4 p-md-5 bg-white border border-primary border-opacity-25 rounded-4 shadow-sm position-relative overflow-hidden h-100">
+                <i class="bi bi-braces position-absolute text-primary opacity-10" style="font-size: 10rem; right: -20px; bottom: -40px; transform: rotate(-15deg);"></i>
+                
+                <div class="position-relative z-1">
+                    <h4 class="fw-bold mb-3 text-primary"><i class="bi bi-rocket-takeoff me-2"></i>Ready for Modern Editors?</h4>
+                    <p class="text-secondary mb-4">Once you are comfortable with the basics, we highly recommend downloading a modern code editor. They provide syntax highlighting, auto-completion, and live previews which makes coding 10x faster!</p>
+                    
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="https://code.visualstudio.com/" target="_blank" class="btn btn-primary fw-semibold d-flex align-items-center gap-2">
+                            <i class="bi bi-code-slash"></i> VS Code <span class="badge bg-white text-primary ms-1">Free</span>
+                        </a>
+                        <a href="https://www.sublimetext.com/" target="_blank" class="btn btn-outline-secondary fw-semibold">
+                            Sublime Text
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-5">
+            <div class="p-4 bg-dark text-white rounded-4 shadow-sm position-relative overflow-hidden h-100">
+                <i class="bi bi-globe position-absolute text-white opacity-10" style="font-size: 10rem; right: -30px; top: -30px;"></i>
+                
+                <div class="position-relative z-1">
+                    <h4 class="fw-bold mb-3"><i class="bi bi-cloud-check me-2"></i>Online Playgrounds</h4>
+                    <p class="text-light text-opacity-75 mb-4">Don't want to install anything? You can write and test HTML directly in your browser using online sandbox environments.</p>
+                    
+                    <div class="d-flex flex-column gap-2">
+                        <a href="https://codepen.io/pen/" target="_blank" class="text-decoration-none text-white d-flex align-items-center p-2 rounded hover-bg-light-alpha transition-all">
+                            <i class="bi bi-box me-3 fs-5"></i> CodePen.io
+                        </a>
+                        <a href="https://jsfiddle.net/" target="_blank" class="text-decoration-none text-white d-flex align-items-center p-2 rounded hover-bg-light-alpha transition-all">
+                            <i class="bi bi-cloud me-3 fs-5"></i> JSFiddle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-bg-light-alpha:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    .transition-all {
+        transition: all 0.2s ease-in-out;
+    }
+</style>

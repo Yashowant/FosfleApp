@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Lists Challenge · The Master Catalog</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ink: #0f172a; 
+            --ink-dim: #1e293b; 
+            --ink-light: #475569; 
+            --canvas: #f8fafc;
+            --canvas2: #f1f5f9;
+            --border: #e2e8f0;
+            
+            --teal: #0d9488;
+            --teal-light: #ccfbf1;
+            --blue: #2563eb;
+            --green: #10b981;
+            --red: #ef4444;
+            --gold: #f59e0b;
+            
+            --text-main: #0f172a;
+            --text-dim: #64748b;
+
+            --panel-bg: #ffffff;
+            --code-bg: #1e293b;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body { overflow-x: hidden; max-width: 100%; }
+
+        body {
+            background-color: var(--canvas);
+            background-image:
+                linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 40px 16px 60px;
+        }
+
+        .wrap { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; }
+
+        /* ─── SCREENS ─── */
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ─── UI COMPONENTS ─── */
+        .exit-btn {
+            background: #fff; border: 1.5px solid var(--border); color: var(--text-dim);
+            font-family: 'DM Sans', sans-serif; font-size: 0.88rem; padding: 9px 20px;
+            border-radius: 30px; cursor: pointer; transition: all 0.3s;
+            display: inline-flex; align-items: center; gap: 6px; margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .exit-btn:hover { border-color: var(--teal); color: var(--teal); transform: translateX(-2px); }
+
+        .panel {
+            background: var(--panel-bg); border: 1px solid var(--border);
+            border-radius: 20px; box-shadow: 0 20px 40px rgba(15,23,42,0.06); overflow: hidden;
+        }
+
+        .panel-head {
+            background: var(--canvas2); border-bottom: 1px solid var(--border);
+            padding: 14px 24px; display: flex; justify-content: space-between; align-items: center;
+            font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em;
+            color: var(--text-dim); text-transform: uppercase; font-weight: 600;
+        }
+
+        /* ─── LOGIN ─── */
+        .login-card { padding: 64px 48px; text-align: center; position: relative; }
+        .studio-title {
+            font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 900; color: var(--ink); line-height: 1.1; margin-bottom: 8px;
+        }
+        .briefing-box {
+            background: var(--teal-light); border-left: 4px solid var(--teal); border-radius: 8px;
+            padding: 24px 32px; font-size: 1rem; line-height: 1.7; color: var(--ink-dim);
+            text-align: left; margin: 32px auto; max-width: 680px;
+        }
+        .name-input {
+            background: #fff; border: 2px solid var(--border); border-radius: 12px;
+            font-family: 'DM Sans', sans-serif; font-size: 1.1rem; text-align: center;
+            padding: 14px 20px; width: 100%; max-width: 380px; transition: all 0.3s;
+            color: var(--ink); margin-bottom: 16px;
+        }
+        .name-input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15); }
+        .go-btn {
+            background: linear-gradient(135deg, var(--teal), #0f766e); border: none; color: #fff;
+            font-family: 'Playfair Display', Georgia, serif; font-size: 1.3rem;
+            font-weight: 800; font-style: italic; padding: 14px 40px; border-radius: 12px;
+            width: 100%; max-width: 380px; cursor: pointer; transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(13, 148, 136, 0.3);
+        }
+        .go-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4); }
+
+        /* ─── CHALLENGE LAYOUT ─── */
+        .challenge-wrap { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 12px 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); flex-wrap: wrap; gap: 12px;
+        }
+        .segment-tabs { display: flex; gap: 6px; background: var(--canvas2); border-radius: 12px; padding: 6px; overflow-x: auto; }
+        .seg-tab {
+            font-family: 'DM Mono', monospace; font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 0.05em; padding: 8px 16px; border-radius: 8px; border: 1px solid transparent;
+            cursor: pointer; transition: all 0.3s; color: var(--text-dim); background: transparent;
+            text-transform: uppercase; white-space: nowrap;
+        }
+        .seg-tab.active { background: #fff; color: var(--teal); border-color: var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .seg-tab i.done-icon { display: none; color: var(--green); }
+        .seg-tab.completed i.done-icon { display: inline-block; }
+        .seg-tab.completed i.main-icon { display: none; }
+
+        #countdown { font-family: 'DM Mono', monospace; font-size: 1.25rem; font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+        #countdown.warn { color: var(--red); animation: countBlink 0.8s infinite; }
+        @keyframes countBlink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+        .segment { display: none; min-width: 0; }
+        .segment.active { display: block; animation: fadeUp 0.4s ease-out; }
+
+        /* ─── SEGMENT A: SORTING BIN (Good vs Bad) ─── */
+        .sorting-layout { display: flex; flex-direction: column; gap: 20px; }
+        .chip-container {
+            display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+            background: var(--canvas2); padding: 20px; border-radius: 16px; border: 1px dashed var(--border);
+        }
+        .sort-chip {
+            background: #fff; border: 2px solid var(--border); border-radius: 8px;
+            padding: 10px 16px; font-family: 'DM Mono', monospace; font-size: 0.9rem;
+            cursor: grab; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.2s;
+            user-select: none;
+        }
+        .sort-chip:active { cursor: grabbing; transform: scale(1.05); }
+        .sort-chip.dragging { opacity: 0.5; }
+        
+        .bins-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media(max-width:600px) { .bins-wrap { grid-template-columns: 1fr; } }
+        .bin {
+            border: 3px dashed var(--border); border-radius: 16px; padding: 30px 20px;
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
+            min-height: 200px; transition: all 0.3s; background: #fff;
+        }
+        .bin.over { transform: scale(1.02); }
+        .bin.good.over { border-color: var(--green); background: #f0fdf4; }
+        .bin.bad.over { border-color: var(--red); background: #fef2f2; }
+        .bin-title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .bin.good .bin-title { color: var(--green); }
+        .bin.bad .bin-title { color: var(--red); }
+        .sorted-item {
+            background: var(--canvas2); padding: 8px 12px; border-radius: 6px;
+            font-family: 'DM Mono', monospace; font-size: 0.8rem; width: 100%; text-align: center;
+            border: 1px solid var(--border); animation: popIn 0.3s ease-out;
+        }
+        @keyframes popIn { 0%{transform:scale(0.8);opacity:0} 100%{transform:scale(1);opacity:1} }
+
+        /* ─── SEGMENT B: BUG SQUASHER ─── */
+        .bug-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+        @media(max-width:800px) { .bug-layout { grid-template-columns: 1fr; } }
+        .bug-editor-wrap { background: var(--code-bg); border-radius: 16px; padding: 20px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.2); }
+        .bug-ta {
+            width: 100%; height: 150px; background: transparent; border: 1px dashed rgba(255,255,255,0.2);
+            color: #f8fafc; font-family: 'DM Mono', monospace; padding: 16px; font-size: 1rem;
+            resize: none; outline: none; border-radius: 8px; transition: all 0.3s;
+        }
+        .bug-ta:focus { border-color: var(--gold); }
+        .bug-ta.error { animation: shake 0.4s; border-color: var(--red); background: rgba(239, 68, 68, 0.1); }
+        .bug-ta.success { border-color: var(--green); background: rgba(16, 185, 129, 0.1); pointer-events: none; }
+        .bug-instructions { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+
+        /* ─── SEGMENT C: CODE MIRROR ─── */
+        .mirror-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+        @media(max-width:800px) { .mirror-layout { grid-template-columns: 1fr; } }
+        
+        .mirror-target {
+            background: #fff; border: 2px dashed var(--border); border-radius: 16px; padding: 24px;
+            display: flex; flex-direction: column;
+        }
+        .mirror-target-box { background: var(--canvas2); padding: 20px; border-radius: 8px; border: 1px solid var(--border); font-family: 'Times New Roman', serif; font-size: 1.1rem; flex-grow: 1; }
+        
+        .mirror-editor { background: var(--code-bg); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; }
+        .mirror-ta {
+            width: 100%; flex-grow: 1; background: transparent; border: 1px solid rgba(255,255,255,0.1);
+            color: #f8fafc; font-family: 'DM Mono', monospace; padding: 16px; font-size: 0.95rem;
+            resize: none; outline: none; border-radius: 8px; min-height: 150px;
+        }
+        .live-preview-box {
+            background: #fff; padding: 12px; border-radius: 8px; margin-top: 12px;
+            font-family: 'Times New Roman', serif; font-size: 1.1rem; min-height: 80px;
+        }
+
+        /* ─── GLOBALS ─── */
+        .action-btn {
+            background: linear-gradient(135deg, var(--teal), #0f766e); border: none; color: #fff;
+            font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.95rem; padding: 12px 24px;
+            border-radius: 10px; cursor: pointer; transition: all 0.3s; margin-top: 16px; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .action-btn:disabled { background: var(--border); color: var(--text-dim); cursor: not-allowed; }
+        .action-btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3); }
+
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+        /* ─── RESULT ─── */
+        .result-shell {
+            background: #fff; border: 1px solid var(--border); border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05); padding: 56px 40px; text-align: center;
+        }
+        .stat-card { background: var(--canvas2); border: 1px solid var(--border); border-radius: 16px; padding: 20px 12px; }
+        .stat-lbl { font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.05em; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px; }
+        .stat-val { font-family:'Playfair Display',serif; font-weight:700; font-size:2.2rem; }
+    </style>
+
+<link rel="stylesheet" href="../../../../css/fosfle-lesson-bridge.css" />
+<script src="../../../../js/fosfle-lesson-bridge.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <button class="exit-btn" id="btn-exit"><i class="bi bi-arrow-left"></i> Exit Facility</button>
+        <span style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--text-dim);letter-spacing:0.05em;text-transform:uppercase;">
+            // The Master Catalog · Data Sorting Facility
+        </span>
+    </div>
+
+    <!-- ═══════════ LOGIN ═══════════ -->
+    <div id="login-screen" class="screen active">
+        <div class="panel login-card">
+            <i class="bi bi-ui-checks-grid" style="font-size:3.5rem; color:var(--teal); margin-bottom: 12px;"></i>
+            <div class="studio-title">Catalog Restorer</div>
+            
+            <div class="briefing-box">
+                <strong>System Alert:</strong> The main index has suffered a structural collapse.<br><br>
+                Your objective is to restore order using your knowledge of HTML Lists. You have <strong>3 minutes</strong> to complete three recovery tasks:
+                <ul class="mt-2 mb-0">
+                    <li><strong>1. The Sorting Bin:</strong> Separate valid list structures from corrupted syntax.</li>
+                    <li><strong>2. Bug Squasher:</strong> Identify and repair crossed tags in a description list.</li>
+                    <li><strong>3. Code Mirror:</strong> Reconstruct a specific numbered checklist from scratch.</li>
+                </ul>
+            </div>
+
+            <div style="max-width:380px; margin:0 auto;">
+                <input type="text" id="student-name" class="name-input" placeholder="Enter Cataloger Name">
+                <button class="go-btn" id="btn-start">Start Recovery <i class="bi bi-lightning-charge ms-2"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════ CHALLENGE ═══════════ -->
+    <div id="challenge-screen" class="screen">
+        <div class="challenge-wrap">
+
+            <div class="top-bar">
+                <div class="segment-tabs">
+                    <button class="seg-tab active" data-target="sort" id="tab-sort">
+                        <i class="bi bi-trash3 main-icon"></i><i class="bi bi-check-circle-fill done-icon"></i> Sorting Bin
+                    </button>
+                    <button class="seg-tab" data-target="bug" id="tab-bug">
+                        <i class="bi bi-bug main-icon"></i><i class="bi bi-check-circle-fill done-icon"></i> Bug Squasher
+                    </button>
+                    <button class="seg-tab" data-target="mirror" id="tab-mirror">
+                        <i class="bi bi-symmetry-vertical main-icon"></i><i class="bi bi-check-circle-fill done-icon"></i> Code Mirror
+                    </button>
+                </div>
+                <div id="countdown"><i class="bi bi-stopwatch"></i> 03:00</div>
+            </div>
+
+            <!-- ── SEGMENT 1: SORTING BIN ── -->
+            <div class="segment active" id="seg-sort">
+                <div class="panel p-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-trash3 text-teal me-2"></i>Task 1: The Sorting Bin</h5>
+                    <p class="text-dim mb-4">Drag each snippet into the correct bin. Does it follow proper HTML list rules?</p>
+                    
+                    <div class="chip-container" id="chip-container">
+                        <!-- Chips injected via JS -->
+                    </div>
+
+                    <div class="bins-wrap mt-4">
+                        <div class="bin good" id="bin-good" data-type="good">
+                            <i class="bi bi-check-circle text-green fs-1"></i>
+                            <div class="bin-title">Valid Structure</div>
+                            <div class="bin-items" id="items-good" style="width:100%; display:flex; flex-direction:column; gap:8px;"></div>
+                        </div>
+                        <div class="bin bad" id="bin-bad" data-type="bad">
+                            <i class="bi bi-x-octagon text-red fs-1"></i>
+                            <div class="bin-title">Corrupted Code</div>
+                            <div class="bin-items" id="items-bad" style="width:100%; display:flex; flex-direction:column; gap:8px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <button class="action-btn" id="btn-next-bug" disabled>Next Task <i class="bi bi-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SEGMENT 2: BUG SQUASHER ── -->
+            <div class="segment" id="seg-bug">
+                <div class="panel p-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-bug text-teal me-2"></i>Task 2: Bug Squasher</h5>
+                    
+                    <div class="bug-layout">
+                        <div class="bug-instructions">
+                            <p class="text-dim mb-3">A description list defining two drinks has been mangled. The tags are crossed and improperly closed.</p>
+                            <div class="p-3 bg-light border rounded font-monospace small mb-3">
+                                Expected Output:<br>
+                                <strong>Coffee</strong><br>
+                                &nbsp;&nbsp;Black hot drink<br>
+                                <strong>Milk</strong><br>
+                                &nbsp;&nbsp;White cold drink
+                            </div>
+                            <p class="mb-0 fw-bold text-ink">Fix the HTML code in the editor to proceed.</p>
+                        </div>
+                        <div class="bug-editor-wrap d-flex flex-column">
+                            <div class="d-flex gap-2 mb-3">
+                                <div style="width:12px;height:12px;border-radius:50%;background:#ef4444;"></div>
+                                <div style="width:12px;height:12px;border-radius:50%;background:#f59e0b;"></div>
+                                <div style="width:12px;height:12px;border-radius:50%;background:#10b981;"></div>
+                            </div>
+                            <!-- Broken code initialized here -->
+                            <textarea id="bug-ta" class="bug-ta" spellcheck="false">&lt;dl&gt;&#10;  &lt;dt&gt;Coffee&lt;dd&gt;Black hot drink&lt;/dt&gt;&lt;/dd&gt;&#10;  &lt;dt&gt;Milk&lt;/dd&gt;&#10;  &lt;dd&gt;White cold drink&lt;/dt&gt;&#10;&lt;/dl&gt;</textarea>
+                            
+                            <div class="mt-auto pt-3 text-end">
+                                <span id="bug-feedback" class="me-3 fw-bold"></span>
+                                <button class="action-btn mt-0" id="btn-check-bug">Run Diagnostics</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-end border-top pt-3 mt-4">
+                        <button class="action-btn" id="btn-next-mirror" disabled>Next Task <i class="bi bi-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SEGMENT 3: CODE MIRROR ── -->
+            <div class="segment" id="seg-mirror">
+                <div class="panel p-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-symmetry-vertical text-teal me-2"></i>Task 3: Code Mirror</h5>
+                    <p class="text-dim mb-4">Replicate the target output perfectly. Use HTML ordered list attributes to match the numbering.</p>
+
+                    <div class="mirror-layout">
+                        <div class="mirror-target">
+                            <h6 class="fw-bold text-uppercase text-dim small mb-3">Target Output</h6>
+                            <div class="mirror-target-box">
+                                <ol start="5">
+                                    <li>Prepare data</li>
+                                    <li>Sort lists</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="mirror-editor">
+                            <h6 class="fw-bold text-uppercase text-dim small mb-3" style="color:#94a3b8!important;">Your Code</h6>
+                            <textarea id="mirror-ta" class="mirror-ta" spellcheck="false" placeholder="<!-- Write your list code here -->"></textarea>
+                            <div class="live-preview-box" id="mirror-preview">
+                                <span style="color:var(--text-dim); font-style:italic; font-size:0.85rem;">Live render...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-end border-top pt-3 mt-4">
+                        <span id="mirror-feedback" class="me-3 fw-bold"></span>
+                        <button class="action-btn" id="btn-finish" disabled>Save Catalog <i class="bi bi-cloud-check"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══════════ RESULT ═══════════ -->
+    <div id="result-screen" class="screen">
+        <div class="result-shell">
+            <div style="font-size:4.5rem;margin-bottom:12px;" id="result-emoji">✨</div>
+            <div style="font-family:'Playfair Display',serif; font-weight:900; font-size:2.8rem; color:var(--ink); margin-bottom:8px;" id="result-title"></div>
+            <p style="color:var(--text-dim);font-size:1.1rem;margin-bottom:40px;" id="result-sub"></p>
+
+            <div class="row g-3 justify-content-center mb-5">
+                <div class="col-6 col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Tasks Completed</div>
+                        <div class="stat-val" id="stat-tasks" style="color:var(--teal);">0/3</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Time Left</div>
+                        <div class="stat-val" id="stat-time" style="color:var(--blue);">0s</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Final Score</div>
+                        <div class="stat-val" id="stat-score" style="color:var(--ink);">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <button class="action-btn mt-0" style="background:#fff; color:var(--ink); border:2px solid var(--border);" onclick="location.reload()">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i> Retry
+                </button>
+                <button class="action-btn mt-0" id="btn-save" onclick="submitScore()">
+                    <i class="bi bi-cloud-upload me-2"></i> Publish Record
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // ─── STATE ───
+    let timeLeft = 180; // 3 minutes
+    let timerInterval;
+    let studentName = '';
+    let finalScore = 0;
+    
+    let task1Done = false;
+    let task2Done = false;
+    let task3Done = false;
+
+    // ─── INIT ───
+    document.getElementById('btn-exit')?.addEventListener('click', () => history.back());
+    document.getElementById('student-name')?.addEventListener('keypress', e => { if (e.key === 'Enter') startApp(); });
+    document.getElementById('btn-start')?.addEventListener('click', startApp);
+
+    document.querySelectorAll('.seg-tab').forEach(t => t.addEventListener('click', e => switchTab(e.currentTarget.dataset.target)));
+    
+    document.getElementById('btn-next-bug')?.addEventListener('click', () => switchTab('bug'));
+    document.getElementById('btn-next-mirror')?.addEventListener('click', () => switchTab('mirror'));
+    document.getElementById('btn-finish')?.addEventListener('click', finishApp);
+
+    function startApp() {
+        const n = document.getElementById('student-name').value.trim();
+        if(!n) return alert('Name required.');
+        studentName = n;
+        document.getElementById('login-screen').classList.remove('active');
+        document.getElementById('challenge-screen').classList.add('active');
+        initSortingBin();
+        startTimer();
+    }
+
+    function startTimer() {
+        updateClock();
+        timerInterval = setInterval(() => {
+            if (--timeLeft <= 0) { clearInterval(timerInterval); endGame(false); }
+            updateClock();
+        }, 1000);
+    }
+
+    function updateClock() {
+        const m = String(Math.floor(timeLeft/60)).padStart(2,'0');
+        const s = String(timeLeft%60).padStart(2,'0');
+        const el = document.getElementById('countdown');
+        el.innerHTML = `<i class="bi bi-stopwatch"></i> ${m}:${s}`;
+        el.className = timeLeft <= 30 ? 'warn' : '';
+    }
+
+    function switchTab(name) {
+        document.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
+        document.getElementById(`seg-${name}`).classList.add('active');
+        document.querySelectorAll('.seg-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(`tab-${name}`).classList.add('active');
+    }
+
+    // ─── TASK 1: SORTING BIN ───
+    const chipsData = [
+        { text: '&lt;ol&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ol&gt;', type: 'good' },
+        { text: '&lt;ul&gt;&lt;p&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/p&gt;&lt;/ul&gt;', type: 'bad' },
+        { text: '&lt;dl&gt;&lt;dt&gt;A&lt;/dt&gt;&lt;dd&gt;B&lt;/dd&gt;&lt;/dl&gt;', type: 'good' },
+        { text: '&lt;ol type="A"&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ol&gt;', type: 'good' },
+        { text: '&lt;list&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/list&gt;', type: 'bad' },
+        { text: '&lt;ul&gt;&lt;ul&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ul&gt;&lt;/ul&gt;', type: 'bad' } // Invalid nesting directly
+    ];
+
+    let sortedCount = 0;
+
+    function initSortingBin() {
+        const container = document.getElementById('chip-container');
+        chipsData.sort(() => Math.random() - 0.5).forEach((c, i) => {
+            const el = document.createElement('div');
+            el.className = 'sort-chip';
+            el.innerHTML = c.text;
+            el.draggable = true;
+            el.dataset.type = c.type;
+            el.id = 'chip-' + i;
+            
+            el.addEventListener('dragstart', e => {
+                el.classList.add('dragging');
+                e.dataTransfer.setData('text/plain', el.id);
+            });
+            el.addEventListener('dragend', () => el.classList.remove('dragging'));
+            container.appendChild(el);
+        });
+
+        document.querySelectorAll('.bin').forEach(bin => {
+            bin.addEventListener('dragover', e => { e.preventDefault(); bin.classList.add('over'); });
+            bin.addEventListener('dragleave', () => bin.classList.remove('over'));
+            bin.addEventListener('drop', handleDrop);
+        });
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        const bin = e.currentTarget;
+        bin.classList.remove('over');
+        
+        const chipId = e.dataTransfer.getData('text/plain');
+        const chip = document.getElementById(chipId);
+        if(!chip) return;
+
+        if (chip.dataset.type === bin.dataset.type) {
+            chip.remove();
+            const sorted = document.createElement('div');
+            sorted.className = 'sorted-item';
+            sorted.innerHTML = chip.innerHTML;
+            bin.querySelector('.bin-items').appendChild(sorted);
+            
+            sortedCount++;
+            if (sortedCount === chipsData.length) {
+                task1Done = true;
+                document.getElementById('tab-sort').classList.add('completed');
+                document.getElementById('btn-next-bug').disabled = false;
+            }
+        } else {
+            chip.style.borderColor = 'var(--red)';
+            chip.style.animation = 'shake 0.4s';
+            setTimeout(() => { chip.style.borderColor = 'var(--border)'; chip.style.animation = ''; }, 500);
+        }
+    }
+
+    // ─── TASK 2: BUG SQUASHER ───
+    document.getElementById('btn-check-bug').addEventListener('click', () => {
+        if(task2Done) return;
+        const ta = document.getElementById('bug-ta');
+        const fb = document.getElementById('bug-feedback');
+        
+        const raw = ta.value;
+        const clean = raw.toLowerCase().replace(/\s+/g, '');
+        
+        const expected = "<dl><dt>coffee</dt><dd>blackhotdrink</dd><dt>milk</dt><dd>whitecolddrink</dd></dl>";
+
+        if (clean === expected) {
+            task2Done = true;
+            ta.classList.add('success');
+            fb.innerHTML = '<span class="text-green">✓ Syntax repaired!</span>';
+            document.getElementById('tab-bug').classList.add('completed');
+            document.getElementById('btn-check-bug').disabled = true;
+            document.getElementById('btn-next-mirror').disabled = false;
+        } else {
+            ta.classList.add('error');
+            fb.innerHTML = '<span class="text-red">✗ Tags still mismatched.</span>';
+            setTimeout(() => ta.classList.remove('error'), 500);
+        }
+    });
+
+    // ─── TASK 3: CODE MIRROR ───
+    const mirrorTa = document.getElementById('mirror-ta');
+    const mirrorPreview = document.getElementById('mirror-preview');
+    const mirrorFb = document.getElementById('mirror-feedback');
+    const btnFinish = document.getElementById('btn-finish');
+
+    mirrorTa.addEventListener('input', () => {
+        if(task3Done) return;
+        const raw = mirrorTa.value;
+        mirrorPreview.innerHTML = raw.trim() === '' ? '<span style="color:var(--text-dim); font-style:italic;">Live render...</span>' : raw;
+
+        const clean = raw.toLowerCase().replace(/\s+/g, '');
+        // Require <ol start="5"> and exactly those two list items.
+        // Also accept single quotes or spaces around the 5.
+        const hasStart5 = clean.includes('<olstart="5">') || clean.includes("<olstart='5'>");
+        const hasItems = clean.includes('<li>preparedata</li>') && clean.includes('<li>sortlists</li>');
+        const isClosed = clean.includes('</ol>');
+
+        if (hasStart5 && hasItems && isClosed) {
+            task3Done = true;
+            mirrorFb.innerHTML = '<span class="text-green">✓ Perfect mirror match!</span>';
+            mirrorTa.style.borderColor = 'var(--green)';
+            document.getElementById('tab-mirror').classList.add('completed');
+            btnFinish.disabled = false;
+        } else {
+            mirrorFb.innerHTML = '';
+        }
+    });
+
+    // ─── FINISH APP ───
+    function finishApp() {
+        if (task1Done && task2Done && task3Done) {
+            clearInterval(timerInterval);
+            endGame(true);
+        }
+    }
+
+    function endGame(won) {
+        document.getElementById('challenge-screen').classList.remove('active');
+        document.getElementById('result-screen').classList.add('active');
+
+        let tasksDone = (task1Done?1:0) + (task2Done?1:0) + (task3Done?1:0);
+        finalScore = (tasksDone * 100) + (won ? timeLeft * 5 : 0);
+
+        document.getElementById('result-emoji').textContent = won ? '🏆' : '⚠️';
+        document.getElementById('result-title').textContent = won ? 'Catalog Restored!' : 'Recovery Failed';
+        document.getElementById('result-sub').textContent = won 
+            ? `Excellent sorting, ${studentName}. The index is intact.`
+            : `Time expired, ${studentName}. Tasks completed: ${tasksDone}/3.`;
+
+        document.getElementById('stat-tasks').textContent = `${tasksDone}/3`;
+        document.getElementById('stat-time').textContent = won ? `+${timeLeft}s` : '0s';
+        document.getElementById('stat-score').textContent = finalScore;
+
+        if (finalScore === 0) document.getElementById('btn-save').disabled = true;
+    }
+
+    window.submitScore = function() {
+        const btn = document.getElementById('btn-save');
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Publishing...`;
+        btn.disabled = true;
+
+        if (typeof GOOGLE_SCRIPT_URL === 'undefined') {
+            setTimeout(() => {
+                btn.innerHTML = `<i class="bi bi-check-circle me-2"></i> Published!`;
+                btn.style.background = 'var(--green)';
+            }, 800);
+            return;
+        }
+
+        fetch(GOOGLE_SCRIPT_URL1, {
+            method: 'POST',
+            body: JSON.stringify({ 
+                name: studentName, 
+                score: finalScore, 
+                total: 'HTML LISTS CHALLENGE', 
+                timestamp: new Date().toLocaleString() 
+            }),
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+        }).then(() => {
+            btn.innerHTML = `<i class="bi bi-check-circle me-2"></i> Published!`;
+            btn.style.background = 'var(--green)';
+        }).catch(() => {
+            alert('Transmission error.');
+            btn.innerHTML = `<i class="bi bi-cloud-upload me-2"></i> Publish Record`;
+            btn.disabled = false;
+        });
+    };
+});
+</script>
+<script src="/js/config.js"></script>
+</body>
+</html>

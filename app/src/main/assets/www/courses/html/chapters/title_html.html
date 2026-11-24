@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Titles · The Archivist's Index</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ink:        #1a1209;
+            --ink-mid:    #4a3f35;
+            --ink-light:  #8c7b6e;
+            --canvas:     #fafaf8;
+            --canvas-warm:#f5f0e8;
+            --border:     #e8e0d4;
+            --accent-red: #c0392b;
+            --accent-blue:#1a5276;
+            --accent-gold:#d4a017;
+            --accent-green:#27ae60;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            background-color: var(--canvas);
+            font-family: 'DM Sans', system-ui, sans-serif;
+            color: var(--ink);
+            line-height: 1.7;
+        }
+
+        /* ── SECTION NUMBERING ── */
+        .sec-num {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 0.7rem;
+            font-style: italic;
+            letter-spacing: 0.15em;
+            color: var(--ink-light);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .sec-num::after { content:''; flex:1; height:1px; background:var(--border); }
+
+        .sec-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(1.5rem, 3vw, 2.1rem);
+            color: var(--ink);
+            margin-bottom: 14px;
+            line-height: 1.25;
+        }
+
+        .sec-body {
+            font-size: 1.05rem;
+            color: var(--ink-mid);
+            max-width: 720px;
+        }
+
+        section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+        section:last-of-type { border-bottom: none; }
+
+        /* ── HERO ── */
+        .hero {
+            background: var(--ink);
+            color: #fff;
+            padding: 80px 40px;
+            border-radius: 20px;
+            margin-bottom: 64px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-palette {
+            position: absolute;
+            right: 0; top: 0; bottom: 0;
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding-right: 20px;
+            gap: 8px;
+        }
+        .hero-tab {
+            background: rgba(255,255,255,0.1);
+            padding: 12px 16px;
+            border-radius: 12px 12px 0 0;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.8);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-bottom: none;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.2);
+            transform: translateY(10px);
+        }
+        .hero-tab:nth-child(1) { opacity: 0.4; }
+        .hero-tab:nth-child(2) { opacity: 0.7; transform: translateY(5px); }
+        .hero-tab:nth-child(3) { opacity: 1; background: rgba(255,255,255,0.2); color: #fff; transform: translateY(0); }
+
+        .hero-badge {
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            padding: 4px 14px;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            font-family: 'DM Mono', monospace;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero-sub { font-size: 1.1rem; color: rgba(255,255,255,0.65); max-width: 560px; }
+
+        /* ── CODE BLOCKS ── */
+        .code-block {
+            background: var(--ink);
+            border-radius: 12px;
+            overflow: hidden;
+            font-family: 'DM Mono', monospace;
+        }
+        .code-block-head {
+            background: #2c2417;
+            padding: 10px 18px;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .code-block pre {
+            margin: 0;
+            padding: 20px 18px;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #e8dcc8;
+        }
+        .code-block code .cm-tag   { color: #e06c75; }
+        .code-block code .cm-attr  { color: #61afef; }
+        .code-block code .cm-val   { color: #98c379; }
+        .code-block code .cm-text  { color: #e8dcc8; }
+        .code-block code .cm-cmt   { color: #676f7d; font-style: italic; }
+
+        /* ── PREVIEW CARD ── */
+        .preview-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .preview-card-head {
+            background: var(--canvas-warm);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 18px;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            color: var(--ink-light);
+            text-transform: uppercase;
+            font-family: 'DM Mono', monospace;
+        }
+        .preview-card-body { padding: 24px 20px; }
+
+        /* ── MOCK BROWSER TAB ── */
+        .mock-browser {
+            background: #dfe1e5;
+            border-radius: 8px 8px 0 0;
+            padding: 8px 8px 0 8px;
+            display: flex;
+            align-items: flex-end;
+            border: 1px solid #c9cccf;
+            border-bottom: none;
+        }
+        .mock-tab {
+            background: #fff;
+            border-radius: 8px 8px 0 0;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-family: sans-serif;
+            color: #3c4043;
+            min-width: 200px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .mock-tab-icon { width: 16px; height: 16px; background: var(--accent-blue); border-radius: 50%; display:inline-block; }
+        
+        .mock-serp {
+            background: #fff;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-family: arial, sans-serif;
+        }
+        .mock-serp .url { font-size: 0.85rem; color: #202124; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;}
+        .mock-serp .url i { color: var(--ink-light); }
+        .mock-serp .title { font-size: 1.25rem; color: #1a0dab; text-decoration: none; display: inline-block; margin-bottom: 4px; }
+        .mock-serp .title:hover { text-decoration: underline; cursor: pointer; }
+        .mock-serp .desc { font-size: 0.85rem; color: #4d5156; line-height: 1.5; }
+
+        /* ── LOCATION CARDS ── */
+        .loc-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            height: 100%;
+            transition: box-shadow 0.2s;
+        }
+        .loc-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+        .loc-icon {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            background: var(--canvas-warm);
+            color: var(--accent-blue);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+        .loc-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        .loc-card p { font-size: 0.95rem; color: var(--ink-light); margin: 0; }
+
+        /* ── LIVE INSPECTOR ── */
+        .mixer-shell {
+            background: var(--ink);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+        }
+        .mixer-head {
+            background: #2c2417;
+            padding: 16px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .mixer-title {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: rgba(255,255,255,0.8);
+            font-size: 1rem;
+        }
+        .mixer-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.35);
+            text-transform: uppercase;
+        }
+        .mixer-body { padding: 32px 28px; }
+        
+        .title-input-wrap { margin-bottom: 24px; }
+        .title-label {
+            display: flex; justify-content: space-between;
+            font-family: 'DM Mono', monospace; font-size: 0.75rem;
+            color: rgba(255,255,255,0.5); margin-bottom: 8px;
+        }
+        .mixer-input {
+            width: 100%;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.1rem;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .mixer-input:focus { border-color: rgba(255,255,255,0.35); }
+        
+        .preview-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        @media(min-width: 768px){ .preview-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .dark-mock-box {
+            background: #202124;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .dark-mock-lbl {
+            font-family: 'DM Mono', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.3);
+            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;
+        }
+
+        /* ── ALERT VARIANTS ── */
+        .tip-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .tip-box-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+        .tip-box-body { flex: 1; }
+        .tip-box-body strong { display: block; margin-bottom: 4px; }
+        .tip-info   { background: #e8f4fd; border: 1px solid #b8d9f0; }
+        .tip-warn   { background: #fef9e7; border: 1px solid #f7dc6f; }
+        .tip-danger { background: #fdf2f2; border: 1px solid #f5c6c6; }
+        .tip-ok     { background: #eafaf1; border: 1px solid #a9dfbf; }
+
+        /* ── SUMMARY ── */
+        .summary-shell {
+            background: linear-gradient(135deg, #1a1209 0%, #2c1f10 100%);
+            border-radius: 20px;
+            padding: 56px 40px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .summary-shell::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                rgba(212,160,23,0.1) 0%,
+                rgba(26,82,118,0.15) 100%);
+        }
+        .summary-shell > * { position: relative; z-index: 1; }
+        .summary-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 8px;
+        }
+        .summary-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .summary-item:last-child { border-bottom: none; }
+        .summary-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            margin-top: 7px;
+            flex-shrink: 0;
+            background: var(--accent-gold);
+        }
+        .summary-item p { margin: 0; color: rgba(255,255,255,0.75); font-size: 0.98rem; }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity:0; transform:translateY(18px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        .animation-fade-in { animation: fadeUp 0.6s ease-out; }
+
+        @media (max-width: 768px) {
+            .hero-palette { display: none; }
+            .hero { padding: 48px 28px; }
+            .summary-shell { padding: 40px 24px; }
+        }
+    </style>
+
+<link rel="stylesheet" href="../../../css/fosfle-lesson-bridge.css" />
+<script src="../../../js/fosfle-lesson-bridge.js"></script>
+</head>
+<body class="py-4 px-3 px-md-4">
+<div class="container animation-fade-in" style="max-width:960px;">
+
+    <!-- ═══ HERO ═══ -->
+    <div class="hero mb-5">
+        <div class="hero-palette" aria-hidden="true">
+            <div class="hero-tab"><i class="bi bi-box-seam"></i> Archives</div>
+            <div class="hero-tab"><i class="bi bi-clock-history"></i> History</div>
+            <div class="hero-tab"><i class="bi bi-gem"></i> The Exhibition</div>
+        </div>
+        <div style="position:relative;z-index:1;">
+            <div class="hero-badge">Module 1 · Chapter 17 · HTML Titles</div>
+            <h1 class="hero-title">The Archivist's<br>Index</h1>
+            <p class="hero-sub">
+                Every webpage needs a name. Learn how the HTML <code>&lt;title&gt;</code> tag shapes your site's identity across browser tabs, bookmarks, and search engine results.
+            </p>
+        </div>
+    </div>
+
+    <!-- ═══ 1. WHAT IS A TITLE ═══ -->
+    <section>
+        <div class="sec-num">Section 01</div>
+        <h2 class="sec-title">What is a Page Title?</h2>
+        <p class="sec-body mb-4">
+            The HTML <code>&lt;title&gt;</code> tag defines the official title of the document. Unlike heading tags (like <code>&lt;h1&gt;</code>) which show up on the page itself, the <code>&lt;title&gt;</code> is meant for the browser and search engines. It must always be placed inside the <code>&lt;head&gt;</code> section.
+        </p>
+
+        <div class="row g-3 mb-4">
+            <div class="col-lg-6">
+                <div class="code-block h-100">
+                    <div class="code-block-head"><span>Example</span><span>HTML</span></div>
+                    <pre><code><span class="cm-tag">&lt;!DOCTYPE html&gt;</span>
+<span class="cm-tag">&lt;html&gt;</span>
+<span class="cm-tag">&lt;head&gt;</span>
+  <span class="cm-cmt">&lt;!-- The title goes here --&gt;</span>
+  <span class="cm-tag">&lt;title&gt;</span><span class="cm-text">My Gallery Portfolio</span><span class="cm-tag">&lt;/title&gt;</span>
+<span class="cm-tag">&lt;/head&gt;</span>
+<span class="cm-tag">&lt;body&gt;</span>
+  <span class="cm-tag">&lt;h1&gt;</span><span class="cm-text">Welcome to my art page!</span><span class="cm-tag">&lt;/h1&gt;</span>
+<span class="cm-tag">&lt;/body&gt;</span>
+<span class="cm-tag">&lt;/html&gt;</span></code></pre>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="preview-card h-100 d-flex flex-column">
+                    <div class="preview-card-head">Browser Output</div>
+                    <div class="preview-card-body flex-grow-1" style="background:#f1f3f4; padding:0;">
+                        <!-- Mock browser top bar -->
+                        <div class="mock-browser">
+                            <div class="mock-tab">
+                                <span class="mock-tab-icon"></span>
+                                My Gallery Portfolio
+                            </div>
+                        </div>
+                        <div style="background:#fff; height:100%; padding:20px; font-family:serif;">
+                            <h1>Welcome to my art page!</h1>
+                            <p style="color:#666;">The title tag isn't visible here in the body.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 2. WHERE TITLES APPEAR ═══ -->
+    <section>
+        <div class="sec-num">Section 02</div>
+        <h2 class="sec-title">Where Do Titles Appear?</h2>
+        <p class="sec-body mb-4">
+            Since the title doesn't show up on the main page canvas, you might wonder why it's so important. The title is actually one of the most widely viewed elements of your website.
+        </p>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="loc-card">
+                    <div class="loc-icon"><i class="bi bi-window-stack"></i></div>
+                    <h4>Browser Tabs</h4>
+                    <p>It's the text that appears on the tab at the top of your web browser, helping users find your site when they have many tabs open.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="loc-card">
+                    <div class="loc-icon"><i class="bi bi-google"></i></div>
+                    <h4>Search Engines</h4>
+                    <p>Google and Bing use the title tag as the large, clickable blue link in search engine results pages (SERPs).</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="loc-card">
+                    <div class="loc-icon"><i class="bi bi-bookmark-star"></i></div>
+                    <h4>Bookmarks &amp; Shares</h4>
+                    <p>When a user bookmarks your site or shares the link on social media, the title tag is automatically used as the default name.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 3. LIVE INSPECTOR ═══ -->
+    <section>
+        <div class="sec-num">Section 03 · Interactive</div>
+        <h2 class="sec-title">Live Title Inspector</h2>
+        <p class="sec-body mb-5">
+            Test how your title will look in the wild. Type a title below to see it update live in a simulated browser tab and Google search result. Pay attention to the character counter!
+        </p>
+
+        <div class="mixer-shell">
+            <div class="mixer-head">
+                <span class="mixer-title">Title Tag Simulator</span>
+                <span class="mixer-badge">Interactive Demo</span>
+            </div>
+            <div class="mixer-body">
+                
+                <div class="title-input-wrap">
+                    <div class="title-label">
+                        <span><code>&lt;title&gt;</code> text</span>
+                        <span id="char-count" style="color:var(--accent-green);">33/60 chars</span>
+                    </div>
+                    <input type="text" id="title-input" class="mixer-input" value="HTML Colors · The Painter's Studio" oninput="updatePreviews()">
+                </div>
+
+                <div class="preview-grid">
+                    <!-- Browser Tab Mock -->
+                    <div class="dark-mock-box">
+                        <div class="dark-mock-lbl">Simulated Browser Tab</div>
+                        <div class="mock-browser" style="background:#292a2d; border-color:#3c4043;">
+                            <div class="mock-tab" style="background:#323639; color:#f1f3f4; border-bottom:none;">
+                                <i class="bi bi-palette-fill" style="color:#8ab4f8; font-size:14px;"></i>
+                                <span id="live-tab-text" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px;">HTML Colors · The Painter's Studio</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SERP Mock -->
+                    <div class="dark-mock-box">
+                        <div class="dark-mock-lbl">Simulated Search Result</div>
+                        <div class="mock-serp" style="background:#202124; border:none; padding:10px;">
+                            <div class="url" style="color:#bdc1c6;">
+                                <div style="width:24px;height:24px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#000;font-size:12px;"><i class="bi bi-globe2"></i></div>
+                                <div>
+                                    <span style="display:block;font-size:14px;color:#dadce0;">The Curator's Gallery</span>
+                                    <span style="display:block;font-size:12px;">https://www.curatorsgallery.com</span>
+                                </div>
+                            </div>
+                            <div class="title" id="live-serp-title" style="color:#8ab4f8; font-size:20px; padding:6px 0;">HTML Colors · The Painter's Studio</div>
+                            <div class="desc" style="color:#bdc1c6; font-size:14px;">This is a simulated meta description. It appears below the title tag in search results to give users a summary of the webpage.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 4. BEST PRACTICES ═══ -->
+    <section>
+        <div class="sec-num">Section 04</div>
+        <h2 class="sec-title">Curation Guidelines</h2>
+        <div class="tip-box tip-ok mb-3">
+            <div class="tip-box-icon">📏</div>
+            <div class="tip-box-body">
+                <strong>Keep it around 50–60 characters</strong>
+                If your title is too long, search engines will cut it off with an ellipsis (...). Keep it concise and front-load the most important words.
+            </div>
+        </div>
+        <div class="tip-box tip-warn mb-3">
+            <div class="tip-box-icon">🏷️</div>
+            <div class="tip-box-body">
+                <strong>Use a consistent format</strong>
+                A common and effective format is: <code>Primary Keyword - Secondary Keyword | Brand Name</code>. For example: <code>Men's Running Shoes | Nike</code>.
+            </div>
+        </div>
+        <div class="tip-box tip-danger mb-3">
+            <div class="tip-box-icon">🚫</div>
+            <div class="tip-box-body">
+                <strong>Don't "Keyword Stuff"</strong>
+                Avoid titles like <code>Shoes, Buy Shoes, Cheap Shoes, Running Shoes</code>. Search engines might penalize your site, and it looks untrustworthy to users.
+            </div>
+        </div>
+        <div class="tip-box tip-info">
+            <div class="tip-box-icon">✨</div>
+            <div class="tip-box-body">
+                <strong>Make every page unique</strong>
+                Never use a generic title like "Home" or "Page 1". Every single HTML document on your website should have a distinct, descriptive title.
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ SUMMARY ═══ -->
+    <div class="summary-shell mb-5">
+        <div class="text-center mb-5">
+            <div class="summary-title">Chapter Summary</div>
+            <p style="color:rgba(255,255,255,0.5);font-style:italic;font-family:'DM Sans',sans-serif;">
+                Everything that stuck to the canvas
+            </p>
+        </div>
+        <div style="max-width:680px;margin:0 auto;">
+            <div class="summary-item">
+                <div class="summary-dot"></div>
+                <p>The <code>&lt;title&gt;</code> tag defines the title of an HTML document.</p>
+            </div>
+            <div class="summary-item">
+                <div class="summary-dot"></div>
+                <p>It must be placed exclusively inside the <code>&lt;head&gt;</code> section of your HTML.</p>
+            </div>
+            <div class="summary-item">
+                <div class="summary-dot"></div>
+                <p>The title is invisible on the webpage itself, but appears in <strong>browser tabs</strong>, <strong>search engine results</strong>, and <strong>bookmarks</strong>.</p>
+            </div>
+            <div class="summary-item">
+                <div class="summary-dot"></div>
+                <p>Titles are crucial for <strong>SEO (Search Engine Optimization)</strong> as they tell Google exactly what your page is about.</p>
+            </div>
+            <div class="summary-item">
+                <div class="summary-dot"></div>
+                <p>An ideal title is descriptive, unique to that specific page, and kept under 60 characters to prevent truncation.</p>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /container -->
+
+<script>
+// ─── TITLE SIMULATOR LOGIC ───
+function updatePreviews() {
+    const input = document.getElementById('title-input');
+    const tabText = document.getElementById('live-tab-text');
+    const serpTitle = document.getElementById('live-serp-title');
+    const charCount = document.getElementById('char-count');
+    
+    let text = input.value;
+    const len = text.length;
+
+    // Handle empty state gracefully
+    if (text.trim() === '') {
+        tabText.textContent = 'Untitled Document';
+        serpTitle.textContent = 'Untitled Document';
+    } else {
+        tabText.textContent = text;
+        serpTitle.textContent = text;
+    }
+    
+    // Update Character Count
+    charCount.textContent = `${len}/60 chars`;
+    
+    // Color coding based on length
+    if (len > 60) {
+        charCount.style.color = 'var(--accent-red)';
+    } else if (len > 40) {
+        charCount.style.color = 'var(--accent-gold)';
+    } else if (len > 0) {
+        charCount.style.color = 'var(--accent-green)';
+    } else {
+        charCount.style.color = 'rgba(255,255,255,0.4)';
+    }
+}
+
+// Initialize on load just in case
+document.addEventListener('DOMContentLoaded', updatePreviews);
+</script>
+
+</body>
+</html>

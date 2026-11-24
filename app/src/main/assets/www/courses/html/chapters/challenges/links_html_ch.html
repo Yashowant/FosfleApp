@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Links Challenge · The Wayfinder's Station</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ink: #0f172a;
+            --ink-dim: #334155;
+            --ink-light: #64748b;
+            --canvas: #f8fafc;
+            --canvas2: #f1f5f9;
+            --border: #e2e8f0;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0ea5e9;
+            --green: #059669;
+            --green-light: #d1fae5;
+            --yellow: #d97706;
+            --red: #e11d48;
+            --red-light: #ffe4e6;
+            --purple: #8b5cf6;
+            
+            --panel-bg: #ffffff;
+            --code-bg: #0f172a;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body {
+            overflow-x: hidden; /* Prevents mobile horizontal scrolling bugs */
+            max-width: 100%;
+        }
+
+        body {
+            background-color: var(--canvas);
+            background-image:
+                radial-gradient(circle at 15% 25%, rgba(37, 99, 235, 0.04) 0%, transparent 45%),
+                radial-gradient(circle at 85% 70%, rgba(14, 165, 233, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 50% 90%, rgba(5, 150, 105, 0.03) 0%, transparent 40%);
+            font-family: 'DM Sans', system-ui, sans-serif;
+            color: var(--ink);
+            min-height: 100vh;
+            padding: 40px 16px 60px;
+        }
+
+        /* Subtle grid background */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: linear-gradient(rgba(15, 23, 42, 0.02) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(15, 23, 42, 0.02) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none; z-index: 0;
+        }
+
+        .wrap { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; }
+
+        /* ─── SCREENS ─── */
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeUp 0.5s cubic-bezier(0.34,1.2,0.64,1); }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── EXIT BUTTON ─── */
+        .exit-btn {
+            background: #fff;
+            border: 1.5px solid var(--border);
+            color: var(--ink-dim);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            padding: 9px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            margin-bottom: 24px;
+        }
+        .exit-btn:hover { border-color: var(--ink-light); color: var(--ink); transform: translateX(-2px); }
+
+        /* ─── PANEL BASE ─── */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(15,23,42,0.02), 0 20px 40px rgba(15,23,42,0.06);
+            overflow: hidden;
+        }
+        .panel-head {
+            background: var(--canvas2);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: var(--ink-dim);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* ─── LOGIN CARD ─── */
+        .login-card {
+            padding: 56px 48px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Decorative Background Splashes */
+        .login-card::before {
+            content: ''; position: absolute;
+            width: 250px; height: 250px;
+            background: radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%);
+            top: -80px; right: -80px; pointer-events: none;
+        }
+        .login-card::after {
+            content: ''; position: absolute;
+            width: 150px; height: 150px;
+            background: radial-gradient(circle, rgba(14,165,233,0.06) 0%, transparent 70%);
+            bottom: -40px; left: -40px; pointer-events: none;
+        }
+
+        .studio-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 900;
+            color: var(--ink);
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .briefing-box {
+            background: rgba(37, 99, 235, 0.03);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            border-radius: 14px;
+            padding: 24px 32px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--ink-dim);
+            text-align: left;
+            margin: 32px auto;
+            max-width: 680px;
+        }
+        .briefing-box strong { color: var(--primary); }
+
+        .name-input {
+            background: var(--canvas);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            padding: 14px 20px;
+            width: 100%;
+            max-width: 380px;
+            transition: all 0.25s;
+            color: var(--ink);
+            margin-bottom: 16px;
+        }
+        .name-input:focus {
+            outline: none; border-color: var(--primary); background: #fff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .go-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none; color: #fff;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.3rem; font-weight: 700; font-style: italic;
+            padding: 14px 40px; border-radius: 12px;
+            width: 100%; max-width: 380px;
+            cursor: pointer; transition: all 0.25s; letter-spacing: 0.02em;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+        }
+        .go-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35); }
+
+        /* ─── CHALLENGE LAYOUT ─── */
+        .challenge-wrap { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+
+        /* TOP BAR */
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #fff; border: 1px solid var(--border);
+            border-radius: 14px; padding: 12px 24px;
+            box-shadow: 0 2px 10px rgba(15,23,42,0.02);
+        }
+
+        .segment-tabs {
+            display: flex; gap: 6px; background: var(--canvas2);
+            border-radius: 10px; padding: 6px;
+        }
+        .seg-tab {
+            font-family: 'DM Mono', monospace; font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 0.05em; padding: 8px 20px; border-radius: 6px;
+            border: none; cursor: pointer; transition: all 0.25s;
+            color: var(--ink-dim); background: transparent; text-transform: uppercase;
+        }
+        .seg-tab.active {
+            background: #fff; color: var(--primary);
+            box-shadow: 0 2px 8px rgba(15,23,42,0.05); border: 1px solid var(--border);
+        }
+
+        #countdown {
+            font-family: 'DM Mono', monospace; font-size: 1.25rem; font-weight: 600;
+            color: var(--primary); letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;
+        }
+        #countdown.warn { color: var(--red); animation: countBlink 0.8s infinite; }
+        @keyframes countBlink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+        .score-pill {
+            background: rgba(217, 119, 6, 0.1); border: 1px solid rgba(217, 119, 6, 0.3);
+            border-radius: 20px; padding: 6px 16px; font-family: 'DM Mono', monospace;
+            font-size: 0.75rem; color: var(--yellow); font-weight: 600; letter-spacing: 0.05em;
+        }
+
+        /* ─── SEGMENT A: DRAG & DROP ─── */
+        .segment { display: none; min-width: 0; }
+        .segment.active { display: block; animation: fadeUp 0.4s ease-out; }
+
+        .dnd-layout {
+            display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start;
+        }
+        @media (max-width: 800px) { .dnd-layout { grid-template-columns: 1fr; } }
+
+        /* TAG PALETTE */
+        .tag-palette { background: #fff; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+
+        .tag-chip {
+            padding: 14px 18px; margin: 10px; border-radius: 10px;
+            font-family: 'DM Mono', monospace; font-size: 0.9rem; font-weight: 600;
+            cursor: grab; border: 2px solid; transition: all 0.2s; user-select: none;
+            background: var(--canvas); text-align: center;
+        }
+        .tag-chip:active { cursor: grabbing; transform: scale(1.03); }
+        .tag-chip.dragging { opacity: 0.4; }
+        .tag-chip.used { opacity: 0.3; cursor: not-allowed; pointer-events: none; border-color: var(--border)!important; background: var(--canvas2)!important; color: var(--ink-light)!important; }
+
+        /* Property Colors */
+        .tag-chip[data-tag="href"]     { border-color: var(--primary); color: var(--primary); }
+        .tag-chip[data-tag="target"]   { border-color: var(--secondary); color: var(--secondary); }
+        .tag-chip[data-tag="_blank"]   { border-color: var(--purple); color: var(--purple); }
+        .tag-chip[data-tag="mailto:"]  { border-color: var(--red); color: var(--red); }
+        .tag-chip[data-tag="#"]        { border-color: var(--green); color: var(--green); }
+
+        /* DROP ZONES */
+        .drop-slots { display: flex; flex-direction: column; gap: 16px; min-width: 0;}
+
+        .drop-card {
+            background: #fff; border: 1px solid var(--border); border-radius: 16px;
+            padding: 20px 24px; display: grid; grid-template-columns: 1fr auto;
+            gap: 20px; align-items: center; transition: all 0.3s;
+            overflow-x: auto;
+        }
+        .drop-card.solved { border-color: rgba(5, 150, 105, 0.4); background: rgba(5, 150, 105, 0.03); }
+
+        .html-code {
+            font-family: 'DM Mono', monospace; font-size: 0.95rem; color: var(--ink);
+            background: var(--canvas2); padding: 16px 20px; border-radius: 10px;
+            border: 1px solid var(--border); display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+        }
+        .cm-tag { color: #f43f5e; font-weight: 600; }
+        .cm-attr { color: #38bdf8; font-weight: 600; }
+        .cm-val { color: #a3e635; font-weight: 600; }
+        .cm-text { color: var(--ink); }
+
+        .drop-zone {
+            min-width: 90px; height: 32px; border: 2px dashed rgba(37, 99, 235, 0.3);
+            border-radius: 6px; display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; color: var(--ink-light); transition: all 0.2s; background: #fff;
+            margin: 0 4px; vertical-align: middle; padding: 0 10px;
+        }
+        .drop-zone.over {
+            border-color: var(--primary); background: rgba(37, 99, 235, 0.08); color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.05);
+        }
+        .drop-zone.correct {
+            border-color: var(--green); background: rgba(5, 150, 105, 0.1); color: var(--green);
+            border-style: solid; font-weight: 600;
+        }
+        .drop-zone.wrong {
+            border-color: var(--red); background: rgba(225, 29, 72, 0.08);
+            animation: shake 0.4s ease;
+        }
+
+        .live-mini-preview {
+            width: 120px; height: 80px; border: 1px solid var(--border); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
+            background: var(--canvas); text-align: left; padding: 8px; overflow: hidden;
+            transition: all 0.4s; text-decoration: underline; color: var(--primary); font-weight: 500;
+        }
+        .live-mini-preview i { margin-left: 4px; font-size: 0.7rem; }
+
+        /* ─── SEGMENT B: CODE CHALLENGE ─── */
+        .code-layout {
+            display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start;
+        }
+        @media (max-width: 860px) { .code-layout { grid-template-columns: 1fr; } }
+
+        .editor-panel {
+            background: var(--code-bg); border-radius: 16px; overflow: hidden;
+            box-shadow: 0 8px 25px rgba(15,23,42,0.15); border: 1px solid #1e293b;
+        }
+        .editor-bar {
+            background: #1e293b; border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .dots { display: flex; gap: 6px; }
+        .dot2 { width: 12px; height: 12px; border-radius: 50%; }
+        
+        .code-ta {
+            width: 100%; min-height: 250px; background: transparent; border: none;
+            outline: none; resize: none; font-family: 'DM Mono', monospace; font-size: 0.95rem;
+            color: #f8fafc; padding: 20px; line-height: 1.7; caret-color: #38bdf8;
+        }
+        .code-ta::placeholder { color: rgba(255,255,255,0.3); }
+
+        /* LIVE RENDER */
+        .render-panel {
+            background: #fff; padding: 20px; min-height: 140px;
+            border-top: 1px solid #1e293b; position: relative;
+        }
+        .render-label {
+            position: absolute; top: 0; left: 0; background: var(--canvas2);
+            color: var(--ink-dim); font-family: 'DM Mono', monospace; font-size: 0.65rem;
+            padding: 4px 12px; border-bottom-right-radius: 8px; font-weight: 600;
+        }
+        
+        #live-render-container { margin-top: 16px; font-family: sans-serif; font-size: 1rem; color: var(--ink); }
+        #live-render-container a { color: var(--primary); text-decoration: underline; font-weight: 500; }
+
+        .editor-footer {
+            background: #1e293b; padding: 14px 20px; display: flex;
+            justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        #code-log { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: rgba(255,255,255,0.6); }
+
+        /* OBJECTIVES PANEL */
+        .obj-panel {
+            background: #fff; border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+        }
+        .obj-item {
+            padding: 16px; border-bottom: 1px solid var(--canvas2);
+            display: flex; align-items: center; gap: 14px; transition: all 0.3s;
+        }
+        .obj-item:last-child { border-bottom: none; }
+        .obj-icon {
+            width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center; font-size: 1rem;
+            flex-shrink: 0; background: var(--canvas); color: var(--ink-light); transition: all 0.3s;
+        }
+        .obj-item.done { background: rgba(5, 150, 105, 0.04); }
+        .obj-item.done .obj-icon {
+            border-color: var(--green); background: rgba(5, 150, 105, 0.1); color: var(--green);
+        }
+        .obj-text strong { display: block; font-size: 0.85rem; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+        .obj-text span { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--ink-dim); }
+
+        /* PROGRESS */
+        .prog-wrap { padding: 16px; background: var(--canvas2); border-top: 1px solid var(--border); }
+        .prog-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-family:'DM Mono',monospace; font-size:0.75rem; color:var(--ink-dim); font-weight:600;}
+        .prog-track { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+        .prog-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--green)); border-radius: 3px; transition: width 0.4s ease; width: 0%; }
+
+        /* ACTION BUTTONS */
+        .action-btn {
+            background: linear-gradient(135deg, var(--green), #047857); border: none;
+            color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+            padding: 10px 24px; border-radius: 10px; cursor: pointer; transition: all 0.3s;
+        }
+        .action-btn:disabled { background: var(--canvas2); color: var(--ink-light); cursor: not-allowed; }
+        .action-btn:not(:disabled):hover { box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3); transform: translateY(-1px); }
+
+        /* ─── PARTICLES ─── */
+        .confetti {
+            position: fixed; pointer-events: none; border-radius: 4px;
+            animation: fall 1s cubic-bezier(0.25, 1, 0.5, 1) forwards; z-index: 9999;
+        }
+        @keyframes fall { 0%{opacity:1;transform:scale(1) translate(0,0) rotate(0deg)} 100%{opacity:0;transform:scale(0.5) translate(var(--tx),var(--ty)) rotate(var(--rot))} }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+        /* ─── RESULT ─── */
+        .result-shell {
+            background: #fff; border: 1px solid var(--border); border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(15,23,42,0.05); padding: 56px 40px; text-align: center;
+        }
+        .result-headline { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(2rem, 5vw, 3.2rem); color: var(--ink); margin-bottom: 8px;}
+        .stat-card { background: var(--canvas); border: 1px solid var(--border); border-radius: 16px; padding: 20px 12px; }
+        .stat-lbl { font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.05em; color:var(--ink-dim); text-transform:uppercase; margin-bottom:6px; }
+        .stat-val { font-family:'Playfair Display',serif; font-weight:700; font-size:2.2rem; }
+
+        .r-btn { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.95rem; padding: 14px 32px; border-radius: 12px; cursor: pointer; transition: all 0.3s; border: 2px solid; }
+        .r-btn-out { background: transparent; border-color: var(--border); color: var(--ink); }
+        .r-btn-out:hover { border-color: var(--ink-dim); }
+        .r-btn-save { background: linear-gradient(135deg, var(--primary), var(--secondary)); border-color: transparent; color: #fff; }
+        .r-btn-save:hover { box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3); transform: translateY(-2px); }
+        .r-btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* TOAST */
+        .toast-msg {
+            position: fixed; bottom: 30px; right: 30px;
+            background: #fff; border: 1px solid var(--border);
+            border-radius: 12px; padding: 14px 20px;
+            font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; color: var(--ink);
+            box-shadow: 0 10px 30px rgba(15,23,42,0.1);
+            z-index: 9999; transform: translateY(80px); opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .toast-msg.show { transform: translateY(0); opacity: 1; }
+    </style>
+
+<link rel="stylesheet" href="../../../../css/fosfle-lesson-bridge.css" />
+<script src="../../../../js/fosfle-lesson-bridge.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <button class="exit-btn" id="btn-exit">
+            <i class="bi bi-arrow-left"></i> Exit Station
+        </button>
+        <span style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--ink-light);letter-spacing:0.05em;text-transform:uppercase;">
+            // The Wayfinder's Station · Navigation Assessment
+        </span>
+    </div>
+
+    <!-- ═══════════ LOGIN ═══════════ -->
+    <div id="login-screen" class="screen active">
+        <div class="panel login-card">
+            <div class="mb-3">
+                <i class="bi bi-map" style="font-size:3rem; color:var(--primary);"></i>
+            </div>
+            <div class="studio-title">Navigation Deck</div>
+            
+            <div class="briefing-box">
+                <strong>Project Brief:</strong><br>
+                Welcome to the Navigation Deck. A website without links is just an isolated island. You have <strong>4 minutes</strong> to establish secure connections between documents.
+                <br><br>
+                Your task is split into two parts:
+                <br>1. <strong>Assemble:</strong> Drag the correct attributes and values into the anchor tags to fix broken waypoints.
+                <br>2. <strong>Draft:</strong> Write custom HTML anchor code to meet the specific routing requirements.
+            </div>
+
+            <div style="max-width:380px; margin:0 auto;">
+                <input type="text" id="student-name" class="name-input" placeholder="Enter Your Navigator Name">
+                <button class="go-btn" id="btn-start">
+                    Initialize Systems <i class="bi bi-arrow-right ms-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════ CHALLENGE ═══════════ -->
+    <div id="challenge-screen" class="screen">
+        <div class="challenge-wrap">
+
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <div class="segment-tabs">
+                    <button class="seg-tab active" id="tab-dnd" data-target="dnd">
+                        <i class="bi bi-puzzle me-1"></i> Assemble
+                    </button>
+                    <button class="seg-tab" id="tab-code" data-target="code">
+                        <i class="bi bi-code-slash me-1"></i> Draft Routes
+                    </button>
+                </div>
+
+                <div id="countdown"><i class="bi bi-stopwatch"></i> 04:00</div>
+
+                <div class="score-pill">
+                    <i class="bi bi-star-fill me-1"></i> <span id="live-score">0</span> pts
+                </div>
+            </div>
+
+            <!-- ── SEGMENT A: DRAG & DROP ── -->
+            <div class="segment active" id="seg-dnd">
+                <div class="dnd-layout">
+
+                    <!-- TAG PALETTE -->
+                    <div class="tag-palette">
+                        <div class="panel-head">
+                            <span><i class="bi bi-tags me-2"></i>Parts</span>
+                            <span>DRAG →</span>
+                        </div>
+                        <div style="padding:10px;">
+                            <div draggable="true" class="tag-chip" data-tag="href">href</div>
+                            <div draggable="true" class="tag-chip" data-tag="target">target</div>
+                            <div draggable="true" class="tag-chip" data-tag="_blank">_blank</div>
+                            <div draggable="true" class="tag-chip" data-tag="mailto:">mailto:</div>
+                            <div draggable="true" class="tag-chip" data-tag="#">#</div>
+                        </div>
+                    </div>
+
+                    <!-- DROP SLOTS -->
+                    <div class="drop-slots">
+                        
+                        <!-- Item 1 -->
+                        <div class="drop-card" id="card-1">
+                            <div class="html-code">
+                                <span class="cm-tag">&lt;a</span> 
+                                <div class="drop-zone" id="dz-1" data-correct="href">
+                                    <span class="drop-placeholder">attribute</span>
+                                </div>
+                                <span class="cm-attr">="https://example.com"</span><span class="cm-tag">&gt;</span><span class="cm-text">Website</span><span class="cm-tag">&lt;/a&gt;</span>
+                            </div>
+                            <div class="live-mini-preview" id="prev-1">
+                                <span>Website</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="drop-card" id="card-2">
+                            <div class="html-code">
+                                <span class="cm-tag">&lt;a</span> <span class="cm-attr">href="https://google.com"</span>
+                                <div class="drop-zone" id="dz-2" data-correct="target">
+                                    <span class="drop-placeholder">attribute</span>
+                                </div>
+                                <span class="cm-attr">="_blank"</span><span class="cm-tag">&gt;</span><span class="cm-text">Google</span><span class="cm-tag">&lt;/a&gt;</span>
+                            </div>
+                            <div class="live-mini-preview" id="prev-2">
+                                <span>Google</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="drop-card" id="card-3">
+                            <div class="html-code">
+                                <span class="cm-tag">&lt;a</span> <span class="cm-attr">href="https://bing.com"</span> <span class="cm-attr">target="</span><div class="drop-zone" id="dz-3" data-correct="_blank">
+                                    <span class="drop-placeholder">value</span>
+                                </div><span class="cm-attr">"</span><span class="cm-tag">&gt;</span><span class="cm-text">Bing</span><span class="cm-tag">&lt;/a&gt;</span>
+                            </div>
+                            <div class="live-mini-preview" id="prev-3">
+                                <span>Bing</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div class="drop-card" id="card-4">
+                            <div class="html-code">
+                                <span class="cm-tag">&lt;a</span> <span class="cm-attr">href="</span><div class="drop-zone" id="dz-4" data-correct="mailto:">
+                                    <span class="drop-placeholder">prefix</span>
+                                </div><span class="cm-attr">contact@test.com"</span><span class="cm-tag">&gt;</span><span class="cm-text">Email</span><span class="cm-tag">&lt;/a&gt;</span>
+                            </div>
+                            <div class="live-mini-preview" id="prev-4">
+                                <span>Email</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 5 -->
+                        <div class="drop-card" id="card-5">
+                            <div class="html-code">
+                                <span class="cm-tag">&lt;a</span> <span class="cm-attr">href="</span><div class="drop-zone" id="dz-5" data-correct="#">
+                                    <span class="drop-placeholder">symbol</span>
+                                </div><span class="cm-attr">bottom"</span><span class="cm-tag">&gt;</span><span class="cm-text">Jump</span><span class="cm-tag">&lt;/a&gt;</span>
+                            </div>
+                            <div class="live-mini-preview" id="prev-5">
+                                <span>Jump</span>
+                            </div>
+                        </div>
+
+                        <div style="text-align:right; margin-top:8px;">
+                            <button class="action-btn" id="btn-next-code" disabled>
+                                Proceed to Drafting <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SEGMENT B: CODE CHALLENGE ── -->
+            <div class="segment" id="seg-code">
+                <div class="code-layout">
+
+                    <!-- EDITOR -->
+                    <div class="editor-panel">
+                        <div class="editor-bar">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="dots">
+                                    <div class="dot2" style="background:#f43f5e"></div>
+                                    <div class="dot2" style="background:#f59e0b"></div>
+                                    <div class="dot2" style="background:#10b981"></div>
+                                </div>
+                                <span style="font-family:'DM Mono',monospace;font-size:0.8rem;color:#fff;opacity:0.8;">index.html</span>
+                            </div>
+                        </div>
+
+                        <textarea id="code-ta" class="code-ta" spellcheck="false" placeholder="<!-- Write HTML anchor tags here -->&#10;<!-- Example: <a href='...'>Link</a> -->"></textarea>
+
+                        <div class="render-panel">
+                            <div class="render-label">LIVE HTML PREVIEW</div>
+                            <div id="live-render-container">
+                                <!-- Student's typed HTML will be injected here -->
+                            </div>
+                        </div>
+
+                        <div class="editor-footer">
+                            <span id="code-log">Waiting for valid HTML...</span>
+                            <button class="action-btn" id="btn-submit-code" disabled>
+                                Finalize Routes <i class="bi bi-check2-all ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- OBJECTIVES -->
+                    <div class="obj-panel">
+                        <div class="panel-head">
+                            <span><i class="bi bi-list-check me-2"></i>Route Goals</span>
+                            <span id="obj-count" style="color:var(--ink-dim)">0 / 4</span>
+                        </div>
+
+                        <div class="obj-item" id="obj-1">
+                            <div class="obj-icon"><i class="bi bi-circle"></i></div>
+                            <div class="obj-text">
+                                <strong>Search Link</strong>
+                                <span>Create a link to `https://google.com`</span>
+                            </div>
+                        </div>
+                        <div class="obj-item" id="obj-2">
+                            <div class="obj-icon"><i class="bi bi-circle"></i></div>
+                            <div class="obj-text">
+                                <strong>New Tab Behavior</strong>
+                                <span>Ensure a link opens in a new tab (`target`)</span>
+                            </div>
+                        </div>
+                        <div class="obj-item" id="obj-3">
+                            <div class="obj-icon"><i class="bi bi-circle"></i></div>
+                            <div class="obj-text">
+                                <strong>Contact Link</strong>
+                                <span>Create an email link to `hello@world.com`</span>
+                            </div>
+                        </div>
+                        <div class="obj-item" id="obj-4">
+                            <div class="obj-icon"><i class="bi bi-circle"></i></div>
+                            <div class="obj-text">
+                                <strong>Bookmark Link</strong>
+                                <span>Create a jump link to `#top`</span>
+                            </div>
+                        </div>
+
+                        <div class="prog-wrap">
+                            <div class="prog-row">
+                                <span>DRAFT PROGRESS</span>
+                                <span id="code-pct">0%</span>
+                            </div>
+                            <div class="prog-track">
+                                <div class="prog-fill" id="code-prog"></div>
+                            </div>
+                        </div>
+
+                        <div class="prog-wrap" style="border-top:1px solid var(--border)">
+                            <div class="prog-row">
+                                <span style="color:var(--primary)">TOTAL PROJECT</span>
+                                <span id="total-count" style="color:var(--primary)">0 / 9</span>
+                            </div>
+                            <div class="prog-track">
+                                <div class="prog-fill" id="total-prog" style="background:linear-gradient(90deg,var(--primary),var(--yellow))"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══════════ RESULT ═══════════ -->
+    <div id="result-screen" class="screen">
+        <div class="result-shell">
+            <div style="font-size:4.5rem;margin-bottom:12px;" id="result-emoji">✨</div>
+            <div class="result-headline" id="result-title"></div>
+            <p style="color:var(--ink-dim);font-size:1.1rem;margin-bottom:40px;font-style:italic;" id="result-sub"></p>
+
+            <div class="row g-3 justify-content-center mb-5">
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Assemble</div>
+                        <div class="stat-val" id="stat-dnd" style="color:var(--primary);">0/5</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Drafting</div>
+                        <div class="stat-val" id="stat-code" style="color:var(--yellow);">0/4</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Time Left</div>
+                        <div class="stat-val" id="stat-time" style="color:var(--green);">0s</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Final Score</div>
+                        <div class="stat-val" id="stat-score" style="color:var(--purple);">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <button class="r-btn r-btn-out" id="btn-retry">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i> Retake Test
+                </button>
+                <button class="r-btn r-btn-save" id="btn-save">
+                    <i class="bi bi-cloud-upload me-2"></i> Save Status
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast-msg" id="toast"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // ─── STATE ───
+    let timeLeft = 240, timerInterval, studentName = '';
+    let isDone = false, finalScore = 0;
+    let dndSolved = new Set();   // dz-1 … dz-5
+    let codeSolved = new Set();  // obj-1 … obj-4
+    let draggingTag = null;
+
+    // ─── INIT EVENT LISTENERS ───
+    document.getElementById('btn-exit')?.addEventListener('click', () => history.back());
+    document.getElementById('btn-start')?.addEventListener('click', startChallenge);
+    document.getElementById('btn-next-code')?.addEventListener('click', () => switchSeg('code'));
+    document.getElementById('btn-submit-code')?.addEventListener('click', finishChallenge);
+    document.getElementById('btn-retry')?.addEventListener('click', () => location.reload());
+    document.getElementById('btn-save')?.addEventListener('click', submitToGoogleSheets);
+    
+    document.getElementById('student-name')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') startChallenge();
+    });
+
+    document.querySelectorAll('.seg-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => switchSeg(e.currentTarget.dataset.target));
+    });
+
+    // ─── START ───
+    function startChallenge() {
+        const n = document.getElementById('student-name').value.trim();
+        if (!n) return showToast('Enter your name to initialize systems.', true);
+        studentName = n;
+        sw('login-screen', 'challenge-screen');
+        startTimer();
+    }
+
+    function startTimer() {
+        updateClock();
+        timerInterval = setInterval(() => {
+            if (--timeLeft <= 0) { clearInterval(timerInterval); endGame(false); }
+            updateClock();
+        }, 1000);
+    }
+
+    function updateClock() {
+        const m = String(Math.floor(timeLeft/60)).padStart(2,'0');
+        const s = String(timeLeft%60).padStart(2,'0');
+        const el = document.getElementById('countdown');
+        el.innerHTML = `<i class="bi bi-stopwatch me-1"></i>${m}:${s}`;
+        el.className = timeLeft <= 30 ? 'warn' : '';
+    }
+
+    // ─── SEGMENT SWITCH ───
+    function switchSeg(name) {
+        document.getElementById('seg-dnd').classList.toggle('active', name === 'dnd');
+        document.getElementById('seg-code').classList.toggle('active', name === 'code');
+        document.getElementById('tab-dnd').classList.toggle('active', name === 'dnd');
+        document.getElementById('tab-code').classList.toggle('active', name === 'code');
+        if (name === 'code') document.getElementById('code-ta').focus();
+    }
+
+    // ═══════════════════════════════
+    // ─── DRAG & DROP ENGINE ───
+    // ═══════════════════════════════
+    document.querySelectorAll('.tag-chip').forEach(chip => {
+        chip.addEventListener('dragstart', e => {
+            draggingTag = chip.dataset.tag;
+            chip.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', chip.dataset.tag);
+        });
+        chip.addEventListener('dragend', () => {
+            chip.classList.remove('dragging');
+        });
+    });
+
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            zone.classList.add('over');
+        });
+        zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+        zone.addEventListener('drop', (e) => handleDrop(e, zone));
+    });
+
+    function handleDrop(e, zone) {
+        e.preventDefault();
+        zone.classList.remove('over');
+        if (zone.classList.contains('correct')) return; // already solved
+
+        const dropped = e.dataTransfer.getData('text/plain') || draggingTag;
+        const correct = zone.dataset.correct;
+        const num = zone.id.split('-')[1];
+
+        if (dropped === correct) {
+            // CORRECT
+            zone.classList.add('correct');
+            zone.innerHTML = dropped; // Replace placeholder with actual property
+            const card = document.getElementById('card-'+num);
+            card.classList.add('solved');
+
+            // Apply visual styling to the live mini preview
+            applyMiniPreview(num);
+
+            // Mark chip as used
+            const chip = document.querySelector(`.tag-chip[data-tag="${dropped}"]`);
+            if (chip) chip.classList.add('used');
+
+            dndSolved.add(zone.id);
+            spawnConfetti(zone, ['#059669','#d4a017','#2563eb']);
+            showToast(`✓ Waypoint connected: ${dropped}`);
+            updateTotals();
+
+            if (dndSolved.size === 5) {
+                document.getElementById('btn-next-code').disabled = false;
+                showToast('🎉 Assembly complete! Move to Drafting Routes →');
+            }
+        } else {
+            // WRONG
+            zone.classList.add('wrong');
+            setTimeout(() => zone.classList.remove('wrong'), 500);
+            showToast(`✗ Part "${dropped}" doesn't fit here.`, true);
+        }
+    }
+
+    function applyMiniPreview(num) {
+        const preview = document.getElementById('prev-'+num);
+        if(!preview) return;
+        
+        // Adds subtle visual cues that the link became active
+        if (num === '2' || num === '3') {
+            preview.innerHTML += ' <i class="bi bi-box-arrow-up-right"></i>';
+        } else if (num === '4') {
+            preview.innerHTML += ' <i class="bi bi-envelope"></i>';
+        } else if (num === '5') {
+            preview.innerHTML += ' <i class="bi bi-arrow-down-circle"></i>';
+        }
+        
+        preview.style.backgroundColor = 'rgba(37, 99, 235, 0.05)';
+    }
+
+    // ═══════════════════════════════
+    // ─── CODE VALIDATION ENGINE ───
+    // ═══════════════════════════════
+    const codeArea = document.getElementById('code-ta');
+    const liveRenderContainer = document.getElementById('live-render-container');
+    
+    codeArea.addEventListener('input', runCodeChecks);
+
+    function runCodeChecks() {
+        if (isDone) return;
+        const raw = codeArea.value;
+        const c = raw.toLowerCase().replace(/\s+/g, '').replace(/'/g, '"'); // normalize string and quotes
+
+        // Inject the HTML into the live render block
+        liveRenderContainer.innerHTML = raw;
+        // Safety: Prevent actual navigation clicks in the preview container
+        liveRenderContainer.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', e => e.preventDefault());
+        });
+
+        // Validation Rules
+        const checks = {
+            'obj-1': c.includes('<a') && c.includes('href="https://google.com"'),
+            'obj-2': c.includes('<a') && c.includes('target="_blank"'),
+            'obj-3': c.includes('<a') && c.includes('href="mailto:hello@world.com"'),
+            'obj-4': c.includes('<a') && c.includes('href="#top"')
+        };
+
+        let done = 0;
+        for (const [id, met] of Object.entries(checks)) {
+            const wasAlready = codeSolved.has(id);
+            if (met) {
+                codeSolved.add(id);
+                if (!wasAlready) spawnConfettiId(id);
+            } else {
+                codeSolved.delete(id);
+            }
+            updateObjUI(id, met);
+            if (met) done++;
+        }
+
+        const pct = Math.round(done/4*100);
+        document.getElementById('code-prog').style.width = pct+'%';
+        document.getElementById('code-pct').textContent = pct+'%';
+        document.getElementById('obj-count').textContent = `${done} / 4`;
+
+        const log = document.getElementById('code-log');
+        if (done === 4) {
+            log.innerHTML = `<span style="color:var(--green)">✓ All route requirements met!</span>`;
+            document.getElementById('btn-submit-code').disabled = false;
+        } else {
+            log.textContent = `Drafting: ${done}/4 rules valid...`;
+            document.getElementById('btn-submit-code').disabled = true;
+        }
+
+        updateTotals();
+    }
+
+    function updateObjUI(id, met) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const icon = el.querySelector('.obj-icon i');
+        if (met) {
+            el.classList.add('done');
+            icon.className = 'bi bi-check-circle-fill';
+            icon.style.color = 'var(--green)';
+        } else {
+            el.classList.remove('done');
+            icon.className = 'bi bi-circle';
+            icon.style.color = '';
+        }
+    }
+
+    function updateTotals() {
+        const total = dndSolved.size + codeSolved.size;
+        const pct = Math.round(total/9*100);
+        document.getElementById('total-prog').style.width = pct+'%';
+        document.getElementById('total-count').textContent = `${total} / 9`;
+        document.getElementById('live-score').textContent = calcScore();
+    }
+
+    function calcScore() {
+        return (dndSolved.size * 80) + (codeSolved.size * 100) + (timeLeft * 5);
+    }
+
+    // ─── FINISH ───
+    function finishChallenge() {
+        clearInterval(timerInterval);
+        isDone = true;
+        endGame(true);
+    }
+
+    function endGame(won) {
+        isDone = true;
+        clearInterval(timerInterval);
+        const total = dndSolved.size + codeSolved.size;
+        finalScore = (dndSolved.size * 80) + (codeSolved.size * 100) + (won ? timeLeft * 5 : 0);
+
+        sw('challenge-screen', 'result-screen');
+
+        const ranks = [
+            [9, 'Master Wayfinder — Perfect Execution'],
+            [7, 'Senior Navigator — Secure Connections'],
+            [5, 'Junior Explorer — Decent Attempt'],
+            [3, 'Apprentice — Rough Around the Edges'],
+            [0, 'Lost — Signal Disconnected'],
+        ];
+        const [,rankLabel] = ranks.find(([min]) => total >= min);
+
+        document.getElementById('result-emoji').textContent = won ? '✨' : '⚠️';
+        document.getElementById('result-title').innerHTML = won
+            ? `<span style="color:var(--ink)">Routes Established!</span>`
+            : `<span style="color:var(--red)">Deadline Missed</span>`;
+        document.getElementById('result-sub').textContent = won
+            ? `Beautiful work, ${studentName}. ${rankLabel}`
+            : `Time's up, ${studentName}. ${total}/9 tasks complete. ${rankLabel}`;
+
+        document.getElementById('stat-dnd').textContent   = `${dndSolved.size}/5`;
+        document.getElementById('stat-code').textContent  = `${codeSolved.size}/4`;
+        document.getElementById('stat-time').textContent  = won ? `+${timeLeft}s` : '0s';
+        document.getElementById('stat-score').textContent = finalScore;
+
+        if (finalScore === 0) document.getElementById('btn-save').disabled = true;
+    }
+
+    // ─── CONFETTI / PARTICLES ───
+    function spawnConfetti(anchor, colours) {
+        const rect = anchor.getBoundingClientRect();
+        const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+        for (let i = 0; i < 12; i++) {
+            const p = document.createElement('div');
+            p.className = 'confetti';
+            const sz = 6 + Math.random()*6;
+            p.style.cssText = `width:${sz}px;height:${sz}px;left:${cx}px;top:${cy}px;
+                background:${colours[Math.floor(Math.random()*colours.length)]};
+                --tx:${(Math.random()-.5)*150}px;--ty:${(Math.random()-.5)*150}px;
+                --rot:${Math.random()*360}deg;`;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 1000);
+        }
+    }
+    function spawnConfettiId(id) {
+        const el = document.getElementById(id);
+        if (el) spawnConfetti(el, ['#059669','#d4a017','#2563eb','#0ea5e9']);
+    }
+
+    // ─── TOAST ───
+    let toastTimer;
+    function showToast(msg, isErr=false) {
+        const t = document.getElementById('toast');
+        t.innerHTML = msg;
+        t.style.borderColor = isErr ? 'rgba(225, 29, 72, 0.4)' : 'rgba(5, 150, 105, 0.4)';
+        t.style.color = isErr ? 'var(--red)' : 'var(--green)';
+        t.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ─── UTILS ───
+    function sw(a, b) {
+        document.getElementById(a).classList.remove('active');
+        document.getElementById(b).classList.add('active');
+    }
+
+    // ─── SUBMIT ───
+    function submitToGoogleSheets() {
+        const btn = document.getElementById('btn-save');
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Saving...`;
+        btn.disabled = true;
+        
+        if (typeof GOOGLE_SCRIPT_URL === 'undefined') {
+            console.warn("GOOGLE_SCRIPT_URL not found. Simulating save.");
+            setTimeout(() => {
+                btn.innerHTML = `<i class="bi bi-check-circle me-2"></i> Status Saved!`;
+                btn.style.background = 'linear-gradient(135deg,#059669,#047857)';
+            }, 800);
+            return;
+        }
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({ name:studentName, score:finalScore, total:'HTML LINKS CHALLENGE', timestamp:new Date().toLocaleString() }),
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+        }).then(() => {
+            btn.innerHTML = `<i class="bi bi-check-circle me-2"></i> Status Saved!`;
+            btn.style.background = 'linear-gradient(135deg,#059669,#047857)';
+        }).catch(() => {
+            alert('Transmission failed. Check network or config.js.');
+            btn.innerHTML = `<i class="bi bi-cloud-upload me-2"></i> Save Status`;
+            btn.disabled = false;
+        });
+    }
+
+});
+</script>
+<script src="/js/config.js"></script>
+</body>
+</html>

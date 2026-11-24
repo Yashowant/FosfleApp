@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Comments: The Lost Scrolls</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ink:       #1a0a2e;
+            --deep:      #0d0618;
+            --parchment: #f5e6c8;
+            --aged:      #d4b896;
+            --gold:      #c9a84c;
+            --gold-glow: #f0c060;
+            --seal-red:  #8b1a1a;
+            --mystic:    #6b21a8;
+            --solved:    #15803d;
+            --rune:      #7c3aed;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--deep);
+            background-image:
+                radial-gradient(ellipse at 20% 50%, rgba(107,33,168,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.06) 0%, transparent 50%);
+            font-family: 'IM Fell English', Georgia, serif;
+            min-height: 100vh;
+            color: var(--parchment);
+        }
+
+        /* ─── SCREENS ─── */
+        .screen { display: none; }
+        .screen.active { display: block; animation: unfurl 0.6s ease-out; }
+        @keyframes unfurl {
+            from { opacity: 0; transform: translateY(-12px) scaleY(0.96); }
+            to   { opacity: 1; transform: translateY(0) scaleY(1); }
+        }
+
+        /* ─── SCROLL CONTAINER ─── */
+        .scroll-card {
+            background: linear-gradient(160deg, #2a1045 0%, #1a0a2e 50%, #120820 100%);
+            border: 1px solid #4a2c6e;
+            border-radius: 16px;
+            box-shadow:
+                0 0 0 1px rgba(201,168,76,0.15),
+                0 0 40px rgba(107,33,168,0.2),
+                0 25px 50px rgba(0,0,0,0.6);
+            overflow: hidden;
+        }
+
+        /* ─── LOGIN SCREEN ─── */
+        .rune-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            background: linear-gradient(135deg, #c9a84c, #f0c060, #c9a84c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.05em;
+            text-shadow: none;
+        }
+
+        .scroll-lore {
+            background: rgba(201,168,76,0.06);
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 10px;
+            padding: 24px;
+            font-style: italic;
+            color: var(--aged);
+            line-height: 1.8;
+        }
+
+        .mission-scroll {
+            background: rgba(10,5,20,0.7);
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 8px;
+            padding: 20px 24px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            color: #c9a84c;
+            line-height: 2;
+            text-align: left;
+        }
+        .mission-scroll .label {
+            color: #7c3aed;
+            font-weight: bold;
+        }
+
+        .begin-btn {
+            background: linear-gradient(135deg, #7c3aed, #5b21b6);
+            border: 1px solid rgba(201,168,76,0.4);
+            color: var(--gold-glow);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.08em;
+            padding: 16px 40px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(124,58,237,0.4);
+            width: 100%;
+        }
+        .begin-btn:hover {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            box-shadow: 0 0 35px rgba(124,58,237,0.6);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .name-input {
+            background: rgba(10,5,20,0.8);
+            border: 1px solid rgba(201,168,76,0.3);
+            color: var(--parchment);
+            font-family: 'Share Tech Mono', monospace;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1rem;
+            padding: 14px;
+        }
+        .name-input:focus {
+            background: rgba(10,5,20,0.95);
+            border-color: var(--gold);
+            color: var(--gold-glow);
+            box-shadow: 0 0 12px rgba(201,168,76,0.25);
+            outline: none;
+        }
+        .name-input::placeholder { color: rgba(201,168,76,0.35); }
+
+        /* ─── CHALLENGE LAYOUT ─── */
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 20px;
+            align-items: start;
+        }
+        @media (max-width: 900px) {
+            .challenge-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ─── EDITOR PANEL ─── */
+        .editor-shell {
+            background: rgba(5,2,12,0.9);
+            border: 1px solid #3b1a60;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(107,33,168,0.15), 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .editor-topbar {
+            background: linear-gradient(90deg, #1e0a35, #160726);
+            border-bottom: 1px solid #3b1a60;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .dot-row { display: flex; gap: 6px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot-r { background: #ef4444; }
+        .dot-y { background: #f59e0b; }
+        .dot-g { background: #10b981; }
+
+        .editor-filename { color: var(--gold); opacity: 0.8; }
+
+        #countdown {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--gold);
+            letter-spacing: 0.05em;
+        }
+        #countdown.warning { color: #ef4444; animation: flicker 0.8s infinite; }
+        @keyframes flicker { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+        .code-area {
+            width: 100%;
+            min-height: 320px;
+            background: transparent;
+            border: none;
+            outline: none;
+            resize: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            color: #a78bfa;
+            padding: 20px;
+            line-height: 1.7;
+            caret-color: var(--gold);
+        }
+        .code-area::placeholder { color: rgba(167,139,250,0.3); }
+        .code-area:focus { box-shadow: inset 0 0 20px rgba(124,58,237,0.08); }
+
+        /* ─── LIVE PREVIEW ─── */
+        .preview-strip {
+            background: rgba(245,230,200,0.05);
+            border-top: 1px solid #2a1045;
+            padding: 14px 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.78rem;
+            color: rgba(201,168,76,0.6);
+            min-height: 52px;
+        }
+        .preview-strip .vis { color: #10b981; }
+        .preview-strip .hidden { color: rgba(167,139,250,0.5); font-style: italic; }
+
+        .editor-bottombar {
+            background: linear-gradient(90deg, #1e0a35, #160726);
+            border-top: 1px solid #3b1a60;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #status-log {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: rgba(201,168,76,0.5);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #15803d, #166534);
+            border: 1px solid rgba(16,185,129,0.4);
+            color: #6ee7b7;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            padding: 10px 28px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .submit-btn:disabled {
+            background: #1e0a35;
+            border-color: #3b1a60;
+            color: rgba(167,139,250,0.3);
+            cursor: not-allowed;
+        }
+        .submit-btn:not(:disabled):hover {
+            box-shadow: 0 0 20px rgba(16,185,129,0.4);
+            color: #fff;
+        }
+
+        /* ─── HINT SYSTEM ─── */
+        .hint-btn {
+            background: transparent;
+            border: 1px solid rgba(201,168,76,0.25);
+            color: rgba(201,168,76,0.6);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .hint-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+        .hint-panel {
+            background: rgba(124,58,237,0.1);
+            border: 1px solid rgba(124,58,237,0.3);
+            border-radius: 6px;
+            padding: 10px 16px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: #c4b5fd;
+            margin-top: 10px;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+
+        /* ─── SCROLL SEALS (Objectives) ─── */
+        .seals-panel {
+            background: linear-gradient(160deg, #1a0a2e, #120820);
+            border: 1px solid #3b1a60;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .seals-header {
+            background: linear-gradient(90deg, #2a1045, #1a0a2e);
+            border-bottom: 1px solid #3b1a60;
+            padding: 14px 20px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .seals-count {
+            background: rgba(201,168,76,0.1);
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 20px;
+            padding: 2px 12px;
+            font-size: 0.8rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--gold);
+        }
+
+        .seal-item {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(59,26,96,0.5);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .seal-item::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: #3b1a60;
+            transition: background 0.4s;
+        }
+        .seal-item.unlocked::before { background: var(--solved); }
+        .seal-item.unlocked {
+            background: rgba(21,128,61,0.07);
+        }
+
+        .seal-icon {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            border: 2px solid #4a2c6e;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            background: rgba(10,5,20,0.6);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: rgba(167,139,250,0.4);
+        }
+        .seal-item.unlocked .seal-icon {
+            border-color: var(--solved);
+            background: rgba(21,128,61,0.2);
+            color: #4ade80;
+            box-shadow: 0 0 12px rgba(74,222,128,0.3);
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .seal-text strong {
+            display: block;
+            font-family: 'Cinzel', serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--parchment);
+            letter-spacing: 0.05em;
+        }
+        .seal-text span {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.72rem;
+            color: rgba(201,168,76,0.5);
+        }
+        .seal-item.unlocked .seal-text strong { color: #86efac; }
+        .seal-item.unlocked .seal-text span { color: rgba(134,239,172,0.6); }
+
+        /* ─── PROGRESS BAR ─── */
+        .scroll-progress {
+            padding: 14px 18px;
+            border-top: 1px solid #2a1045;
+        }
+        .progress-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.72rem;
+            color: rgba(201,168,76,0.5);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .prog-track {
+            height: 6px;
+            background: rgba(59,26,96,0.6);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .prog-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #7c3aed, #10b981);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* ─── PARTICLE BURST ─── */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            border-radius: 50%;
+            animation: burst 0.9s ease-out forwards;
+            z-index: 9999;
+        }
+        @keyframes burst {
+            0%   { opacity: 1; transform: scale(1) translate(0,0); }
+            100% { opacity: 0; transform: scale(0) translate(var(--tx), var(--ty)); }
+        }
+
+        /* ─── RESULT SCREEN ─── */
+        .result-card {
+            background: linear-gradient(160deg, #1a0a2e 0%, #0d0618 100%);
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 16px;
+            box-shadow: 0 0 60px rgba(201,168,76,0.08), 0 30px 60px rgba(0,0,0,0.7);
+        }
+
+        .result-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            letter-spacing: 0.06em;
+        }
+
+        .stat-box {
+            background: rgba(10,5,20,0.7);
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 10px;
+            padding: 18px;
+        }
+        .stat-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            color: rgba(201,168,76,0.5);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 2rem;
+        }
+
+        .restart-btn {
+            background: transparent;
+            border: 1px solid rgba(167,139,250,0.4);
+            color: #a78bfa;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            padding: 14px 36px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .restart-btn:hover { border-color: #a78bfa; background: rgba(167,139,250,0.08); }
+
+        .save-btn {
+            background: linear-gradient(135deg, #92400e, #78350f);
+            border: 1px solid rgba(201,168,76,0.4);
+            color: var(--gold-glow);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            padding: 14px 36px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(201,168,76,0.15);
+        }
+        .save-btn:hover { box-shadow: 0 0 30px rgba(201,168,76,0.3); color: #fff; }
+        .save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* ─── FLOATING RUNES (ambient) ─── */
+        .rune-float {
+            position: fixed;
+            font-size: 1.2rem;
+            opacity: 0.04;
+            pointer-events: none;
+            animation: floatUp linear infinite;
+            color: var(--gold);
+            user-select: none;
+        }
+        @keyframes floatUp {
+            0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%  { opacity: 0.04; }
+            90%  { opacity: 0.04; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+
+<link rel="stylesheet" href="../../../../css/fosfle-lesson-bridge.css" />
+<script src="../../../../js/fosfle-lesson-bridge.js"></script>
+</head>
+<body class="py-4 px-3">
+
+<!-- Ambient floating runes -->
+<div id="rune-layer"></div>
+
+<div class="container" style="max-width: 1100px;">
+
+    <div class="mb-4 d-flex align-items-center gap-3">
+        <button class="btn btn-outline-secondary px-4" onclick="history.back()">
+            <i class="bi bi-arrow-counterclockwise me-2"></i> Exit Vault
+        </button>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:rgba(201,168,76,0.3);">
+            // THE LOST SCROLLS: CHAPTER II
+        </span>
+    </div>
+
+    <!-- ═══ LOGIN SCREEN ═══ -->
+    <div id="login-screen" class="screen active">
+        <div class="scroll-card p-5">
+            <div class="text-center mb-5">
+                <div style="font-size:4rem;margin-bottom:16px;" id="orb-anim">📜</div>
+                <div class="rune-title mb-3">The Lost Scrolls</div>
+                <p style="font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:0.2em;color:rgba(201,168,76,0.5);text-transform:uppercase;">
+                    Chapter II · The Invisible Ink Codex
+                </p>
+            </div>
+
+            <div class="scroll-lore mb-5 text-center" style="max-width:680px;margin:0 auto;">
+                The ancient monks of the Hypertext Order encoded their secrets in <em>invisible ink</em> — 
+                annotations hidden from mortal eyes, preserved only for those who know where to look. 
+                These are the <strong style="color:var(--gold)">HTML Comments</strong>. 
+                The Vault has been sealed for centuries. Seven rune-locks must be broken.
+                You have <strong style="color:#f0c060">three minutes</strong> before the scrolls crumble to dust.
+            </div>
+
+            <div class="mission-scroll mb-5" style="max-width:700px;margin:0 auto;">
+                <div class="mb-1"><span class="label">// SEVEN RUNE-LOCKS TO BREAK:</span></div>
+                <div>① Add a single-line comment: <span style="color:#a78bfa"><!-- Page starts here --></span></div>
+                <div>② Add a comment: <span style="color:#a78bfa"><!-- Author: Archivus --></span></div>
+                <div>③ Hide a secret: comment out the tag <span style="color:#a78bfa">&lt;p&gt;Forbidden Text&lt;/p&gt;</span></div>
+                <div>④ Write a multi-line comment with lines <span style="color:#a78bfa">Line One</span> and <span style="color:#a78bfa">Line Two</span></div>
+                <div>⑤ Add a comment above &lt;h1&gt;: <span style="color:#a78bfa"><!-- Main Heading --></span></div>
+                <div>⑥ Add a comment above &lt;footer&gt;: <span style="color:#a78bfa"><!-- Footer Section --></span></div>
+                <div>⑦ Add a comment at the very end: <span style="color:#a78bfa"><!-- End of Document --></span></div>
+            </div>
+
+            <div style="max-width:420px;margin:0 auto;">
+                <input type="text" id="student-name" class="name-input form-control mb-4" placeholder="⟡ Enter Your Archivist Name">
+                <button class="begin-btn" onclick="startChallenge()">
+                    <i class="bi bi-lock-fill me-2"></i> Break the Seven Seals
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ CHALLENGE SCREEN ═══ -->
+    <div id="challenge-screen" class="screen">
+        <div class="challenge-grid">
+
+            <!-- LEFT: Editor -->
+            <div>
+                <div class="editor-shell">
+                    <div class="editor-topbar">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="dot-row">
+                                <div class="dot dot-r"></div>
+                                <div class="dot dot-y"></div>
+                                <div class="dot dot-g"></div>
+                            </div>
+                            <span class="editor-filename">ancient_scroll.html</span>
+                        </div>
+                        <div id="countdown"><i class="bi bi-hourglass-split me-1"></i> 03:00</div>
+                    </div>
+
+                    <textarea id="code-area" class="code-area" 
+                        placeholder="// Begin inscribing the seven hidden runes...&#10;// The ink is invisible — but the parser sees all." 
+                        oninput="runChecks()" spellcheck="false"></textarea>
+
+                    <div class="preview-strip" id="preview-strip">
+                        <span style="color:rgba(201,168,76,0.4)">⟡ LIVE SCROLL READER: </span>
+                        <span id="preview-text" class="hidden">Awaiting inscription...</span>
+                    </div>
+
+                    <div class="editor-bottombar">
+                        <div>
+                            <button class="hint-btn" onclick="toggleHint()">
+                                <i class="bi bi-lightbulb me-1"></i> Reveal Hint
+                            </button>
+                            <div class="hint-panel" id="hint-panel">
+                                Comments use <code style="color:#f0c060">&lt;!-- your text --&gt;</code> syntax.<br>
+                                Browsers ignore everything between <code>&lt;!--</code> and <code>--&gt;</code>.<br>
+                                Multi-line: just press Enter inside the comment tags.
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span id="status-log">&gt; Vault scanner online.</span>
+                            <button class="submit-btn" id="submit-btn" onclick="deployScroll()" disabled>
+                                ⚡ Unseal Vault
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Seals Panel -->
+            <div>
+                <div class="seals-panel">
+                    <div class="seals-header">
+                        <span><i class="bi bi-shield-lock me-2"></i>RUNE SEALS</span>
+                        <span class="seals-count" id="seals-count">0 / 7</span>
+                    </div>
+
+                    <div id="seal-1" class="seal-item">
+                        <div class="seal-icon">①</div>
+                        <div class="seal-text">
+                            <strong>Opening Invocation</strong>
+                            <span>&lt;!-- Page starts here --&gt;</span>
+                        </div>
+                    </div>
+                    <div id="seal-2" class="seal-item">
+                        <div class="seal-icon">②</div>
+                        <div class="seal-text">
+                            <strong>Author's Mark</strong>
+                            <span>&lt;!-- Author: Archivus --&gt;</span>
+                        </div>
+                    </div>
+                    <div id="seal-3" class="seal-item">
+                        <div class="seal-icon">③</div>
+                        <div class="seal-text">
+                            <strong>Forbidden Concealment</strong>
+                            <span>Comment out &lt;p&gt;Forbidden Text&lt;/p&gt;</span>
+                        </div>
+                    </div>
+                    <div id="seal-4" class="seal-item">
+                        <div class="seal-icon">④</div>
+                        <div class="seal-text">
+                            <strong>The Two-Line Cipher</strong>
+                            <span>Multi-line: "Line One" + "Line Two"</span>
+                        </div>
+                    </div>
+                    <div id="seal-5" class="seal-item">
+                        <div class="seal-icon">⑤</div>
+                        <div class="seal-text">
+                            <strong>Heading Rune</strong>
+                            <span>&lt;!-- Main Heading --&gt; above &lt;h1&gt;</span>
+                        </div>
+                    </div>
+                    <div id="seal-6" class="seal-item">
+                        <div class="seal-icon">⑥</div>
+                        <div class="seal-text">
+                            <strong>Footer Inscription</strong>
+                            <span>&lt;!-- Footer Section --&gt; above &lt;footer&gt;</span>
+                        </div>
+                    </div>
+                    <div id="seal-7" class="seal-item">
+                        <div class="seal-icon">⑦</div>
+                        <div class="seal-text">
+                            <strong>The Closing Sigil</strong>
+                            <span>&lt;!-- End of Document --&gt;</span>
+                        </div>
+                    </div>
+
+                    <div class="scroll-progress">
+                        <div class="progress-label">
+                            <span>VAULT INTEGRITY</span>
+                            <span id="prog-pct">0%</span>
+                        </div>
+                        <div class="prog-track">
+                            <div class="prog-fill" id="prog-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══ RESULT SCREEN ═══ -->
+    <div id="result-screen" class="screen">
+        <div class="result-card p-5 text-center">
+            <div id="result-icon" class="mb-4" style="font-size:5rem;"></div>
+            <div class="result-title mb-2" id="result-title"></div>
+            <p class="mb-5" style="color:rgba(245,230,200,0.7);font-size:1.1rem;font-style:italic;" id="result-subtitle"></p>
+
+            <div class="row g-3 justify-content-center mb-5">
+                <div class="col-6 col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-label">Seals Broken</div>
+                        <div class="stat-value" id="stat-seals" style="color:#a78bfa;">0/7</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-label">Time Bonus</div>
+                        <div class="stat-value" id="stat-time" style="color:var(--gold);">0s</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-label">Final Score</div>
+                        <div class="stat-value" id="stat-score" style="color:#4ade80;">0</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-label">Rank</div>
+                        <div class="stat-value" id="stat-rank" style="color:#f87171;font-size:1.4rem;">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <button class="restart-btn" onclick="location.reload()">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i> Reseal & Retry
+                </button>
+                <button class="save-btn" id="save-btn" onclick="submitToGoogleSheets()">
+                    <i class="bi bi-cloud-upload me-2"></i> Inscribe Record
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ─── STATE ───
+    let timeLeft = 180;
+    let timerInterval;
+    let studentName = "";
+    let isComplete = false;
+    let finalScore = 0;
+    let sealsBroken = 0;
+    const prevUnlocked = new Set();
+
+    // ─── AMBIENT RUNES ───
+    const runeChars = ['⟡','⚡','⟢','⊗','◈','⋯','∞','⊕','◎','⟴','⊘'];
+    function spawnRunes() {
+        const layer = document.getElementById('rune-layer');
+        for (let i = 0; i < 18; i++) {
+            const r = document.createElement('div');
+            r.className = 'rune-float';
+            r.textContent = runeChars[Math.floor(Math.random() * runeChars.length)];
+            r.style.left = (Math.random() * 100) + 'vw';
+            r.style.animationDuration = (12 + Math.random() * 20) + 's';
+            r.style.animationDelay = (Math.random() * 20) + 's';
+            r.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+            layer.appendChild(r);
+        }
+    }
+    spawnRunes();
+
+    // ─── ORB ANIMATION ───
+    const orbs = ['📜','🔮','⚗️','📜','✨'];
+    let orbIdx = 0;
+    setInterval(() => {
+        const el = document.getElementById('orb-anim');
+        if (el) el.textContent = orbs[orbIdx++ % orbs.length];
+    }, 1800);
+
+    // ─── START ───
+    function startChallenge() {
+        const n = document.getElementById("student-name").value.trim();
+        if (!n) return alert("Name thine Archivist before entering the Vault!");
+        studentName = n;
+        switchScreen("login-screen", "challenge-screen");
+        document.getElementById("code-area").focus();
+        startTimer();
+    }
+
+    function startTimer() {
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) { clearInterval(timerInterval); endGame(false); }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const m = Math.floor(timeLeft / 60).toString().padStart(2,'0');
+        const s = (timeLeft % 60).toString().padStart(2,'0');
+        const el = document.getElementById("countdown");
+        el.innerHTML = `<i class="bi bi-hourglass-split me-1"></i> ${m}:${s}`;
+        el.className = timeLeft <= 30 ? 'warning' : '';
+    }
+
+    // ─── VALIDATION ENGINE ───
+    const norm = str => str.toLowerCase().replace(/\s+/g, '').replace(/'/g, '"');
+
+    function runChecks() {
+        if (isComplete) return;
+        const raw = document.getElementById("code-area").value;
+        const c = norm(raw);
+
+        const checks = {
+            "seal-1": c.includes("<!--pagestartshere-->"),
+            "seal-2": c.includes("<!--author:archivus-->"),
+            "seal-3": c.includes("<!--<p>forbiddentext</p>-->"),
+            "seal-4": (() => {
+                // multi-line: must have <!-- ... lineone ... linetwo ... -->
+                const m = raw.match(/<!--[\s\S]*?-->/g) || [];
+                return m.some(comment => {
+                    const n2 = norm(comment);
+                    return n2.includes("lineone") && n2.includes("linetwo");
+                });
+            })(),
+            "seal-5": (() => {
+                const n2 = norm(raw);
+                const idx5 = n2.indexOf("<!--mainheading-->");
+                const idx5h = n2.indexOf("<h1>");
+                return idx5 !== -1 && idx5h !== -1 && idx5 < idx5h;
+            })(),
+            "seal-6": (() => {
+                const n2 = norm(raw);
+                const idx6 = n2.indexOf("<!--footersection-->");
+                const idx6f = n2.indexOf("<footer>");
+                return idx6 !== -1 && idx6f !== -1 && idx6 < idx6f;
+            })(),
+            "seal-7": c.includes("<!--endofdocument-->"),
+        };
+
+        let broken = 0;
+        for (const [id, met] of Object.entries(checks)) {
+            updateSeal(id, met);
+            if (met) broken++;
+        }
+        sealsBroken = broken;
+
+        // Progress bar
+        const pct = Math.round((broken / 7) * 100);
+        document.getElementById("prog-fill").style.width = pct + "%";
+        document.getElementById("prog-pct").innerText = pct + "%";
+        document.getElementById("seals-count").innerText = `${broken} / 7`;
+
+        // Live preview
+        updatePreview(raw);
+
+        // Status log
+        const log = document.getElementById("status-log");
+        if (broken === 7) {
+            log.innerHTML = `<span style="color:#4ade80">&gt; ALL SEALS BROKEN — VAULT UNLOCKED</span>`;
+            document.getElementById("submit-btn").disabled = false;
+        } else if (broken > 0) {
+            log.innerText = `> ${broken}/7 runes deciphered...`;
+            document.getElementById("submit-btn").disabled = true;
+        } else {
+            log.innerText = `> Vault scanner online.`;
+        }
+    }
+
+    function updateSeal(id, met) {
+        const el = document.getElementById(id);
+        const icon = el.querySelector(".seal-icon");
+        if (met && !el.classList.contains("unlocked")) {
+            el.classList.add("unlocked");
+            icon.innerHTML = "✓";
+            if (!prevUnlocked.has(id)) {
+                prevUnlocked.add(id);
+                spawnParticles(el);
+            }
+        } else if (!met) {
+            el.classList.remove("unlocked");
+            // restore number
+            const num = id.split("-")[1];
+            const nums = ['①','②','③','④','⑤','⑥','⑦'];
+            icon.innerHTML = nums[parseInt(num)-1];
+            prevUnlocked.delete(id);
+        }
+    }
+
+    function updatePreview(raw) {
+        const el = document.getElementById("preview-text");
+        const commentCount = (raw.match(/<!--[\s\S]*?-->/g) || []).length;
+        const visibleTags = (raw.match(/<(?!!)[\w/]+>/g) || []).length;
+        if (raw.trim().length === 0) {
+            el.className = "hidden";
+            el.textContent = "Awaiting inscription...";
+        } else {
+            el.className = "vis";
+            el.textContent = `${commentCount} hidden comment${commentCount!==1?'s':''} · ${visibleTags} visible element${visibleTags!==1?'s':''}`;
+        }
+    }
+
+    // ─── PARTICLES ───
+    function spawnParticles(anchor) {
+        const rect = anchor.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const colours = ['#c9a84c','#f0c060','#4ade80','#a78bfa','#86efac'];
+        for (let i = 0; i < 12; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const size = 4 + Math.random() * 6;
+            p.style.cssText = `
+                width:${size}px; height:${size}px;
+                left:${cx}px; top:${cy}px;
+                background:${colours[Math.floor(Math.random()*colours.length)]};
+                --tx:${(Math.random()-0.5)*160}px;
+                --ty:${(Math.random()-0.5)*120}px;
+            `;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 900);
+        }
+    }
+
+    // ─── HINT ───
+    let hintOpen = false;
+    function toggleHint() {
+        hintOpen = !hintOpen;
+        document.getElementById("hint-panel").style.display = hintOpen ? 'block' : 'none';
+    }
+
+    // ─── DEPLOY ───
+    function deployScroll() {
+        clearInterval(timerInterval);
+        isComplete = true;
+        endGame(true);
+    }
+
+    // ─── END ───
+    function endGame(won) {
+        switchScreen("challenge-screen", "result-screen");
+
+        const ranks = {
+            7: ['Grand Archivist of the Hypertext Order','🏆'],
+            6: ['Senior Scroll Keeper','🥇'],
+            5: ['Rune Apprentice','🥈'],
+            4: ['Ink Initiate','🥉'],
+            3: ['Curious Scholar','📚'],
+            2: ['Fledgling Monk','🕯️'],
+            1: ['Lost Pilgrim','🗺️'],
+            0: ['Unnamed Wanderer','❓'],
+        };
+
+        if (won) {
+            finalScore = 700 + (sealsBroken * 50) + (timeLeft * 8);
+            const [rankName, rankIcon] = ranks[Math.min(sealsBroken, 7)];
+
+            document.getElementById("result-icon").textContent = "✨";
+            document.getElementById("result-title").innerHTML = `<span style="background:linear-gradient(135deg,#c9a84c,#f0c060);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Vault Unsealed</span>`;
+            document.getElementById("result-subtitle").textContent = `The ancient knowledge is yours, ${studentName}. The Hypertext Order is restored.`;
+            document.getElementById("stat-rank").textContent = rankIcon + " " + rankName;
+            document.getElementById("stat-rank").style.fontSize = "0.9rem";
+        } else {
+            finalScore = sealsBroken * 50;
+            const [rankName, rankIcon] = ranks[Math.min(sealsBroken, 7)];
+
+            document.getElementById("result-icon").textContent = "💀";
+            document.getElementById("result-title").innerHTML = `<span style="color:#ef4444;">Scrolls Crumbled</span>`;
+            document.getElementById("result-subtitle").textContent = `Time expired, ${studentName}. The vault collapsed with ${sealsBroken} seal${sealsBroken!==1?'s':''} broken.`;
+            document.getElementById("stat-rank").textContent = rankIcon + " " + rankName;
+            document.getElementById("stat-rank").style.fontSize = "0.9rem";
+            if (sealsBroken === 0) document.getElementById("save-btn").disabled = true;
+        }
+
+        document.getElementById("stat-seals").textContent = `${sealsBroken}/7`;
+        document.getElementById("stat-time").textContent = won ? `+${timeLeft}s` : "0s";
+        document.getElementById("stat-score").textContent = finalScore;
+    }
+
+    // ─── HELPERS ───
+    function switchScreen(hide, show) {
+        document.getElementById(hide).classList.remove("active");
+        document.getElementById(show).classList.add("active");
+    }
+
+    // ─── SUBMIT ───
+    function submitToGoogleSheets() {
+        const btn = document.getElementById("save-btn");
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Inscribing...`;
+        btn.disabled = true;
+
+        const data = {
+            name: studentName,
+            score: finalScore,
+            total: "CHALLENGE: HTML COMMENTS",
+            timestamp: new Date().toLocaleString()
+        };
+
+        fetch(GOOGLE_SCRIPT_URL1, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+        }).then(() => {
+            btn.innerHTML = `<i class="bi bi-check-circle me-2"></i> Inscribed in the Order's Ledger`;
+            btn.style.background = 'linear-gradient(135deg,#15803d,#166534)';
+            btn.style.borderColor = 'rgba(74,222,128,0.4)';
+            btn.style.color = '#4ade80';
+        }).catch(() => {
+            alert('The raven failed to deliver the scroll. Check config.js.');
+            btn.innerHTML = `<i class="bi bi-cloud-upload me-2"></i> Inscribe Record`;
+            btn.disabled = false;
+        });
+    }
+</script>
+<script src="/js/config.js"></script>
+</body>
+</html>

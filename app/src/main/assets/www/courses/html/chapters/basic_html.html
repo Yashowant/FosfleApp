@@ -1,0 +1,324 @@
+
+<link rel="stylesheet" href="../../../css/fosfle-lesson-bridge.css" />
+<script src="../../../js/fosfle-lesson-bridge.js"></script>
+<div class="container-fluid p-0 animation-fade-in">
+    <div class="p-5 bg-dark text-white rounded-4 shadow-sm mb-5 position-relative overflow-hidden">
+        <i class="bi bi-code-slash position-absolute text-white opacity-10" style="font-size: 15rem; right: -30px; top: -50px; transform: rotate(15deg);"></i>
+        <div class="position-relative z-1">
+            <span class="badge bg-primary mb-3 px-3 py-2 fw-semibold fs-6">Module 1 &bull; Chapter 3</span>
+            <h1 class="display-4 fw-bold mb-3">HTML Basic</h1>
+            <p class="lead text-light text-opacity-75 max-w-3xl">
+                Welcome to the core of the web! In this chapter, we will introduce the essential building blocks that make up almost every single webpage on the internet. Don't worry if you don't memorize them all immediately; we will use them constantly from here on out.
+            </p>
+        </div>
+    </div>
+    
+    <div class="mb-5 mt-5">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">1</span>
+            <h2 class="fw-bold mb-0">The HTML Skeleton</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">Every HTML document needs a basic structure to tell the browser what it is looking at. Think of this as the "skeleton" of your webpage.</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-header bg-black border-0 d-flex justify-content-between align-items-center py-3">
+                        <span class="badge bg-primary px-3 py-2"><i class="bi bi-layout-text-window-reverse me-1"></i> skeleton.html</span>
+                        <button class="btn btn-sm btn-outline-secondary text-white border-0" onclick="navigator.clipboard.writeText('<!DOCTYPE html>\n<html>\n<head>\n <title>Page Title</title>\n<' + '/head>\n<body>\n\n<h1>My First Heading</h1>\n<p>My first paragraph.</p>\n\n<' + '/body>\n<' + '/html>'); alert('Code copied to clipboard!');">
+    <i class="bi bi-clipboard"></i> Copy
+</button>
+                    </div>
+                    <div class="card-body font-monospace" style="overflow-x: auto; font-size: 0.95rem;">
+<pre class="m-0 text-white"><code><span class="text-secondary">&lt;!DOCTYPE html&gt;</span>
+<span class="text-primary">&lt;html&gt;</span>
+<span class="text-primary">&lt;head&gt;</span>
+  <span class="text-warning">&lt;title&gt;</span>Page Title<span class="text-warning">&lt;/title&gt;</span>
+<span class="text-primary">&lt;/head&gt;</span>
+<span class="text-primary">&lt;body&gt;</span>
+
+  <span class="text-info">&lt;h1&gt;</span>My First Heading<span class="text-info">&lt;/h1&gt;</span>
+  <span class="text-info">&lt;p&gt;</span>My first paragraph.<span class="text-info">&lt;/p&gt;</span>
+
+<span class="text-primary">&lt;/body&gt;</span>
+<span class="text-primary">&lt;/html&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm bg-light h-100 p-4">
+                    <h5 class="fw-bold mb-3 text-dark border-bottom pb-2">Code Breakdown:</h5>
+                    <ul class="list-unstyled mb-0 d-flex flex-column gap-3">
+                        <li><code class="text-secondary bg-white px-2 py-1 rounded border border-secondary border-opacity-25">&lt;!DOCTYPE html&gt;</code> <span class="text-secondary">Declares this document as HTML5.</span></li>
+                        <li><code class="text-primary bg-primary bg-opacity-10 px-2 py-1 rounded">&lt;html&gt;</code> <span class="text-secondary">The root element that wraps all the content.</span></li>
+                        <li><code class="text-warning bg-warning bg-opacity-10 px-2 py-1 rounded">&lt;head&gt;</code> <span class="text-secondary">Contains meta-information like the page title.</span></li>
+                        <li><code class="text-primary bg-primary bg-opacity-10 px-2 py-1 rounded">&lt;body&gt;</code> <span class="text-secondary">Contains the <strong>visible</strong> content of the page (headings, text, images, etc).</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">2</span>
+            <h2 class="fw-bold mb-0">HTML Headings</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">Headings are defined with the <code>&lt;h1&gt;</code> to <code>&lt;h6&gt;</code> tags. They are crucial for both users (readability) and search engines (SEO) to understand the structure of your page.</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-header bg-black border-0 py-3">
+                        <span class="badge bg-secondary px-3 py-2"><i class="bi bi-type-h1 me-1"></i> Heading Tags</span>
+                    </div>
+                    <div class="card-body font-monospace d-flex align-items-center" style="font-size: 0.95rem;">
+<pre class="m-0 text-white w-100"><code><span class="text-info">&lt;h1&gt;</span>This is an H1 heading (Most Important)<span class="text-info">&lt;/h1&gt;</span>
+<span class="text-info">&lt;h2&gt;</span>This is an H2 heading<span class="text-info">&lt;/h2&gt;</span>
+<span class="text-info">&lt;h3&gt;</span>This is an H3 heading<span class="text-info">&lt;/h3&gt;</span>
+<span class="text-info">&lt;h4&gt;</span>This is an H4 heading<span class="text-info">&lt;/h4&gt;</span>
+<span class="text-info">&lt;h5&gt;</span>This is an H5 heading<span class="text-info">&lt;/h5&gt;</span>
+<span class="text-info">&lt;h6&gt;</span>This is an H6 heading<span class="text-info">&lt;/h6&gt; &lt;!--(Least Important)--&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card bg-white border border-primary border-opacity-25 shadow-sm h-100">
+                    <div class="card-header bg-light border-bottom py-3">
+                        <span class="badge text-primary bg-primary bg-opacity-10 px-3 py-2"><i class="bi bi-eye me-1"></i> Visual Hierarchy Preview</span>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="mb-2">This is an H1 heading</h1>
+                        <h2 class="mb-2 text-secondary">This is an H2 heading</h2>
+                        <h3 class="mb-2 text-secondary">This is an H3 heading</h3>
+                        <h4 class="mb-2 text-secondary">This is an H4 heading</h4>
+                        <h5 class="mb-2 text-secondary">This is an H5 heading</h5>
+                        <h6 class="mb-0 text-secondary">This is an H6 heading</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-warning border-0 shadow-sm border-start border-4 border-warning mt-4 d-flex align-items-start">
+            <i class="bi bi-exclamation-triangle-fill fs-5 me-3 text-warning mt-1"></i>
+            <div>
+                <strong class="d-block mb-1">SEO Pro Tip:</strong>
+                Search engines use headings to index the structure and content of your web pages. You should strictly use only <strong>one</strong> <code>&lt;h1&gt;</code> tag per page for the main title, and use <code>&lt;h2&gt;</code> to <code>&lt;h6&gt;</code> to create a logical document outline. Never skip heading levels!
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">3</span>
+            <h2 class="fw-bold mb-0">HTML Paragraphs</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">The <code>&lt;p&gt;</code> tag defines a paragraph. Browsers automatically add a single blank line before and after each paragraph.</p>
+        
+        <div class="row g-4">
+             <div class="col-lg-6">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100">
+                    <div class="card-body font-monospace d-flex align-items-center" style="font-size: 0.95rem;">
+<pre class="m-0 text-white"><code><span class="text-info">&lt;p&gt;</span>This is a paragraph. It contains text that represents a block of thought.<span class="text-info">&lt;/p&gt;</span>
+
+<span class="text-info">&lt;p&gt;</span>This is another paragraph. Notice how the browser will automatically separate them.<span class="text-info">&lt;/p&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card bg-white border border-secondary border-opacity-25 shadow-sm h-100 p-4">
+                    <p class="mb-3 text-dark">This is a paragraph. It contains text that represents a block of thought.</p>
+                    <p class="mb-0 text-dark">This is another paragraph. Notice how the browser will automatically separate them.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">4</span>
+            <h2 class="fw-bold mb-0">Line Breaks & Horizontal Rules</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">Sometimes you want a line break without starting a new paragraph, or a horizontal line to separate content. We use the <code>&lt;br&gt;</code> and <code>&lt;hr&gt;</code> tags for this.</p>
+        
+        <div class="row g-4">
+             <div class="col-lg-6">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100">
+                    <div class="card-body font-monospace" style="font-size: 0.95rem;">
+<pre class="m-0 text-white"><code><span class="text-info">&lt;p&gt;</span>This is a paragraph<span class="text-warning">&lt;br&gt;</span>
+with a line break inside it.<span class="text-info">&lt;/p&gt;</span>
+
+<span class="text-warning">&lt;hr&gt;</span>
+
+<span class="text-info">&lt;p&gt;</span>This is a new section after the horizontal rule.<span class="text-info">&lt;/p&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card bg-white border border-secondary border-opacity-25 shadow-sm h-100 p-4">
+                    <p class="mb-0 text-dark">This is a paragraph<br>with a line break inside it.</p>
+                    <hr class="my-3 text-secondary">
+                    <p class="mb-0 text-dark">This is a new section after the horizontal rule.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">5</span>
+            <h2 class="fw-bold mb-0">Basic Text Formatting</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">You can easily make text stand out using formatting tags. The most common are <code>&lt;strong&gt;</code> for important bold text, and <code>&lt;em&gt;</code> for emphasized italic text.</p>
+        
+        <div class="row g-4">
+             <div class="col-lg-7">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100">
+                    <div class="card-body font-monospace d-flex align-items-center" style="font-size: 0.95rem;">
+<pre class="m-0 text-white w-100"><code><span class="text-info">&lt;p&gt;</span>This text is normal, but this is <span class="text-warning">&lt;strong&gt;</span>important<span class="text-warning">&lt;/strong&gt;</span>.<span class="text-info">&lt;/p&gt;</span>
+
+<span class="text-info">&lt;p&gt;</span>This text is normal, but this is <span class="text-warning">&lt;em&gt;</span>emphasized<span class="text-warning">&lt;/em&gt;</span>.<span class="text-info">&lt;/p&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card bg-white border border-primary border-opacity-25 shadow-sm h-100 p-4 d-flex justify-content-center">
+                    <p class="mb-3 text-dark fs-5">This text is normal, but this is <strong>important</strong>.</p>
+                    <p class="mb-0 text-dark fs-5">This text is normal, but this is <em>emphasized</em>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">6</span>
+            <h2 class="fw-bold mb-0">HTML Links</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">HTML links are defined with the <code>&lt;a&gt;</code> tag (which stands for "anchor"). The actual destination of the link is specified in the <code>href</code> attribute.</p>
+        
+        <div class="card bg-dark text-light border-0 shadow-sm mt-4 overflow-hidden mb-4">
+            <div class="card-body font-monospace" style="font-size: 1rem;">
+<pre class="m-0 text-white"><code><span class="text-info">&lt;a</span> <span class="text-warning">href</span>=<span class="text-success">"https://www.fosfle.netlify.app"</span><span class="text-info">&gt;</span>Visit Fosfle Courses<span class="text-info">&lt;/a&gt;</span></code></pre>
+            </div>
+        </div>
+
+        <div class="row g-4">
+             <div class="col-md-6">
+                <div class="p-4 bg-light border rounded shadow-sm h-100">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-puzzle me-2 text-primary"></i>Anatomy of a Link:</h5>
+                    <ul class="text-secondary mb-0">
+                        <li class="mb-2"><code>&lt;a&gt;</code>: The starting anchor tag.</li>
+                        <li class="mb-2"><code>href="..."</code>: The attribute storing the URL.</li>
+                        <li class="mb-2"><strong>Visit Fosfle Courses</strong>: The clickable text the user sees.</li>
+                        <li><code>&lt;/a&gt;</code>: The closing tag.</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="col-md-6">
+                 <div class="p-4 bg-white border border-primary border-opacity-25 rounded shadow-sm d-flex flex-column justify-content-center align-items-center h-100">
+                     <span class="text-muted small mb-2 text-uppercase fw-bold letter-spacing-1">Interactive Preview</span>
+                     <a href="#" onclick="event.preventDefault(); alert('You clicked the link! Normally this would take you to fosfle.netlify.app');" class="fs-4 fw-medium text-decoration-underline text-primary">Visit Fosfle Courses</a>
+                 </div>
+             </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">7</span>
+            <h2 class="fw-bold mb-0">HTML Images</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">Images are defined with the <code>&lt;img&gt;</code> tag. The <code>&lt;img&gt;</code> tag is <strong>empty</strong>, meaning it contains attributes only, and does not have a closing tag.</p>
+        
+        <div class="card bg-dark text-light border-0 shadow-sm mt-4 overflow-hidden mb-4">
+            <div class="card-body font-monospace" style="font-size: 1rem;">
+<pre class="m-0 text-white"><code><span class="text-info">&lt;img</span> <span class="text-warning">src</span>=<span class="text-success">"profile.jpg"</span> <span class="text-warning">alt</span>=<span class="text-success">"A coding avatar"</span> <span class="text-warning">width</span>=<span class="text-success">"200"</span><span class="text-info">&gt;</span></code></pre>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+             <div class="col-md-7">
+                <div class="p-4 bg-light border rounded shadow-sm h-100">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-image me-2 text-primary"></i>Essential Image Attributes:</h5>
+                    <ul class="text-secondary mb-0">
+                        <li class="mb-3"><code>src</code>: (Source) The path or URL to the image file.</li>
+                        <li class="mb-3"><code>alt</code>: (Alternative text) Text displayed if the image fails to load. Critical for visually impaired users using screen readers!</li>
+                        <li><code>width / height</code>: Defines the size of the image in pixels. (Often controlled by CSS later).</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="col-md-5">
+                 <div class="p-4 bg-white border border-primary border-opacity-25 rounded shadow-sm d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                     <span class="text-muted small mb-3 text-uppercase fw-bold letter-spacing-1">Browser Preview</span>
+                     <div class="bg-light rounded-circle border d-flex align-items-center justify-content-center text-primary shadow-sm" style="width: 100px; height: 100px;">
+                         <i class="bi bi-person-circle" style="font-size: 4rem;"></i>
+                     </div>
+                     <p class="mt-3 text-muted small fst-italic">"profile.jpg"</p>
+                 </div>
+             </div>
+        </div>
+        
+        <div class="alert alert-info border-0 shadow-sm border-start border-4 border-info d-flex align-items-start">
+            <i class="bi bi-info-circle-fill fs-5 me-3 text-info mt-1"></i>
+            <div>
+                <strong class="d-block mb-1">What is an "Empty Element"?</strong>
+                Unlike paragraphs (<code>&lt;p&gt;&lt;/p&gt;</code>) which wrap around text, an image tag doesn't wrap around anything. It just drops an image onto the page. Therefore, it doesn't need a closing <code>&lt;/img&gt;</code> tag. Elements like this are called empty elements or void elements.
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">8</span>
+            <h2 class="fw-bold mb-0">Peek Behind the Curtain</h2>
+        </div>
+        
+        <div class="p-4 p-md-5 bg-dark text-white rounded-4 shadow-sm position-relative overflow-hidden mt-4">
+            <i class="bi bi-incognito position-absolute text-white opacity-10" style="font-size: 12rem; right: -10px; bottom: -20px;"></i>
+            
+            <div class="position-relative z-1">
+                <h4 class="fw-bold mb-3 text-info"><i class="bi bi-search me-2"></i>How to View HTML Source Code</h4>
+                <p class="text-light text-opacity-75 fs-5 mb-4">Have you ever seen a webpage and wondered, <em>"Hey, how did they do that?"</em> You can actually read the HTML of any website on the internet!</p>
+                
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="bg-black bg-opacity-25 p-4 rounded border border-secondary border-opacity-25 h-100">
+                            <h5 class="fw-bold text-white mb-3">View Page Source</h5>
+                            <p class="text-secondary mb-0">Right-click on an empty space in any webpage and select <strong>"View Page Source"</strong> (in Chrome) or <strong>"View Source"</strong> (in Edge/Firefox). This will open a new window containing the raw HTML code of the page.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="bg-black bg-opacity-25 p-4 rounded border border-secondary border-opacity-25 h-100">
+                            <h5 class="fw-bold text-white mb-3">Inspect an HTML Element</h5>
+                            <p class="text-secondary mb-0">Right-click on any specific image, button, or text and select <strong>"Inspect"</strong>. This opens developer tools and shows you the exact HTML tag and CSS used to build that specific part of the page!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-4 p-md-5 bg-gradient border border-primary border-opacity-25 rounded-4 shadow-sm position-relative overflow-hidden mt-5" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);">
+        <i class="bi bi-trophy position-absolute text-success opacity-10" style="font-size: 15rem; right: -20px; bottom: -50px; transform: rotate(15deg);"></i>
+        
+        <div class="position-relative z-1 text-center">
+            <div class="mb-4 d-flex justify-content-center">
+                <div class="bg-white p-3 rounded-circle shadow-sm">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                </div>
+            </div>
+            <h2 class="fw-bold text-success mb-3">Massive Progress Achieved!</h2>
+            <p class="text-dark text-opacity-75 fs-5 max-w-2xl mx-auto mb-4">
+                You've just learned the foundational tags that make up over 90% of the text, links, rules, and images on the internet. Take a breath, you are officially writing real HTML.
+            </p>
+        </div>
+    </div>
+</div>

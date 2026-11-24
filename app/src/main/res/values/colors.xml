@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="fosfle_navy">#001240</color>
+    <color name="fosfle_cobalt">#1D5BFF</color>
+    <color name="fosfle_paper">#F7F8FA</color>
+    <color name="fosfle_surface_dark">#0B1020</color>
+    <color name="fosfle_ink">#0B1226</color>
+    <color name="ic_launcher_background">#001240</color>
+</resources>

@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Favicon · The Identity Forge</title>
+
+    <!-- External Resources -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ── GLOBAL VARIABLES ── */
+        :root {
+            --ink: #18181b;
+            --ink-mid: #3f3f46;
+            --ink-light: #71717a;
+            --canvas: #fafafa;
+            --canvas-warm: #f4f4f5;
+            --border: #e4e4e7;
+            --accent-primary: #8b5cf6; /* Violet */
+            --accent-secondary: #d946ef; /* Fuchsia */
+            --accent-success: #10b981;
+            --accent-warn: #f59e0b;
+            --accent-danger: #f43f5e;
+            --focus-ring: rgba(139, 92, 246, 0.4);
+            --transition-speed: 0.3s;
+        }
+
+        /* ── RESET & BASE STYLES ── */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+
+        body {
+            background-color: var(--canvas);
+            font-family: 'DM Sans', system-ui, sans-serif;
+            color: var(--ink);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Focus Accessibility */
+        :focus-visible {
+            outline: 3px solid var(--accent-primary);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* ── TYPOGRAPHY & SECTIONS ── */
+        .sec-num {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 0.75rem;
+            font-style: italic;
+            letter-spacing: 0.15em;
+            color: var(--ink-light);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .sec-num::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .sec-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            color: var(--ink);
+            margin-bottom: 16px;
+            line-height: 1.25;
+        }
+
+        .sec-body {
+            font-size: 1.05rem;
+            color: var(--ink-mid);
+            max-width: 720px;
+        }
+
+        section {
+            padding: 64px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        /* ── HERO SECTION ── */
+        .hero {
+            background: var(--ink);
+            color: #fff;
+            padding: 80px 40px;
+            border-radius: 20px;
+            margin-bottom: 64px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(24, 24, 27, 0.15);
+        }
+
+        .hero-graphics {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+            opacity: 0.95;
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .hero:hover .hero-graphics {
+            transform: scale(1.02) translateX(10px);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 6px 16px;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            font-family: 'DM Mono', monospace;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 24px;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 560px;
+        }
+
+        /* ── CODE BLOCKS & PREVIEWS ── */
+        .code-block {
+            background: #09090b; /* Very dark */
+            border-radius: 12px;
+            overflow: hidden;
+            font-family: 'DM Mono', monospace;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .code-block-head {
+            background: #18181b;
+            padding: 12px 20px;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .code-block pre {
+            margin: 0;
+            padding: 24px 20px;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #f4f4f5;
+            overflow-x: auto;
+            flex-grow: 1;
+        }
+
+        /* Syntax Highlighting Colors */
+        .cm-tag { color: #f43f5e; } /* Rose */
+        .cm-attr { color: #38bdf8; } /* Sky Blue */
+        .cm-val { color: #a3e635; } /* Lime */
+        .cm-cmt { color: #a1a1aa; font-style: italic; }
+        .cm-text { color: #e4e4e7; }
+
+        .preview-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-card-head {
+            background: var(--canvas-warm);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 20px;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: var(--ink-light);
+            text-transform: uppercase;
+            font-family: 'DM Mono', monospace;
+        }
+
+        .preview-card-body {
+            padding: 32px 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #e4e4e7;
+            transition: background 0.3s ease;
+        }
+
+        /* Mock Browser Tab */
+        .mock-browser-bar {
+            width: 100%;
+            background: #d4d4d8; /* Light theme default */
+            border-radius: 8px 8px 0 0;
+            padding: 8px 8px 0 8px;
+            display: flex;
+            gap: 4px;
+            transition: all 0.3s ease;
+        }
+        .mock-tab {
+            background: #fff;
+            padding: 8px 16px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #3f3f46;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            min-width: 150px;
+            max-width: 250px;
+            transition: all 0.3s ease;
+        }
+        .mock-tab-icon {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+            display: inline-block;
+        }
+        .mock-browser-body {
+            width: 100%;
+            background: #fff;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+            text-align: left;
+            border-top: 1px solid #e4e4e7;
+            font-size: 0.9rem;
+            color: #71717a;
+            transition: all 0.3s ease;
+        }
+
+        /* Dark Mode Mock Browser */
+        .preview-card-body.dark-mode { background: #27272a; }
+        .preview-card-body.dark-mode .mock-browser-bar { background: #000; }
+        .preview-card-body.dark-mode .mock-tab { background: #18181b; color: #e4e4e7; box-shadow: 0 -2px 10px rgba(0,0,0,0.5); }
+        .preview-card-body.dark-mode .mock-browser-body { background: #18181b; color: #a1a1aa; border-color: #3f3f46; }
+        .preview-card-body.dark-mode .mock-browser-body strong { color: #f4f4f5 !important; }
+
+        /* ── ALERT VARIANTS ── */
+        .tip-box {
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin: 24px 0;
+            transition: transform 0.2s ease;
+        }
+
+        .tip-box:hover {
+            transform: translateY(-2px);
+        }
+
+        .tip-box-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .tip-box-body { flex: 1; }
+        .tip-box-body strong { display: block; margin-bottom: 6px; color: var(--ink); font-size: 1.1rem; }
+        
+        .tip-info { background: #f5f3ff; border: 1px solid #ddd6fe; }
+        .tip-warn { background: #fef3c7; border: 1px solid #fde68a; }
+        .tip-ok { background: #ecfdf5; border: 1px solid #a7f3d0; }
+
+        /* ── INTERACTIVE PLAYGROUND ── */
+        .mixer-shell {
+            background: var(--ink);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(24, 24, 27, 0.4);
+            color: #fff;
+        }
+
+        .mixer-head {
+            background: #09090b; 
+            padding: 20px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mixer-title {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .mixer-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .playground-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            min-height: 400px;
+        }
+
+        .controls-sidebar {
+            background: rgba(255, 255, 255, 0.02);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 24px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group:last-child { margin-bottom: 0; }
+
+        .control-label {
+            display: block;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+            font-family: 'DM Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pg-input, .pg-select {
+            width: 100%;
+            background: rgba(0,0,0,0.2);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .pg-input:focus, .pg-select:focus {
+            border-color: var(--accent-secondary);
+        }
+        .pg-select option { background: var(--ink); }
+
+        .preview-main {
+            display: flex;
+            flex-direction: column;
+            padding: 32px;
+            background: #27272a;
+        }
+
+        .preview-stage {
+            background: #f4f4f5;
+            border-radius: 12px;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            min-height: 200px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.3s ease;
+        }
+
+        .live-code-panel {
+            margin-top: 24px;
+            background: #09090b;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+        
+        .live-code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            background: #18181b;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .live-code-title {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .btn-action {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-action:hover { background: rgba(255,255,255,0.2); }
+        .btn-action.primary { background: var(--accent-primary); }
+        .btn-action.primary:hover { background: #7c3aed; }
+
+        .live-code-content {
+            padding: 16px;
+            margin: 0;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.9rem;
+            color: #f8fafc;
+            white-space: pre-wrap;
+        }
+
+        /* ── SUMMARY ── */
+        .summary-shell {
+            background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
+            border-radius: 20px;
+            padding: 64px 40px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        .summary-shell::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(217, 70, 239, 0.15) 100%);
+            pointer-events: none;
+        }
+        .summary-shell > * { position: relative; z-index: 1; }
+        .summary-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 10px;
+        }
+        .summary-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.2s ease;
+        }
+        .summary-item:hover { transform: translateX(5px); }
+        .summary-item:last-child { border-bottom: none; }
+        .summary-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            margin-top: 8px;
+            flex-shrink: 0;
+            background: var(--accent-secondary);
+            box-shadow: 0 0 10px var(--accent-secondary);
+        }
+        .summary-item p { margin: 0; color: rgba(255, 255, 255, 0.85); font-size: 1rem; }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animation-fade-in { animation: fadeUp 0.8s ease-out forwards; }
+
+        /* ── RESPONSIVE STYLES ── */
+        @media (max-width: 992px) {
+            .playground-layout { grid-template-columns: 1fr; }
+            .controls-sidebar { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .preview-stage { min-height: 200px; }
+        }
+        @media (max-width: 768px) {
+            .hero-graphics { display: none; }
+            .hero { padding: 48px 24px; text-align: center; }
+            .hero-sub { margin: 0 auto; }
+            .summary-shell { padding: 40px 24px; }
+            section { padding: 48px 0; }
+        }
+    </style>
+
+<link rel="stylesheet" href="../../../css/fosfle-lesson-bridge.css" />
+<script src="../../../js/fosfle-lesson-bridge.js"></script>
+</head>
+<body class="py-4 px-3 px-md-4">
+
+<main class="container animation-fade-in" style="max-width: 1000px;">
+
+    <!-- HERO SECTION -->
+    <header class="hero mb-5" role="banner">
+        <div class="hero-graphics" aria-hidden="true">
+            <i class="bi bi-browser-chrome" style="font-size: 12rem; color: rgba(255,255,255,0.1); transform: rotate(15deg) translateY(-20px);"></i>
+        </div>
+        <div style="position:relative; z-index:1;">
+            <div class="hero-badge">Module 1 · Chapter 16 · HTML Favicon</div>
+            <h1 class="hero-title">The Identity<br>Forge</h1>
+            <p class="hero-sub">
+                Small icon, massive impact. Learn how to add a Favicon to brand your website's browser tab, bookmarks, and mobile home screens.
+            </p>
+        </div>
+    </header>
+
+    <!-- SECTION 1: WHAT IS A FAVICON -->
+    <section id="what-is-favicon" aria-labelledby="sec1-title">
+        <div class="sec-num" aria-hidden="true">Section 01</div>
+        <h2 id="sec1-title" class="sec-title">What is a Favicon?</h2>
+        <p class="sec-body mb-4">
+            A favicon (short for "favorite icon") is a small image displayed next to the page title in the browser tab. It is also used when a user saves your webpage as a bookmark or adds it to their mobile home screen.
+        </p>
+        <p class="sec-body mb-4">
+            Having a recognizable favicon is essential for branding and helps users quickly locate your website when they have dozens of tabs open.
+        </p>
+
+        <div class="tip-box tip-info" role="note">
+            <div class="tip-box-icon" aria-hidden="true">💡</div>
+            <div class="tip-box-body">
+                <strong>Size Matters</strong>
+                Because favicons are displayed so small, they should be simple, high-contrast, and recognizable even at 16x16 pixels. Don't use complex photos or long words!
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: ADDING A FAVICON -->
+    <section id="adding-favicon" aria-labelledby="sec2-title">
+        <div class="sec-num" aria-hidden="true">Section 02</div>
+        <h2 id="sec2-title" class="sec-title">How to Add a Favicon</h2>
+        <p class="sec-body mb-4">
+            To add a favicon to your website, you need to save an image file (like <code>favicon.ico</code> or <code>logo.png</code>) to your website folder and add a <code>&lt;link&gt;</code> tag inside the <code>&lt;head&gt;</code> section of your HTML document.
+        </p>
+
+        <div class="row g-4 align-items-stretch mb-4">
+            <div class="col-lg-7">
+                <div class="code-block">
+                    <div class="code-block-head"><span>Example: index.html</span><span>HTML</span></div>
+                    <pre><code><span class="cm-tag">&lt;!DOCTYPE html&gt;</span>
+<span class="cm-tag">&lt;html&gt;</span>
+<span class="cm-tag">&lt;head&gt;</span>
+  <span class="cm-tag">&lt;title&gt;</span><span class="cm-text">My Awesome Website</span><span class="cm-tag">&lt;/title&gt;</span>
+  <span class="cm-cmt">&lt;!-- Favicon Link --&gt;</span>
+  <span class="cm-tag">&lt;link</span> <span class="cm-attr">rel</span>=<span class="cm-val">"icon"</span> <span class="cm-attr">type</span>=<span class="cm-val">"image/png"</span> <span class="cm-attr">href</span>=<span class="cm-val">"/images/favicon.png"</span><span class="cm-tag">&gt;</span>
+<span class="cm-tag">&lt;/head&gt;</span>
+<span class="cm-tag">&lt;body&gt;</span>
+  <span class="cm-tag">&lt;h1&gt;</span><span class="cm-text">Welcome to my website</span><span class="cm-tag">&lt;/h1&gt;</span>
+<span class="cm-tag">&lt;/body&gt;</span>
+<span class="cm-tag">&lt;/html&gt;</span></code></pre>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="preview-card h-100">
+                    <div class="preview-card-head">Browser Tab Output</div>
+                    <div class="preview-card-body p-0">
+                        <div style="width:100%; padding:20px; display:flex; justify-content:center;">
+                            <div style="width:100%; max-width:280px; background:#d4d4d8; border-radius:8px 8px 0 0; padding:8px 8px 0 8px; display:flex;">
+                                <div style="background:#fff; padding:6px 14px; border-radius:6px 6px 0 0; display:flex; align-items:center; gap:8px; font-size:0.8rem; font-family:sans-serif; color:#3f3f46; box-shadow:0 -2px 10px rgba(0,0,0,0.05); flex-grow:1;">
+                                    <div style="width:14px; height:14px; background:var(--accent-primary); border-radius:3px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:bold; font-size:10px;">M</div>
+                                    My Awesome Web...
+                                    <i class="bi bi-x" style="margin-left:auto; color:#a1a1aa;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: The Cache Trick -->
+        <div class="tip-box tip-warn" role="note">
+            <div class="tip-box-icon" aria-hidden="true">⚠️</div>
+            <div class="tip-box-body">
+                <strong>The Developer's Nightmare: Caching</strong>
+                Browsers "remember" (cache) favicons very aggressively. If you change your favicon file but still see the old one, the browser is tricking you!
+                <br><br>
+                <strong>The Fix:</strong> Add a version parameter to the end of your file path, like this: <code>href="/images/favicon.png?v=2"</code>. This forces the browser to download the new version.
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: IMAGE FORMATS -->
+    <section id="image-formats" aria-labelledby="sec3-title">
+        <div class="sec-num" aria-hidden="true">Section 03</div>
+        <h2 id="sec3-title" class="sec-title">Supported Image Formats</h2>
+        <p class="sec-body mb-4">
+            Historically, all favicons had to be in the <code>.ico</code> format. Today, modern browsers support several different image formats for favicons.
+        </p>
+
+        <div class="table-responsive mb-4">
+            <table class="comparison-table">
+                <caption class="visually-hidden">Supported Favicon Image Formats</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Format</th>
+                        <th scope="col">Type Attribute</th>
+                        <th scope="col">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>.ico</strong></td>
+                        <td><code>type="image/x-icon"</code></td>
+                        <td>The classic format. Supported by every browser, even very old ones. Often used as a fallback.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>.png</strong></td>
+                        <td><code>type="image/png"</code></td>
+                        <td>The most popular format today. Supports beautiful transparency and high resolution.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>.svg</strong></td>
+                        <td><code>type="image/svg+xml"</code></td>
+                        <td>Vector graphics! Scales perfectly to any size without getting blurry. Supported by modern browsers.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tip-box tip-ok" role="note">
+            <div class="tip-box-icon" aria-hidden="true">🪄</div>
+            <div class="tip-box-body">
+                <strong>Emojis as Favicons!</strong>
+                Because modern browsers support SVG files, you can actually use a trick to set an Emoji as your favicon by putting the emoji inside an SVG data URL! Try it out in the Interactive Playground below.
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: MODERN FAVICONS & GENERATORS -->
+    <section id="generators" aria-labelledby="sec4-title">
+        <div class="sec-num" aria-hidden="true">Section 04</div>
+        <h2 id="sec4-title" class="sec-title">Modern Favicons & Generators</h2>
+        <p class="sec-body mb-4">
+            Today, a single 16x16 pixel <code>favicon.ico</code> isn't enough. Users might bookmark your website, add it to their iPhone home screen, or pin it on a Windows tablet. Different devices require different icon sizes and formats.
+        </p>
+        <ul class="sec-body mb-4">
+            <li><strong>16x16 & 32x32:</strong> Standard desktop browser tabs.</li>
+            <li><strong>180x180:</strong> Used for the Apple Touch Icon (when users save your site to an iOS device).</li>
+            <li><strong>192x192 & 512x512:</strong> Used in Web Manifests for Android devices.</li>
+        </ul>
+        <p class="sec-body mb-4">
+            Instead of making all these sizes by hand, professional developers use tools like <a href="https://realfavicongenerator.net/" target="_blank" style="color:var(--accent-primary); font-weight:600; text-decoration:none;">RealFaviconGenerator.net</a>. You simply upload one high-quality, square image (like 512x512 pixels), and the tool automatically generates all the required images and the exact HTML code you need!
+        </p>
+
+        <div class="code-block">
+            <div class="code-block-head"><span>Output from RealFaviconGenerator</span><span>HTML</span></div>
+            <pre><code><span class="cm-cmt">&lt;!-- A modern, fully-equipped Favicon setup --&gt;</span>
+<span class="cm-tag">&lt;link</span> <span class="cm-attr">rel</span>=<span class="cm-val">"apple-touch-icon"</span> <span class="cm-attr">sizes</span>=<span class="cm-val">"180x180"</span> <span class="cm-attr">href</span>=<span class="cm-val">"/apple-touch-icon.png"</span><span class="cm-tag">&gt;</span>
+<span class="cm-tag">&lt;link</span> <span class="cm-attr">rel</span>=<span class="cm-val">"icon"</span> <span class="cm-attr">type</span>=<span class="cm-val">"image/png"</span> <span class="cm-attr">sizes</span>=<span class="cm-val">"32x32"</span> <span class="cm-attr">href</span>=<span class="cm-val">"/favicon-32x32.png"</span><span class="cm-tag">&gt;</span>
+<span class="cm-tag">&lt;link</span> <span class="cm-attr">rel</span>=<span class="cm-val">"icon"</span> <span class="cm-attr">type</span>=<span class="cm-val">"image/png"</span> <span class="cm-attr">sizes</span>=<span class="cm-val">"16x16"</span> <span class="cm-attr">href</span>=<span class="cm-val">"/favicon-16x16.png"</span><span class="cm-tag">&gt;</span>
+<span class="cm-tag">&lt;link</span> <span class="cm-attr">rel</span>=<span class="cm-val">"manifest"</span> <span class="cm-attr">href</span>=<span class="cm-val">"/site.webmanifest"</span><span class="cm-tag">&gt;</span>
+<span class="cm-tag">&lt;meta</span> <span class="cm-attr">name</span>=<span class="cm-val">"theme-color"</span> <span class="cm-attr">content</span>=<span class="cm-val">"#ffffff"</span><span class="cm-tag">&gt;</span></code></pre>
+        </div>
+    </section>
+
+    <!-- SECTION 5: INTERACTIVE PLAYGROUND -->
+    <section id="interactive-playground" aria-labelledby="sec5-title">
+        <div class="sec-num" aria-hidden="true">Section 05 · Interactive</div>
+        <h2 id="sec5-title" class="sec-title">The Tab Simulator</h2>
+        <p class="sec-body mb-5">
+            Test different icon styles and page titles to see how your brand will look in a user's browser tab. Toggle the Browser Theme to ensure your icon looks good in both Light and Dark mode!
+        </p>
+
+        <div class="mixer-shell">
+            <div class="mixer-head">
+                <span class="mixer-title">Favicon Generator</span>
+                <span class="mixer-badge" aria-label="Interactive Content">Live Builder</span>
+            </div>
+            
+            <div class="playground-layout">
+                <!-- SIDEBAR CONTROLS -->
+                <aside class="controls-sidebar" aria-label="Favicon Controls">
+                    <form id="playground-form">
+                        
+                        <!-- Page Title -->
+                        <div class="control-group">
+                            <label class="control-label" for="pg-title">Page Title</label>
+                            <input type="text" id="pg-title" class="pg-input" value="The Identity Forge" placeholder="Text inside the tab">
+                        </div>
+
+                        <!-- Browser Theme Toggle (NEW) -->
+                        <div class="control-group border-top border-secondary pt-3 mt-4">
+                            <label class="control-label" for="pg-theme">Browser Theme Preview</label>
+                            <select id="pg-theme" class="pg-select">
+                                <option value="light">Light Mode</option>
+                                <option value="dark">Dark Mode</option>
+                            </select>
+                        </div>
+
+                        <!-- Icon Mode -->
+                        <div class="control-group border-top border-secondary pt-3 mt-4">
+                            <label class="control-label" for="pg-mode">Icon Format</label>
+                            <select id="pg-mode" class="pg-select">
+                                <option value="png">PNG / Classic Image</option>
+                                <option value="emoji">Emoji (SVG Trick)</option>
+                            </select>
+                        </div>
+
+                        <!-- Content based on Mode -->
+                        <div id="mode-png-group" class="control-group">
+                            <label class="control-label" for="pg-png">Select Graphic</label>
+                            <select id="pg-png" class="pg-select">
+                                <option value="https://cdn-icons-png.flaticon.com/512/732/732212.png">HTML5 Shield (Color)</option>
+                                <option value="https://cdn-icons-png.flaticon.com/512/25/25231.png">GitHub Logo (Black)</option>
+                                <option value="https://cdn-icons-png.flaticon.com/512/732/732190.png">CSS3 Shield (Color)</option>
+                            </select>
+                        </div>
+
+                        <div id="mode-emoji-group" class="control-group" style="display:none;">
+                            <label class="control-label" for="pg-emoji">Type one Emoji</label>
+                            <input type="text" id="pg-emoji" class="pg-input" value="🔥" maxlength="2">
+                        </div>
+
+                    </form>
+                </aside>
+
+                <!-- MAIN PREVIEW & OUTPUT -->
+                <main class="preview-main">
+                    
+                    <div class="preview-stage" id="preview-stage-container" aria-label="Live Preview Area">
+                        
+                        <div style="width:100%; max-width:400px;">
+                            <!-- Mock Browser Bar -->
+                            <div class="mock-browser-bar" id="mock-browser-bar">
+                                <!-- Background Tab -->
+                                <div class="mock-tab" id="mock-tab-bg" style="background:transparent; color:#71717a; min-width:50px; box-shadow:none; flex-shrink:1;">
+                                    <i class="bi bi-google"></i>
+                                </div>
+                                
+                                <!-- Active Mock Tab -->
+                                <div class="mock-tab" id="mock-tab-active">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/732/732212.png" alt="Favicon" id="mock-icon" class="mock-tab-icon">
+                                    <span id="mock-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">The Identity Forge</span>
+                                    <i class="bi bi-x" style="margin-left:auto; color:#a1a1aa; cursor:pointer;"></i>
+                                </div>
+                                
+                                <!-- Add Tab Button -->
+                                <div style="display:flex; align-items:center; justify-content:center; width:30px; color:#a1a1aa;">
+                                    <i class="bi bi-plus-lg"></i>
+                                </div>
+                            </div>
+                            <!-- Mock Browser Body -->
+                            <div class="mock-browser-body" id="mock-browser-body">
+                                <strong style="color:var(--ink); font-size:1.1rem;" id="mock-body-title">The Identity Forge</strong>
+                                <p style="margin-top:8px;">Welcome to your live webpage. Notice how the tab above represents your site!</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="live-code-panel">
+                        <div class="live-code-header">
+                            <span class="live-code-title">Generated &lt;head&gt; Code</span>
+                            <div class="live-code-actions">
+                                <button type="button" id="btn-copy" class="btn-action primary" aria-label="Copy HTML to Clipboard">
+                                    <i class="bi bi-clipboard" aria-hidden="true"></i> Copy
+                                </button>
+                            </div>
+                        </div>
+                        <pre class="live-code-content" id="html-output" aria-live="polite"></pre>
+                    </div>
+
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <!-- SUMMARY -->
+    <footer class="summary-shell mb-5" role="region" aria-labelledby="summary-title">
+        <div class="text-center mb-5">
+            <h2 id="summary-title" class="summary-title">Chapter Summary</h2>
+            <p style="color:rgba(255,255,255,0.6); font-style:italic; font-family:'DM Sans',sans-serif;">
+                Key takeaways from HTML Favicon
+            </p>
+        </div>
+        <div style="max-width:680px; margin:0 auto;">
+            <div class="summary-item">
+                <div class="summary-dot" aria-hidden="true"></div>
+                <p>A favicon is a small image displayed next to the page title in the browser tab.</p>
+            </div>
+            <div class="summary-item">
+                <div class="summary-dot" aria-hidden="true"></div>
+                <p>Use the HTML <code>&lt;link&gt;</code> element with <code>rel="icon"</code> to insert a favicon inside the <code>&lt;head&gt;</code> section.</p>
+            </div>
+            <div class="summary-item">
+                <div class="summary-dot" aria-hidden="true"></div>
+                <p>If the browser refuses to update your new favicon, append <code>?v=2</code> to the file path to bypass the browser's cache.</p>
+            </div>
+            <div class="summary-item">
+                <div class="summary-dot" aria-hidden="true"></div>
+                <p>Use tools like <strong>RealFaviconGenerator.net</strong> to easily create the multiple sizes required for iPhones, Androids, and Windows tiles.</p>
+            </div>
+        </div>
+    </footer>
+
+</main>
+
+<!-- JAVASCRIPT LOGIC -->
+<script>
+function initFaviconPlayground() {
+    console.log("Initializing Favicon Playground..."); 
+    
+    // DOM ELEMENTS
+    const mockIcon = document.getElementById('mock-icon');
+    const mockTitle = document.getElementById('mock-title');
+    const mockBodyTitle = document.getElementById('mock-body-title');
+    const htmlOutput = document.getElementById('html-output');
+    
+    // Theme Elements
+    const previewContainer = document.getElementById('preview-stage-container');
+    
+    // Inputs
+    const inputs = {
+        title: document.getElementById('pg-title'),
+        mode: document.getElementById('pg-mode'),
+        png: document.getElementById('pg-png'),
+        emoji: document.getElementById('pg-emoji'),
+        theme: document.getElementById('pg-theme')
+    };
+
+    // Groups
+    const groupPng = document.getElementById('mode-png-group');
+    const groupEmoji = document.getElementById('mode-emoji-group');
+
+    if (!mockIcon || !htmlOutput) return;
+
+    // EVENT LISTENERS
+    Object.values(inputs).forEach(input => {
+        if (!input) return;
+        if(input.tagName === 'SELECT') {
+            input.addEventListener('change', updateFavicon);
+        } else {
+            input.addEventListener('input', updateFavicon);
+        }
+    });
+
+    const btnCopy = document.getElementById('btn-copy');
+    if (btnCopy) btnCopy.addEventListener('click', copyHTML);
+    
+    const form = document.getElementById('playground-form');
+    if (form) form.addEventListener('submit', e => e.preventDefault());
+
+    // CORE FUNCTIONS
+    function updateFavicon() {
+        const titleText = inputs.title?.value || 'My Website';
+        const mode = inputs.mode?.value || 'png';
+        const theme = inputs.theme?.value || 'light';
+        
+        let iconUrl = '';
+        let generatedCode = '';
+
+        // Handle Theme Switching
+        if (theme === 'dark') {
+            previewContainer.classList.add('dark-mode');
+        } else {
+            previewContainer.classList.remove('dark-mode');
+        }
+
+        // Handle Mode Switching UI
+        if (mode === 'emoji') {
+            groupPng.style.display = 'none';
+            groupEmoji.style.display = 'block';
+            
+            const emojiChar = inputs.emoji?.value || '🔥';
+            // SVG Data URI trick for Emoji
+            iconUrl = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">${emojiChar}</text></svg>`;
+            
+        } else {
+            groupPng.style.display = 'block';
+            groupEmoji.style.display = 'none';
+            
+            iconUrl = inputs.png?.value || 'favicon.png';
+        }
+
+        // 1. Update Mock Tab
+        mockTitle.textContent = titleText;
+        mockBodyTitle.textContent = titleText;
+        mockIcon.src = iconUrl;
+
+        // 2. Generate Code Output
+        generatedCode = `<title>${escapeHTML(titleText)}</title>\n`;
+        
+        if (mode === 'emoji') {
+            generatedCode += `<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'&gt;&lt;text y='.9em' font-size='90'&gt;${escapeHTML(inputs.emoji?.value || '🔥')}&lt;/text&gt;&lt;/svg&gt;">`;
+        } else {
+            // For the code snippet, we show a clean relative path
+            let cleanPath = "/images/favicon.png";
+            if (inputs.png?.value.includes("25231")) cleanPath = "/images/github-logo.png";
+            if (inputs.png?.value.includes("732190")) cleanPath = "/images/css-shield.png";
+            
+            generatedCode += `<link rel="icon" type="image/png" href="${cleanPath}">`;
+        }
+
+        if (htmlOutput) htmlOutput.innerHTML = highlightSyntax(generatedCode);
+    }
+
+    function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag])
+        );
+    }
+
+    function highlightSyntax(codeStr) {
+        let highlighted = escapeHTML(codeStr);
+        
+        // Highlight tags
+        highlighted = highlighted.replace(/(&lt;\/?(?:title|link))/g, '<span class="cm-tag">$1</span>');
+        highlighted = highlighted.replace(/(&gt;)/g, '<span class="cm-tag">$1</span>');
+        
+        // Highlight attributes
+        highlighted = highlighted.replace(/(rel|type|href)=/g, '<span class="cm-attr">$1</span>=');
+        
+        // Highlight values ("...")
+        highlighted = highlighted.replace(/(&quot;.*?&quot;)/g, '<span class="cm-val">$1</span>');
+        
+        // Highlight single quotes (specifically for the SVG trick)
+        highlighted = highlighted.replace(/(&#39;.*?&#39;)/g, '<span class="cm-val">$1</span>');
+
+        // Extract and colorize inner text for title
+        highlighted = highlighted.replace(/(&lt;title&gt;)(.*?)(&lt;\/title&gt;)/g, '$1<span class="cm-text">$2</span>$3');
+
+        return highlighted;
+    }
+
+    function copyHTML() {
+        if (!htmlOutput) return;
+        // Get raw text without HTML spans
+        const rawCode = htmlOutput.textContent;
+        
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(rawCode).then(showCopySuccess).catch(err => fallbackCopy(rawCode));
+        } else {
+            fallbackCopy(rawCode);
+        }
+    }
+
+    function fallbackCopy(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            showCopySuccess();
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
+        document.body.removeChild(textarea);
+    }
+
+    function showCopySuccess() {
+        const btn = document.getElementById('btn-copy');
+        if (!btn) return;
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i> Copied!';
+        btn.style.backgroundColor = '#10b981'; // Success green
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.style.backgroundColor = '';
+        }, 2000);
+    }
+
+    // Initialize application immediately upon setup
+    updateFavicon();
+}
+
+// Ensure execution happens correctly regardless of when/how the file loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFaviconPlayground);
+} else {
+    initFaviconPlayground();
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,441 @@
+
+<link rel="stylesheet" href="../../../css/fosfle-lesson-bridge.css" />
+<script src="../../../js/fosfle-lesson-bridge.js"></script>
+<div class="container-fluid p-0 animation-fade-in">
+    <div class="p-5 bg-dark text-white rounded-4 shadow-sm mb-5 position-relative overflow-hidden">
+        <i class="bi bi-boxes position-absolute text-white opacity-10" style="font-size: 15rem; right: -30px; top: -30px; transform: rotate(-10deg);"></i>
+        <div class="position-relative z-1">
+            <span class="badge bg-primary mb-3 px-3 py-2 fw-semibold fs-6">Module 1 &bull; Chapter 4</span>
+            <h1 class="display-4 fw-bold mb-3">HTML Elements</h1>
+            <p class="lead text-light text-opacity-75 max-w-3xl">
+                An HTML document is made up of HTML elements. In this chapter, we will break down the anatomy of an element, how to nest them inside each other, and the golden rules of writing clean HTML code.
+            </p>
+        </div>
+    </div>
+    
+    <div class="mb-5 mt-5">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">1</span>
+            <h2 class="fw-bold mb-0">What is an HTML Element?</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">An HTML element is defined by a start tag, some content, and an end tag.</p>
+        
+        <div class="card bg-white border border-primary border-opacity-25 shadow-sm p-4 p-md-5 mb-4 rounded-4 text-center">
+            <h4 class="font-monospace fw-bold mb-4 d-flex flex-wrap justify-content-center align-items-center gap-2" style="font-size: 1.5rem;">
+                <span class="bg-primary text-white px-3 py-2 rounded shadow-sm">&lt;tagname&gt;</span>
+                <span class="text-dark border-bottom border-2 border-dark px-2">Content goes here...</span>
+                <span class="bg-danger text-white px-3 py-2 rounded shadow-sm">&lt;/tagname&gt;</span>
+            </h4>
+            <p class="text-muted fst-italic mb-0">The HTML element is <strong>everything</strong> from the start tag to the end tag.</p>
+        </div>
+
+        <div class="table-responsive shadow-sm rounded-3 border">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-light text-uppercase small fw-bold">
+                    <tr>
+                        <th class="py-3 px-4">Start Tag</th>
+                        <th class="py-3 px-4">Element Content</th>
+                        <th class="py-3 px-4">End Tag</th>
+                    </tr>
+                </thead>
+                <tbody class="font-monospace" style="font-size: 0.95rem;">
+                    <tr>
+                        <td class="py-3 px-4 text-primary fw-bold">&lt;h1&gt;</td>
+                        <td class="py-3 px-4 text-dark">My First Heading</td>
+                        <td class="py-3 px-4 text-danger fw-bold">&lt;/h1&gt;</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-primary fw-bold">&lt;p&gt;</td>
+                        <td class="py-3 px-4 text-dark">My first paragraph.</td>
+                        <td class="py-3 px-4 text-danger fw-bold">&lt;/p&gt;</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-primary fw-bold">&lt;button&gt;</td>
+                        <td class="py-3 px-4 text-dark">Click Me!</td>
+                        <td class="py-3 px-4 text-danger fw-bold">&lt;/button&gt;</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-primary fw-bold">&lt;br&gt;</td>
+                        <td class="py-3 px-4 text-muted fst-italic">none (Empty Element)</td>
+                        <td class="py-3 px-4 text-muted fst-italic">none</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">2</span>
+            <h2 class="fw-bold mb-0">Nested HTML Elements</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">HTML elements can be nested (this means that elements can contain other elements). All HTML documents consist of nested HTML elements.</p>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card bg-dark text-light border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-header bg-black border-0 py-3 d-flex justify-content-between align-items-center">
+                        <span class="badge bg-secondary px-3 py-2"><i class="bi bi-diagram-3 me-1"></i> nesting.html</span>
+                    </div>
+                    <div class="card-body font-monospace" style="font-size: 0.95rem;">
+<pre class="m-0 text-white"><code><span class="text-secondary">&lt;!DOCTYPE html&gt;</span>
+<span class="text-primary">&lt;html&gt;</span>
+<span class="text-warning">&lt;body&gt;</span>
+
+  <span class="text-info">&lt;h1&gt;</span>My First Heading<span class="text-info">&lt;/h1&gt;</span>
+  <span class="text-info">&lt;p&gt;</span>My first paragraph.<span class="text-info">&lt;/p&gt;</span>
+  
+  <span class="text-success">&lt;div&gt;</span>
+    <span class="text-info">&lt;p&gt;</span>A paragraph inside a div!<span class="text-info">&lt;/p&gt;</span>
+  <span class="text-success">&lt;/div&gt;</span>
+
+<span class="text-warning">&lt;/body&gt;</span>
+<span class="text-primary">&lt;/html&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm bg-light h-100 p-4">
+                    <h5 class="fw-bold mb-3 text-dark border-bottom pb-2">Nesting Breakdown:</h5>
+                    <div class="d-flex flex-column gap-3">
+                        <div class="p-3 bg-white border border-primary border-opacity-25 rounded shadow-sm">
+                            <strong class="text-primary">&lt;html&gt;</strong> element is the root element. It contains the entire document.
+                        </div>
+                        <div class="p-3 bg-white border border-warning border-opacity-50 rounded shadow-sm ms-3">
+                            <strong class="text-warning">&lt;body&gt;</strong> element defines the document's body. It contains the <code>&lt;h1&gt;</code>, the first <code>&lt;p&gt;</code>, and the <code>&lt;div&gt;</code>.
+                        </div>
+                        <div class="p-3 bg-white border border-success border-opacity-50 rounded shadow-sm ms-4">
+                            <strong class="text-success">&lt;div&gt;</strong> is a container element. It contains another <code>&lt;p&gt;</code> inside of it!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">3</span>
+            <h2 class="fw-bold mb-0">The HTML Family Tree</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">Because elements are nested inside one another, developers use family terms to describe their relationships. This is crucial for when you start styling with CSS or writing JavaScript!</p>
+        
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div class="p-4 bg-white border rounded-4 shadow-sm h-100">
+                    <i class="bi bi-person-fill display-4 text-primary mb-3"></i>
+                    <h4 class="fw-bold">Parents</h4>
+                    <p class="text-muted mb-0">An element that contains another element is the <strong>Parent</strong>. (e.g., The <code>&lt;body&gt;</code> is the parent of the <code>&lt;h1&gt;</code>).</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white border rounded-4 shadow-sm h-100">
+                    <i class="bi bi-person-badge display-4 text-success mb-3"></i>
+                    <h4 class="fw-bold">Children</h4>
+                    <p class="text-muted mb-0">An element inside another element is a <strong>Child</strong>. (e.g., The <code>&lt;h1&gt;</code> is a child of the <code>&lt;body&gt;</code>).</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white border rounded-4 shadow-sm h-100">
+                    <i class="bi bi-people-fill display-4 text-warning mb-3"></i>
+                    <h4 class="fw-bold">Siblings</h4>
+                    <p class="text-muted mb-0">Elements that share the exact same parent are <strong>Siblings</strong>. (e.g., An <code>&lt;h1&gt;</code> and a <code>&lt;p&gt;</code> sitting next to each other).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">4</span>
+            <h2 class="fw-bold mb-0">Never Skip the End Tag!</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">Some HTML elements will display correctly even if you forget the end tag. For example:</p>
+        
+        <div class="card bg-dark text-light border-0 shadow-sm mb-4">
+            <div class="card-body font-monospace">
+<pre class="m-0 text-white"><code><span class="text-primary">&lt;html&gt;</span>
+<span class="text-warning">&lt;body&gt;</span>
+
+<span class="text-info">&lt;p&gt;</span>This is a paragraph
+<span class="text-info">&lt;p&gt;</span>This is a paragraph
+
+<span class="text-warning">&lt;/body&gt;</span>
+<span class="text-primary">&lt;/html&gt;</span></code></pre>
+            </div>
+        </div>
+
+        <div class="alert alert-danger border-0 shadow-sm border-start border-4 border-danger d-flex align-items-start p-4 bg-danger bg-opacity-10">
+            <i class="bi bi-sign-stop-fill display-5 me-4 text-danger mt-1"></i>
+            <div>
+                <strong class="d-block mb-2 fs-5 text-danger">However, never rely on this!</strong>
+                <p class="mb-0 text-dark">Unexpected results and extreme formatting errors can occur if you forget the end tag. Modern browsers try their best to "fix" your mistakes automatically, but relying on the browser to guess what you meant is a guaranteed way to break a complex website layout.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">5</span>
+            <h2 class="fw-bold mb-0">Empty HTML Elements</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">HTML elements with no content are called <strong>empty elements</strong>. Because they hold no text or children, they do not need a closing tag.</p>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card bg-light border-0 shadow-sm h-100 p-4 text-center">
+                    <h3 class="text-primary font-monospace fw-bold mb-3">&lt;br&gt;</h3>
+                    <p class="text-muted mb-0">Creates a line break. Forces text to the next line without creating a new paragraph.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-light border-0 shadow-sm h-100 p-4 text-center">
+                    <h3 class="text-primary font-monospace fw-bold mb-3">&lt;hr&gt;</h3>
+                    <p class="text-muted mb-0">Creates a horizontal rule. Draws a visible dividing line across the webpage.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-light border-0 shadow-sm h-100 p-4 text-center">
+                    <h3 class="text-primary font-monospace fw-bold mb-3">&lt;img&gt;</h3>
+                    <p class="text-muted mb-0">Embeds an image. It uses attributes to point to the picture file.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">6</span>
+            <h2 class="fw-bold mb-0">HTML is Not Case Sensitive</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">HTML tags are not case sensitive: <code>&lt;P&gt;</code> means the exact same thing as <code>&lt;p&gt;</code>.</p>
+        
+        <div class="alert alert-success border-0 shadow-sm border-start border-4 border-success d-flex align-items-start p-4">
+            <i class="bi bi-shield-check display-6 me-4 text-success mt-1"></i>
+            <div>
+                <strong class="d-block mb-2 fs-5 text-success">Best Practice: Always Use Lowercase</strong>
+                <p class="mb-0 text-dark">The HTML standard does not require lowercase tags, but the W3C (World Wide Web Consortium) <strong>recommends</strong> lowercase in HTML, and <strong>demands</strong> lowercase for stricter document types like XHTML. In the professional world, developers strictly write HTML tags in lowercase.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-4 border-top">
+        <div class="d-flex align-items-center mb-3">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px; font-size: 1.25rem; font-weight: bold;">7</span>
+            <h2 class="fw-bold mb-0">Sneak Peek: Attributes</h2>
+        </div>
+        
+        <p class="text-secondary fs-5 mb-4">If elements are the building blocks, <strong>Attributes</strong> are the settings. You place attributes inside the start tag to give the element extra powers (like telling an <code>&lt;a&gt;</code> tag where to link to). We will cover this next!</p>
+        
+        <div class="p-3 bg-dark text-white rounded shadow-sm font-monospace text-center fs-5">
+            &lt;a <span class="text-warning">href="https://fosfle.netlify.app"</span>&gt;Click Me!&lt;/a&gt;
+        </div>
+    </div>
+
+    <div class="mb-5 mt-5 pt-5 border-top animation-fade-in" id="html-reference">
+    <div class="text-center mb-5">
+        <span class="badge bg-dark px-3 py-2 fw-semibold fs-6 mb-3"><i class="bi bi-book me-1"></i> Reference Appendix</span>
+        <h2 class="display-5 fw-bold mb-3">The Ultimate HTML Tag List</h2>
+        <p class="text-secondary fs-5 max-w-3xl mx-auto">
+            A complete cheat sheet of all standardized HTML elements, categorized by their structural and semantic purpose. Bookmark this page for your coding journey!
+        </p>
+    </div>
+
+    <div class="row g-4">
+        
+        <div class="col-lg-6">
+            <div class="card border border-secondary border-opacity-25 shadow-sm h-100">
+                <div class="card-header bg-light border-bottom py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-file-earmark-code text-primary me-2"></i>Document Metadata</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush font-monospace" style="font-size: 0.9rem;">
+                        <li class="list-group-item px-4 py-3"><span class="text-primary fw-bold">&lt;html&gt;</span> <span class="text-muted d-block mt-1 font-sans">Defines the root of an HTML document.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-primary fw-bold">&lt;head&gt;</span> <span class="text-muted d-block mt-1 font-sans">Contains metadata, machine-readable information, and scripts.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-primary fw-bold">&lt;title&gt;</span> <span class="text-muted d-block mt-1 font-sans">Sets the document title displayed in the browser tab.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-primary fw-bold">&lt;base&gt;</span> <span class="text-muted d-block mt-1 font-sans">Specifies the base URL for all relative URLs in a document.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-primary fw-bold">&lt;link&gt;</span> <span class="text-muted d-block mt-1 font-sans">Links an external resource, usually a stylesheet, to the document.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-primary fw-bold">&lt;meta&gt;</span> <span class="text-muted d-block mt-1 font-sans">Represents metadata that cannot be represented by other elements.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-primary fw-bold">&lt;style&gt;</span> <span class="text-muted d-block mt-1 font-sans">Contains CSS styling information directly within the HTML.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border border-secondary border-opacity-25 shadow-sm h-100">
+                <div class="card-header bg-light border-bottom py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-layout-split text-success me-2"></i>Content Sectioning</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush font-monospace" style="font-size: 0.9rem;">
+                        <li class="list-group-item px-4 py-3"><span class="text-success fw-bold">&lt;body&gt;</span> <span class="text-muted d-block mt-1 font-sans">Represents the main visible content of the HTML document.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-success fw-bold">&lt;article&gt;</span> <span class="text-muted d-block mt-1 font-sans">Represents a self-contained, reusable composition like a blog post.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-success fw-bold">&lt;section&gt;</span> <span class="text-muted d-block mt-1 font-sans">Defines a generic standalone section of a document.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-success fw-bold">&lt;nav&gt;</span> <span class="text-muted d-block mt-1 font-sans">Groups a set of navigation links.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-success fw-bold">&lt;aside&gt;</span> <span class="text-muted d-block mt-1 font-sans">Marks content tangentially related to the content around it.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-success fw-bold">&lt;h1&gt; to &lt;h6&gt;</span> <span class="text-muted d-block mt-1 font-sans">Six levels of section headings.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-success fw-bold">&lt;header&gt;</span> <span class="text-muted d-block mt-1 font-sans">Groups introductory or navigational aids for a section.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-success fw-bold">&lt;footer&gt;</span> <span class="text-muted d-block mt-1 font-sans">Defines a footer for its nearest sectioning content.</span></li>
+                        <li class="list-group-item px-4 py-3"><span class="text-success fw-bold">&lt;address&gt;</span> <span class="text-muted d-block mt-1 font-sans">Indicates contact information for a person or organization.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border border-secondary border-opacity-25 shadow-sm h-100">
+                <div class="card-header bg-light border-bottom py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-text-paragraph text-info me-2"></i>Text Content</h5>
+                </div>
+                <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                    <ul class="list-group list-group-flush font-monospace" style="font-size: 0.9rem;">
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;p&gt;</span> <span class="text-muted d-block font-sans">Defines a paragraph block of text.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;hr&gt;</span> <span class="text-muted d-block font-sans">Represents a thematic break or horizontal rule separator.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;pre&gt;</span> <span class="text-muted d-block font-sans">Renders preformatted text exactly as written.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;blockquote&gt;</span> <span class="text-muted d-block font-sans">Indicates that the enclosed text is an extended quotation.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;ol&gt;</span> <span class="text-muted d-block font-sans">Defines a numbered, ordered list.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;ul&gt;</span> <span class="text-muted d-block font-sans">Defines a bulleted, unordered list.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;li&gt;</span> <span class="text-muted d-block font-sans">Declares a single list item.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;dl&gt;</span> <span class="text-muted d-block font-sans">Represents a description list enclosing terms and descriptions.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;dt&gt;</span> <span class="text-muted d-block font-sans">Specifies a term/name in a description list.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;dd&gt;</span> <span class="text-muted d-block font-sans">Provides the description for the preceding term.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;figure&gt;</span> <span class="text-muted d-block font-sans">Encapsulates self-contained content, often with a caption.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;figcaption&gt;</span> <span class="text-muted d-block font-sans">Provides a text caption for a figure element.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;div&gt;</span> <span class="text-muted d-block font-sans">Serves as a generic block-level container for styling or layout.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-info fw-bold">&lt;main&gt;</span> <span class="text-muted d-block font-sans">Encapsulates the dominant, central content of the document.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border border-secondary border-opacity-25 shadow-sm h-100">
+                <div class="card-header bg-light border-bottom py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-fonts text-warning me-2"></i>Inline Text Semantics</h5>
+                </div>
+                <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                    <ul class="list-group list-group-flush font-monospace" style="font-size: 0.9rem;">
+                        <li class="list-group-item px-4 py-2"><span class="text-warning text-darken fw-bold">&lt;a&gt;</span> <span class="text-muted d-block font-sans">Creates a hyperlink to web pages, files, or locations.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-warning text-darken fw-bold">&lt;em&gt;</span> <span class="text-muted d-block font-sans">Marks text that has emphatic stress (italics).</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-warning text-darken fw-bold">&lt;strong&gt;</span> <span class="text-muted d-block font-sans">Marks text with strong importance (bold).</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-warning text-darken fw-bold">&lt;small&gt;</span> <span class="text-muted d-block font-sans">Represents side-comments and small print.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-warning text-darken fw-bold">&lt;s&gt;</span> <span class="text-muted d-block font-sans">Renders text with a strikethrough.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-warning text-darken fw-bold">&lt;q&gt;</span> <span class="text-muted d-block font-sans">Indicates a short, inline text quotation.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-warning text-darken fw-bold">&lt;code&gt;</span> <span class="text-muted d-block font-sans">Displays a brief fragment of computer code.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-warning text-darken fw-bold">&lt;span&gt;</span> <span class="text-muted d-block font-sans">Acts as a generic inline container for phrasing content.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-warning text-darken fw-bold">&lt;br&gt;</span> <span class="text-muted d-block font-sans">Produces a line break (carriage-return) in text.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-warning text-darken fw-bold">&lt;u&gt;</span> <span class="text-muted d-block font-sans">Renders text with an unarticulated inline underline.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-warning text-darken fw-bold">&lt;mark&gt;</span> <span class="text-muted d-block font-sans">Highlights text for reference purposes.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-warning text-darken fw-bold">&lt;sub&gt; / &lt;sup&gt;</span> <span class="text-muted d-block font-sans">Subscript and Superscript text.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border border-secondary border-opacity-25 shadow-sm h-100">
+                <div class="card-header bg-light border-bottom py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-table text-danger me-2"></i>Table Content</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush font-monospace" style="font-size: 0.9rem;">
+                        <li class="list-group-item px-4 py-2"><span class="text-danger fw-bold">&lt;table&gt;</span> <span class="text-muted d-block font-sans">Renders multidimensional data into structural rows and columns.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-danger fw-bold">&lt;caption&gt;</span> <span class="text-muted d-block font-sans">Sets a descriptive title label for a table element.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-danger fw-bold">&lt;thead&gt;, &lt;tbody&gt;, &lt;tfoot&gt;</span> <span class="text-muted d-block font-sans">Encapsulates block headers, body, and summary rows.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-danger fw-bold">&lt;tr&gt;</span> <span class="text-muted d-block font-sans">Declares a horizontal row of cells within a table layout.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-danger fw-bold">&lt;th&gt;</span> <span class="text-muted d-block font-sans">Declares a header cell containing descriptor labels.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="text-danger fw-bold">&lt;td&gt;</span> <span class="text-muted d-block font-sans">Declares a standard, data-containing cell inside a table row.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border border-secondary border-opacity-25 shadow-sm h-100">
+                <div class="card-header bg-light border-bottom py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-ui-radios text-purple me-2" style="color: #6f42c1;"></i>Forms & Interactive Control</h5>
+                </div>
+                <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                    <ul class="list-group list-group-flush font-monospace" style="font-size: 0.9rem;">
+                        <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #6f42c1;">&lt;form&gt;</span> <span class="text-muted d-block font-sans">Creates a section containing interactive controls to submit data.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #6f42c1;">&lt;input&gt;</span> <span class="text-muted d-block font-sans">Generates a generic, highly customizable data-field input.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #6f42c1;">&lt;button&gt;</span> <span class="text-muted d-block font-sans">Produces a clickable button behavior interface.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #6f42c1;">&lt;select&gt; & &lt;option&gt;</span> <span class="text-muted d-block font-sans">Generates a dropdown menu control allowing value options.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #6f42c1;">&lt;textarea&gt;</span> <span class="text-muted d-block font-sans">Renders a multi-line plain text editing field element.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #6f42c1;">&lt;label&gt;</span> <span class="text-muted d-block font-sans">Defines a user-friendly caption label for a form control.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #6f42c1;">&lt;details&gt; & &lt;summary&gt;</span> <span class="text-muted d-block font-sans">Creates an interactive disclose widget that reveals info on demand.</span></li>
+                        <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #6f42c1;">&lt;dialog&gt;</span> <span class="text-muted d-block font-sans">Represents a modal or popup interactive dialog box.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="card border border-secondary border-opacity-25 shadow-sm">
+                <div class="card-header bg-light border-bottom py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-play-btn-fill text-pink me-2" style="color: #d63384;"></i>Media, Embeds & Scripting</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="row g-0">
+                        <div class="col-md-6 border-end-md">
+                            <ul class="list-group list-group-flush font-monospace" style="font-size: 0.9rem;">
+                                <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #d63384;">&lt;img&gt;</span> <span class="text-muted d-block font-sans">Embeds an image file into the webpage.</span></li>
+                                <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #d63384;">&lt;video&gt; & &lt;audio&gt;</span> <span class="text-muted d-block font-sans">Embeds media player capabilities supporting video/audio playback.</span></li>
+                                <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #d63384;">&lt;iframe&gt;</span> <span class="text-muted d-block font-sans">Embeds another HTML document inside a nested window.</span></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-group list-group-flush font-monospace" style="font-size: 0.9rem;">
+                                <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #d63384;">&lt;script&gt;</span> <span class="text-muted d-block font-sans">Embeds executable client-side code, usually JavaScript.</span></li>
+                                <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #d63384;">&lt;canvas&gt;</span> <span class="text-muted d-block font-sans">Provides a scriptable, drawable zone for graphics and animations.</span></li>
+                                <li class="list-group-item px-4 py-2"><span class="fw-bold" style="color: #d63384;">&lt;svg&gt;</span> <span class="text-muted d-block font-sans">Acts as a container for scalable vector graphics drawings.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .font-sans {
+        font-family: system-ui, -apple-system, sans-serif !important;
+    }
+    .text-warning.text-darken {
+        color: #b77900 !important; /* Makes the yellow tags easier to read on white backgrounds */
+    }
+    /* Simple custom scrollbar for the long lists */
+    .card-body::-webkit-scrollbar {
+        width: 6px;
+    }
+    .card-body::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+    }
+</style>
+
+    <div class="p-4 p-md-5 bg-gradient border border-primary border-opacity-25 rounded-4 shadow-sm position-relative overflow-hidden mt-5" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);">
+        <i class="bi bi-award position-absolute text-success opacity-10" style="font-size: 15rem; right: -20px; bottom: -50px; transform: rotate(15deg);"></i>
+        
+        <div class="position-relative z-1 text-center">
+            <div class="mb-4 d-flex justify-content-center">
+                <div class="bg-white p-3 rounded-circle shadow-sm">
+                    <i class="bi bi-boxes text-success" style="font-size: 3rem;"></i>
+                </div>
+            </div>
+            <h2 class="fw-bold text-success mb-3">Elements Conquered!</h2>
+            <p class="text-dark text-opacity-75 fs-5 max-w-2xl mx-auto mb-4">
+                You now know the exact anatomy of an HTML element, how they nest inside one another to build structure, and the difference between parents, children, and siblings!
+            </p>
+        </div>
+    </div>
+</div>

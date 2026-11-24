@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Colors Exercise</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --canvas:   #faf7f2;
+            --canvas2:  #f2ede4;
+            --ink:      #1c1410;
+            --ink-dim:  #6b5f55;
+            --red:      #e63946;
+            --blue:     #1d7ab5;
+            --green:    #2d9e5f;
+            --yellow:   #f4a800;
+            --purple:   #7b5ea7;
+            --orange:   #f4623a;
+            --teal:     #0ea5a0;
+            --rose:     #d64f8a;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            background-color: var(--canvas);
+            background-image:
+                radial-gradient(circle at 15% 25%, rgba(244,168,0,0.07) 0%, transparent 45%),
+                radial-gradient(circle at 85% 70%, rgba(230,57,70,0.06) 0%, transparent 40%),
+                radial-gradient(circle at 50% 90%, rgba(29,122,181,0.05) 0%, transparent 40%);
+            font-family: 'DM Sans', system-ui, sans-serif;
+            min-height: 100vh;
+            padding: 40px 16px 60px;
+        }
+
+        /* Subtle canvas grain */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 0;
+        }
+
+        .wrap { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; }
+
+        /* ─── SCREENS ─── */
+        .screen { display: none; }
+        .screen.active { display: block; animation: slideUp 0.45s cubic-bezier(0.34,1.2,0.64,1); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── BACK BUTTON ─── */
+        .back-btn {
+            background: #fff;
+            border: 1.5px solid #ddd6cc;
+            color: var(--ink-dim);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            padding: 9px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+        }
+        .back-btn:hover { border-color: #bbb0a4; color: var(--ink); transform: translateX(-2px); }
+
+        /* ─── LOGIN CARD ─── */
+        .login-card {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 20px 50px rgba(0,0,0,0.08);
+            padding: 52px 48px;
+            text-align: center;
+            border: 1.5px solid #ede8e0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Paint splat decorations */
+        .login-card::before {
+            content: '';
+            position: absolute;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(244,168,0,0.15) 0%, transparent 70%);
+            top: -60px; right: -60px;
+            border-radius: 50%;
+        }
+        .login-card::after {
+            content: '';
+            position: absolute;
+            width: 150px; height: 150px;
+            background: radial-gradient(circle, rgba(29,122,181,0.12) 0%, transparent 70%);
+            bottom: -40px; left: -40px;
+            border-radius: 50%;
+        }
+
+        .palette-icon {
+            font-size: 4rem;
+            margin-bottom: 12px;
+            display: block;
+            animation: wobble 3s ease-in-out infinite;
+        }
+        @keyframes wobble {
+            0%,100%{transform:rotate(-4deg)} 50%{transform:rotate(4deg)}
+        }
+
+        .studio-title {
+            font-family: 'Caveat', cursive;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .color-streak {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 16px 0 24px;
+        }
+        .streak-dot {
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            opacity: 0.85;
+        }
+
+        .desc-text {
+            color: var(--ink-dim);
+            font-size: 1rem;
+            line-height: 1.65;
+            max-width: 480px;
+            margin: 0 auto 32px;
+        }
+
+        .name-field {
+            background: var(--canvas);
+            border: 2px solid #ddd6cc;
+            border-radius: 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            padding: 14px 20px;
+            width: 100%;
+            transition: all 0.25s;
+            color: var(--ink);
+            margin-bottom: 16px;
+        }
+        .name-field:focus {
+            outline: none;
+            border-color: var(--orange);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(244,98,58,0.1);
+        }
+        .name-field::placeholder { color: #c4b8aa; }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--orange), #e85d25);
+            border: none;
+            color: #fff;
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 14px 40px;
+            border-radius: 14px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.25s;
+            letter-spacing: 0.02em;
+            box-shadow: 0 4px 15px rgba(244,98,58,0.35);
+        }
+        .start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(244,98,58,0.45); }
+        .start-btn:active { transform: translateY(0); }
+
+        /* ─── QUIZ CARD ─── */
+        .quiz-card {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 20px 50px rgba(0,0,0,0.08);
+            border: 1.5px solid #ede8e0;
+            overflow: hidden;
+        }
+
+        /* Header strip */
+        .quiz-header {
+            padding: 20px 28px 16px;
+            border-bottom: 1.5px solid #f0ebe3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .q-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.78rem;
+            font-weight: 500;
+            background: var(--canvas2);
+            border: 1px solid #ddd6cc;
+            color: var(--ink-dim);
+            padding: 5px 14px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        /* Timer */
+        .timer-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+        .timer-track {
+            flex: 1;
+            height: 8px;
+            background: #f0ebe3;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .timer-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--orange), var(--red));
+            transition: width 1s linear, background-color 0.3s;
+        }
+        .timer-fill.safe { background: linear-gradient(90deg, #34d399, var(--teal)); }
+        .timer-text {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--ink-dim);
+            white-space: nowrap;
+        }
+        .timer-text.danger { color: var(--red); font-weight: 600; }
+
+        .code-badge {
+            background: var(--ink);
+            color: #fff;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        /* Question body */
+        .quiz-body { padding: 28px 28px 20px; }
+
+        .q-text {
+            font-size: 1.12rem;
+            font-weight: 600;
+            color: var(--ink);
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        /* ─── MCQ PAINT SWATCH BUTTONS ─── */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        @media (max-width: 540px) { .options-grid { grid-template-columns: 1fr; } }
+
+        .swatch-btn {
+            position: relative;
+            text-align: left;
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 2px solid #ede8e0;
+            background: var(--canvas);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--ink);
+            cursor: pointer;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+        .swatch-btn::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 5px;
+            border-radius: 0;
+            transition: width 0.3s;
+        }
+        /* Assign left-stripe colors by index */
+        .swatch-btn:nth-child(1)::before { background: var(--red); }
+        .swatch-btn:nth-child(2)::before { background: var(--blue); }
+        .swatch-btn:nth-child(3)::before { background: var(--green); }
+        .swatch-btn:nth-child(4)::before { background: var(--yellow); }
+
+        .swatch-btn:hover:not(:disabled) {
+            border-color: #c4b8aa;
+            background: #fdf9f4;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .swatch-btn.correct {
+            border-color: var(--green) !important;
+            background: #f0fdf6 !important;
+            color: #166534 !important;
+        }
+        .swatch-btn.correct::before { width: 100%; opacity: 0.1; background: var(--green); }
+        .swatch-btn.wrong {
+            border-color: var(--red) !important;
+            background: #fff5f5 !important;
+            color: #991b1b !important;
+            animation: wrongShake 0.4s ease;
+        }
+        @keyframes wrongShake {
+            0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)}
+        }
+
+        /* ─── CODE EDITOR ─── */
+        .code-block {
+            background: #1c1410;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        .code-topbar {
+            background: #2a1f18;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .code-dots { display: flex; gap: 5px; }
+        .code-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .code-file { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: rgba(255,255,255,0.35); }
+
+        .code-ta {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            resize: none;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.95rem;
+            color: #fde68a;
+            padding: 18px 20px;
+            line-height: 1.7;
+            caret-color: #f4a800;
+            min-height: 80px;
+        }
+        .code-ta::placeholder { color: rgba(253,230,138,0.25); }
+
+        /* Live color preview */
+        .color-preview-strip {
+            border-top: 1px solid #2a1f18;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.35);
+        }
+        .color-swatch-live {
+            width: 28px; height: 28px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+
+        /* Tries */
+        .tries-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+        .tries-pill {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.78rem;
+            background: #fef3c7;
+            border: 1px solid #fde68a;
+            color: #92400e;
+            padding: 5px 14px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        .tries-pill.danger { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+
+        .run-btn {
+            background: var(--ink);
+            color: #fde68a;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 9px 22px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .run-btn:hover { background: #2a1f18; color: #fbbf24; }
+        .run-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        /* ─── FEEDBACK & NEXT ─── */
+        .quiz-footer {
+            padding: 16px 28px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1.5px solid #f0ebe3;
+        }
+
+        .feedback-msg { font-weight: 600; font-size: 1rem; }
+        .feedback-msg.ok  { color: var(--green); }
+        .feedback-msg.err { color: var(--red); }
+
+        .next-btn {
+            background: var(--ink);
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .next-btn:hover:not(:disabled) { background: #2a1f18; transform: translateX(2px); }
+        .next-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* ─── RESULT CARD ─── */
+        .result-card {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 20px 50px rgba(0,0,0,0.08);
+            border: 1.5px solid #ede8e0;
+            padding: 52px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-splash {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .result-title {
+            font-family: 'Caveat', cursive;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 6px;
+        }
+
+        .stat-card {
+            background: var(--canvas);
+            border: 1.5px solid #ddd6cc;
+            border-radius: 16px;
+            padding: 20px 12px;
+        }
+        .stat-lbl {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-dim);
+            margin-bottom: 4px;
+        }
+        .stat-val {
+            font-family: 'Caveat', cursive;
+            font-size: 2.4rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .retry-btn {
+            background: var(--canvas);
+            border: 2px solid #ddd6cc;
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 12px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .retry-btn:hover { border-color: var(--ink-dim); }
+
+        .share-btn {
+            background: linear-gradient(135deg, var(--green), #1a7a47);
+            border: none;
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 12px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(45,158,95,0.3);
+        }
+        .share-btn:hover { box-shadow: 0 6px 20px rgba(45,158,95,0.4); transform: translateY(-1px); }
+        .share-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ─── PAINT BURST PARTICLES ─── */
+        .paint-drop {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: paintFly 0.75s ease-out forwards;
+            z-index: 9999;
+        }
+        @keyframes paintFly {
+            0%   { opacity: 0.9; transform: scale(1) translate(0,0); }
+            100% { opacity: 0; transform: scale(0.2) translate(var(--tx), var(--ty)); }
+        }
+
+        /* ─── PROGRESS DOTS ─── */
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 20px;
+        }
+        .p-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #ddd6cc;
+            transition: all 0.3s;
+        }
+        .p-dot.answered { background: var(--green); }
+        .p-dot.current  { background: var(--orange); transform: scale(1.3); }
+    </style>
+
+<link rel="stylesheet" href="../../../../css/fosfle-lesson-bridge.css" />
+<script src="../../../../js/fosfle-lesson-bridge.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+    <button class="back-btn" onclick="history.back()">
+        <i class="bi bi-arrow-left"></i> Back
+    </button>
+
+    <!-- ═══ LOGIN ═══ -->
+    <div id="login-screen" class="screen active">
+        <div class="login-card">
+            <span class="palette-icon">🎨</span>
+            <div class="studio-title">HTML Colors Quiz</div>
+            <p style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.14em;color:#b8a99a;margin-bottom:14px;">
+                PAINT STUDIO · COLOR THEORY TEST
+            </p>
+
+            <div class="color-streak">
+                <div class="streak-dot" style="background:#e63946"></div>
+                <div class="streak-dot" style="background:#f4a800"></div>
+                <div class="streak-dot" style="background:#2d9e5f"></div>
+                <div class="streak-dot" style="background:#1d7ab5"></div>
+                <div class="streak-dot" style="background:#7b5ea7"></div>
+                <div class="streak-dot" style="background:#f4623a"></div>
+                <div class="streak-dot" style="background:#d64f8a"></div>
+                <div class="streak-dot" style="background:#0ea5a0"></div>
+            </div>
+
+            <p class="desc-text">
+                Every pixel on the web has a colour behind it. Prove you know your HEX from your RGB,
+                your named colours from your HSL. 10 questions — timed, creative, and colourful.
+            </p>
+
+            <input type="text" id="student-name" class="name-field" placeholder="Your name, artist…">
+            <button class="start-btn" onclick="startQuiz()">
+                Mix the Palette &amp; Begin →
+            </button>
+        </div>
+
+        <!-- Progress preview dots -->
+        <div class="progress-dots mt-4">
+            <div class="p-dot current"></div>
+            <div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div>
+            <div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div>
+            <div class="p-dot"></div>
+        </div>
+    </div>
+
+    <!-- ═══ QUIZ ═══ -->
+    <div id="quiz-screen" class="screen">
+        <div class="quiz-card">
+            <div class="quiz-header">
+                <span class="q-badge" id="q-counter">Q 1 / 10</span>
+
+                <div class="timer-wrap" id="timer-wrap">
+                    <div class="timer-track">
+                        <div class="timer-fill safe" id="timer-fill" style="width:100%"></div>
+                    </div>
+                    <span class="timer-text" id="timer-text">20s</span>
+                </div>
+
+                <div class="code-badge d-none" id="code-badge">
+                    <i class="bi bi-code-slash me-1"></i> Open Task
+                </div>
+            </div>
+
+            <div class="quiz-body">
+                <div class="q-text" id="q-text">Loading…</div>
+                <div id="interaction-box"></div>
+            </div>
+
+            <div class="quiz-footer">
+                <div id="feedback-msg" class="feedback-msg"></div>
+                <button class="next-btn" id="next-btn" onclick="nextQuestion()" disabled>
+                    Next <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="progress-dots" id="progress-dots"></div>
+    </div>
+
+    <!-- ═══ RESULT ═══ -->
+    <div id="result-screen" class="screen">
+        <div class="result-card" id="result-card">
+            <div id="result-splashes"></div>
+            <div style="font-size:3.5rem;margin-bottom:12px;" id="result-icon">🏆</div>
+            <div class="result-title" id="result-title">Palette Complete!</div>
+            <p style="color:var(--ink-dim);font-size:1rem;margin-bottom:36px;" id="result-sub">Great work, Artist!</p>
+
+            <div class="row g-3 justify-content-center mb-5">
+                <div class="col-5 col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Score</div>
+                        <div class="stat-val" id="stat-score" style="color:var(--orange)">0/10</div>
+                    </div>
+                </div>
+                <div class="col-5 col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Accuracy</div>
+                        <div class="stat-val" id="stat-acc" style="color:var(--blue)">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <button class="retry-btn" onclick="location.reload()">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i> Try Again
+                </button>
+                <button class="share-btn" id="share-btn" onclick="submitToGoogleSheets()">
+                    <i class="bi bi-cloud-upload me-2"></i> Save Score
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /wrap -->
+
+<script>
+    // ─── HELPERS ───
+    const norm = s => s.toLowerCase().replace(/\s+/g,'').replace(/'/g,'"');
+
+    // Extract first CSS color value from a string for live preview
+    function extractColor(str) {
+        // Try hex
+        let m = str.match(/#([0-9a-fA-F]{3,6})\b/);
+        if (m) return m[0];
+        // Try rgb(...)
+        m = str.match(/rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)/i);
+        if (m) return m[0];
+        // Try named color keywords
+        const named = ['red','blue','green','yellow','orange','purple','pink','teal','coral','crimson',
+            'tomato','gold','lime','cyan','magenta','indigo','violet','maroon','navy','olive'];
+        for (const c of named) {
+            if (str.toLowerCase().includes(c)) return c;
+        }
+        return null;
+    }
+
+    // ─── QUIZ DATA ───
+    const quizData = [
+        {
+            type: "mcq",
+            q: "Which of the following is a valid way to set a colour in HTML using an inline style?",
+            options: [
+                'style="color: red;"',
+                'color="red"',
+                'font-color: red;',
+                'text-color: red;'
+            ],
+            answer: 0
+        },
+        {
+            type: "code",
+            q: "Write an inline style to make a paragraph's text colour blue using a named colour.",
+            correctText: '<p style="color: blue;">Text</p>',
+            validate: i => {
+                const c = norm(i);
+                return c.includes('color:blue') || c.includes('color:"blue"');
+            }
+        },
+        {
+            type: "mcq",
+            q: "What does the HEX colour #ff0000 represent?",
+            options: ["Green", "Blue", "Red", "White"],
+            answer: 2
+        },
+        {
+            type: "code",
+            q: "Write an inline style to set a heading's background colour to #ffcc00 (a bright yellow).",
+            correctText: '<h1 style="background-color: #ffcc00;">Title</h1>',
+            validate: i => {
+                const c = norm(i);
+                return c.includes('background-color:#ffcc00') || c.includes('background:#ffcc00');
+            }
+        },
+        {
+            type: "mcq",
+            q: "In RGB colour, what does rgb(0, 0, 0) produce?",
+            options: ["White", "Red", "Transparent", "Black"],
+            answer: 3
+        },
+        {
+            type: "code",
+            q: "Write a style attribute to set a div's text colour using RGB: red=255, green=99, blue=71 (Tomato red).",
+            correctText: '<div style="color: rgb(255, 99, 71);">Hello</div>',
+            validate: i => {
+                const c = norm(i);
+                return c.includes('color:rgb(255,99,71)');
+            }
+        },
+        {
+            type: "mcq",
+            q: "Which HEX value produces pure white?",
+            options: ["#000000", "#ff0000", "#ffffff", "#00ff00"],
+            answer: 2
+        },
+        {
+            type: "code",
+            q: "Write an inline style that sets both the text colour to white (#ffffff) and the background colour to navy (#001f5b) on a paragraph.",
+            correctText: '<p style="color: #ffffff; background-color: #001f5b;">Text</p>',
+            validate: i => {
+                const c = norm(i);
+                return c.includes('color:#ffffff') && (c.includes('background-color:#001f5b') || c.includes('background:#001f5b'));
+            }
+        },
+        {
+            type: "mcq",
+            q: "Which CSS property changes the background colour of an element?",
+            options: ["color", "bg-color", "background-color", "fill"],
+            answer: 2
+        },
+        {
+            type: "code",
+            q: "Write a style to set a span's text colour to the named colour 'coral'.",
+            correctText: '<span style="color: coral;">Text</span>',
+            validate: i => {
+                const c = norm(i);
+                return c.includes('color:coral');
+            }
+        }
+    ];
+
+    // ─── STATE ───
+    let idx = 0, score = 0, studentName = '', isAnswered = false;
+    let trialsLeft = 3, timerInterval, timeLeft = 20;
+
+    // ─── START ───
+    function startQuiz() {
+        const n = document.getElementById('student-name').value.trim();
+        if (!n) return alert('Please enter your name to begin!');
+        studentName = n;
+        buildDots();
+        sw('login-screen', 'quiz-screen');
+        loadQ();
+    }
+
+    function buildDots() {
+        const wrap = document.getElementById('progress-dots');
+        wrap.innerHTML = quizData.map((_, i) =>
+            `<div class="p-dot${i===0?' current':''}" id="dot-${i}"></div>`
+        ).join('');
+    }
+
+    function updateDots() {
+        quizData.forEach((_, i) => {
+            const d = document.getElementById('dot-'+i);
+            if (!d) return;
+            d.className = 'p-dot' + (i < idx ? ' answered' : i === idx ? ' current' : '');
+        });
+    }
+
+    // ─── LOAD QUESTION ───
+    function loadQ() {
+        isAnswered = false;
+        document.getElementById('next-btn').disabled = true;
+        document.getElementById('feedback-msg').innerHTML = '';
+        document.getElementById('q-counter').textContent = `Q ${idx+1} / ${quizData.length}`;
+        document.getElementById('q-text').textContent = quizData[idx].q;
+        updateDots();
+
+        const box = document.getElementById('interaction-box');
+        box.innerHTML = '';
+
+        if (quizData[idx].type === 'mcq') setupMCQ(quizData[idx], box);
+        else setupCode(quizData[idx], box);
+    }
+
+    // ─── MCQ ───
+    function setupMCQ(q, box) {
+        showTimer(); hideCodeBadge();
+        const grid = document.createElement('div');
+        grid.className = 'options-grid';
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'swatch-btn';
+            btn.innerHTML = `<span style="font-family:'DM Mono',monospace;font-size:0.78rem;color:#b8a99a;margin-right:8px;">${String.fromCharCode(65+i)}.</span>${escHTML(opt)}`;
+            btn.onclick = () => handleMCQ(btn, i, q.answer);
+            grid.appendChild(btn);
+        });
+        box.appendChild(grid);
+        startTimer();
+    }
+
+    function handleMCQ(btn, sel, correct) {
+        if (isAnswered) return;
+        isAnswered = true;
+        clearInterval(timerInterval);
+        document.querySelectorAll('.swatch-btn').forEach(b => b.disabled = true);
+
+        if (sel === correct) {
+            btn.classList.add('correct');
+            setFeedback('✓ Correct!', true);
+            score++;
+            burstPaint(btn, ['#2d9e5f','#34d399','#6ee7b7']);
+        } else {
+            btn.classList.add('wrong');
+            document.querySelectorAll('.swatch-btn')[correct].classList.add('correct');
+            setFeedback('✗ Not quite.', false);
+            burstPaint(btn, ['#e63946','#fca5a5','#ff8fa3']);
+        }
+        document.getElementById('next-btn').disabled = false;
+    }
+
+    // ─── CODE ───
+    function setupCode(q, box) {
+        trialsLeft = 3;
+        hideTimer(); showCodeBadge();
+        clearInterval(timerInterval);
+
+        // Determine if the question likely involves a color value for preview
+        box.innerHTML = `
+            <div class="code-block">
+                <div class="code-topbar">
+                    <div class="code-dots">
+                        <div class="code-dot" style="background:#ef4444"></div>
+                        <div class="code-dot" style="background:#f59e0b"></div>
+                        <div class="code-dot" style="background:#10b981"></div>
+                    </div>
+                    <span class="code-file">style.html</span>
+                </div>
+                <textarea id="code-ta" class="code-ta" rows="3"
+                    placeholder="Write your HTML here…" oninput="livePreview(this)"></textarea>
+                <div class="color-preview-strip" id="preview-strip">
+                    <div class="color-swatch-live" id="swatch-live" style="background:#1c1410"></div>
+                    <span id="preview-label">Type a colour value to see it here</span>
+                </div>
+            </div>
+            <div class="tries-row">
+                <span class="tries-pill" id="tries-pill">
+                    <i class="bi bi-arrow-repeat me-1"></i>${trialsLeft} tries left
+                </span>
+                <button class="run-btn" id="run-btn" onclick="checkCode()">
+                    <i class="bi bi-play-fill me-1"></i> Run Code
+                </button>
+            </div>
+        `;
+    }
+
+    function livePreview(ta) {
+        const col = extractColor(ta.value);
+        const swatch = document.getElementById('swatch-live');
+        const label  = document.getElementById('preview-label');
+        if (col) {
+            swatch.style.background = col;
+            label.textContent = col;
+            label.style.color = 'rgba(255,255,255,0.55)';
+        } else {
+            swatch.style.background = '#1c1410';
+            label.textContent = 'Type a colour value to see it here';
+            label.style.color = '';
+        }
+    }
+
+    function checkCode() {
+        if (isAnswered) return;
+        const q = quizData[idx];
+        const val = document.getElementById('code-ta').value;
+        const ok  = q.validate(val);
+        const fb  = document.getElementById('feedback-msg');
+        const ta  = document.getElementById('code-ta');
+
+        if (ok) {
+            isAnswered = true;
+            score++;
+            ta.style.borderColor = '#2d9e5f';
+            setFeedback('✓ Perfect code!', true);
+            document.getElementById('run-btn').disabled = true;
+            document.getElementById('next-btn').disabled = false;
+            burstPaint(document.getElementById('run-btn'), ['#2d9e5f','#f4a800','#1d7ab5','#7b5ea7']);
+        } else {
+            trialsLeft--;
+            const pill = document.getElementById('tries-pill');
+            pill.innerHTML = `<i class="bi bi-arrow-repeat me-1"></i>${trialsLeft} tries left`;
+            if (trialsLeft <= 1) pill.classList.add('danger');
+
+            if (trialsLeft > 0) {
+                setFeedback('✗ Not right — try again.', false);
+                ta.style.outline = '2px solid #e63946';
+                setTimeout(() => ta.style.outline = '', 600);
+            } else {
+                isAnswered = true;
+                ta.disabled = true;
+                document.getElementById('run-btn').disabled = true;
+                pill.innerHTML = `<i class="bi bi-x-circle me-1"></i> Out of tries`;
+                fb.innerHTML = `<span class="feedback-msg err">✗ Answer: <code style="background:#f0fdf6;padding:2px 8px;border-radius:6px;font-size:0.82rem;">${escHTML(q.correctText)}</code></span>`;
+                document.getElementById('next-btn').disabled = false;
+            }
+        }
+    }
+
+    // ─── TIMER ───
+    function startTimer() {
+        timeLeft = 20;
+        updateTimerUI();
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerUI();
+            if (timeLeft <= 0) { clearInterval(timerInterval); autoSkip(); }
+        }, 1000);
+    }
+    function updateTimerUI() {
+        const fill = document.getElementById('timer-fill');
+        const txt  = document.getElementById('timer-text');
+        fill.style.width = (timeLeft/20*100)+'%';
+        fill.className   = 'timer-fill' + (timeLeft > 8 ? ' safe' : '');
+        txt.textContent  = timeLeft+'s';
+        txt.className    = 'timer-text' + (timeLeft <= 5 ? ' danger' : '');
+    }
+    function autoSkip() {
+        isAnswered = true;
+        document.querySelectorAll('.swatch-btn').forEach(b => b.disabled = true);
+        const correct = quizData[idx].answer;
+        document.querySelectorAll('.swatch-btn')[correct].classList.add('correct');
+        setFeedback("⏱ Time's up!", false);
+        document.getElementById('next-btn').disabled = false;
+    }
+    function showTimer() {
+        document.getElementById('timer-wrap').classList.remove('d-none');
+    }
+    function hideTimer() {
+        document.getElementById('timer-wrap').classList.add('d-none');
+    }
+    function showCodeBadge() { document.getElementById('code-badge').classList.remove('d-none'); }
+    function hideCodeBadge() { document.getElementById('code-badge').classList.add('d-none'); }
+
+    // ─── NAVIGATION ───
+    function nextQuestion() {
+        idx++;
+        if (idx < quizData.length) loadQ();
+        else showResult();
+    }
+
+    // ─── RESULT ───
+    function showResult() {
+        sw('quiz-screen', 'result-screen');
+        const pct = Math.round(score/quizData.length*100);
+
+        document.getElementById('result-title').textContent =
+            pct === 100 ? 'Masterpiece! 🎨' : pct >= 70 ? 'Palette Complete!' : 'Keep Painting…';
+        document.getElementById('result-sub').textContent =
+            pct === 100 ? `Flawless, ${studentName}. Every colour, every format — perfect.` :
+            pct >= 70  ? `Great work, ${studentName}! Your colour knowledge is strong.` :
+            `Keep mixing, ${studentName}. Every artist learns with practice.`;
+        document.getElementById('result-icon').textContent = pct >= 70 ? '🏆' : '🎨';
+        document.getElementById('stat-score').textContent = `${score}/${quizData.length}`;
+        document.getElementById('stat-acc').textContent   = `${pct}%`;
+
+        // Decorative paint splashes in result card
+        const splashBox = document.getElementById('result-splashes');
+        const colors = ['rgba(230,57,70,0.08)','rgba(29,122,181,0.08)','rgba(244,168,0,0.1)','rgba(45,158,95,0.08)','rgba(123,94,167,0.08)'];
+        colors.forEach((c, i) => {
+            const s = document.createElement('div');
+            s.className = 'result-splash';
+            const sz = 120 + i*40;
+            s.style.cssText = `width:${sz}px;height:${sz}px;background:radial-gradient(circle,${c},transparent 70%);
+                top:${[-30,-10,40,60,-20][i]}px;left:${[-40,60,'auto','auto',160][i] === 'auto' ? 'auto' : [-40,60,'auto','auto',160][i]+'px'};
+                right:${i>=2 && i<4 ? [-30,20][i-2]+'px' : 'auto'};`;
+            splashBox.appendChild(s);
+        });
+    }
+
+    // ─── PAINT BURST ───
+    function burstPaint(anchor, colours) {
+        const r = anchor.getBoundingClientRect();
+        const cx = r.left + r.width/2, cy = r.top + r.height/2;
+        for (let i = 0; i < 14; i++) {
+            const p = document.createElement('div');
+            p.className = 'paint-drop';
+            const sz = 5 + Math.random()*9;
+            p.style.cssText = `
+                width:${sz}px;height:${sz}px;
+                left:${cx}px;top:${cy}px;
+                background:${colours[Math.floor(Math.random()*colours.length)]};
+                --tx:${(Math.random()-.5)*180}px;
+                --ty:${(Math.random()-.5)*130}px;
+                border-radius:${Math.random()>.5?'50%':'30%'};
+            `;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 750);
+        }
+    }
+
+    // ─── FEEDBACK ───
+    function setFeedback(msg, ok) {
+        const el = document.getElementById('feedback-msg');
+        el.className = 'feedback-msg ' + (ok ? 'ok' : 'err');
+        el.innerHTML = msg;
+    }
+
+    // ─── UTILS ───
+    function escHTML(s) {
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function sw(a, b) {
+        document.getElementById(a).classList.remove('active');
+        document.getElementById(b).classList.add('active');
+    }
+
+    // ─── SUBMIT ───
+    function submitToGoogleSheets() {
+        const btn = document.getElementById('share-btn');
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Saving…`;
+        btn.disabled = true;
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({ name: studentName, score, total: quizData.length, timestamp: new Date().toLocaleString() }),
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+        }).then(() => {
+            btn.innerHTML = `<i class="bi bi-check-circle me-2"></i> Saved!`;
+            btn.style.background = 'linear-gradient(135deg,#065f46,#047857)';
+        }).catch(() => {
+            alert('Error saving score. Check config.js.');
+            btn.innerHTML = `<i class="bi bi-cloud-upload me-2"></i> Save Score`;
+            btn.disabled = false;
+        });
+    }
+</script>
+<script src="/js/config.js"></script>
+</body>
+</html>

@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Titles Challenge · The Archivist's Index</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* The Archivist's Dark Theme */
+            --ink: #1a1209;
+            --ink-dim: #2c1f10;
+            --ink-light: #8c7b6e;
+            --canvas: #fafaf8;
+            --canvas2: #f5f0e8;
+            --border: #e8e0d4;
+            
+            /* Accents */
+            --gold: #d4a017;
+            --gold-light: #f3e5ab;
+            --primary: #1a5276;       
+            --secondary: #2980b9;     
+            --green: #27ae60;
+            --red: #c0392b;
+            --yellow: #f39c12;
+            
+            --text-main: #f4f4f5;
+            --text-dim: #d1d5db;
+
+            --panel-bg: rgba(26, 18, 9, 0.95);
+            --code-bg: #140d06;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body {
+            overflow-x: hidden; 
+            max-width: 100%;
+        }
+
+        body {
+            background-color: #140d06;
+            background-image:
+                radial-gradient(circle at 15% 25%, rgba(212,160,23,0.08) 0%, transparent 45%),
+                radial-gradient(circle at 85% 70%, rgba(26,82,118,0.08) 0%, transparent 40%),
+                radial-gradient(circle at 50% 90%, rgba(192,57,43,0.04) 0%, transparent 40%);
+            font-family: 'DM Sans', system-ui, sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 40px 16px 60px;
+        }
+
+        /* Subtle wall texture */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 0;
+        }
+
+        .wrap { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; }
+
+        /* ─── SCREENS ─── */
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ─── EXIT BUTTON ─── */
+        .exit-btn {
+            background: transparent;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            color: var(--text-dim);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            padding: 9px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+        .exit-btn:hover { border-color: var(--gold); color: var(--gold); transform: translateX(-2px); }
+
+        /* ─── PANEL BASE ─── */
+        .panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+            overflow: hidden;
+        }
+        .panel-head {
+            background: rgba(0,0,0,0.4);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* ─── LOGIN CARD ─── */
+        .login-card { padding: 64px 48px; text-align: center; position: relative; }
+
+        .float-frame {
+            position: absolute;
+            border: 4px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: var(--ink);
+            opacity: 0.15;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite alternate;
+        }
+        .ff-1 { width: 100px; height: 140px; top: -20px; left: -20px; transform: rotate(-10deg); border-color: var(--gold); }
+        .ff-2 { width: 120px; height: 90px; bottom: -30px; right: -10px; transform: rotate(15deg); animation-delay: -3s; }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(var(--r, 0deg)); }
+            100% { transform: translateY(-15px) rotate(var(--r, 0deg)); }
+        }
+
+        .studio-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 900;
+            color: var(--gold-light);
+            line-height: 1.1;
+            margin-bottom: 8px;
+            text-shadow: 0 4px 20px rgba(212, 160, 23, 0.2);
+        }
+
+        .briefing-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--gold);
+            border-radius: 12px;
+            padding: 24px 32px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-dim);
+            text-align: left;
+            margin: 32px auto;
+            max-width: 680px;
+        }
+        .briefing-box strong { color: var(--gold); }
+
+        .name-input {
+            background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); border-radius: 12px;
+            font-family: 'DM Sans', sans-serif; font-size: 1.1rem; text-align: center;
+            padding: 14px 20px; width: 100%; max-width: 380px; transition: all 0.3s;
+            color: #fff; margin-bottom: 16px;
+        }
+        .name-input:focus {
+            outline: none; border-color: var(--primary); background: rgba(0,0,0,0.5);
+            box-shadow: 0 0 0 4px rgba(26, 82, 118, 0.25);
+        }
+
+        .go-btn {
+            background: linear-gradient(135deg, var(--primary), #11364f);
+            border: none; color: #fff;
+            font-family: 'Playfair Display', Georgia, serif; font-size: 1.3rem;
+            font-weight: 800; font-style: italic; padding: 14px 40px; border-radius: 12px;
+            width: 100%; max-width: 380px; cursor: pointer; transition: all 0.3s;
+            letter-spacing: 0.02em; box-shadow: 0 4px 15px rgba(26, 82, 118, 0.3);
+        }
+        .go-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(26, 82, 118, 0.5); }
+
+        /* ─── CHALLENGE LAYOUT ─── */
+        .challenge-wrap { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; padding: 12px 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px); flex-wrap: wrap; gap: 12px;
+        }
+
+        .segment-tabs {
+            display: flex; gap: 6px; background: rgba(0,0,0,0.4);
+            border-radius: 12px; padding: 6px; overflow-x: auto;
+        }
+        .seg-tab {
+            font-family: 'DM Mono', monospace; font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 0.05em; padding: 8px 16px; border-radius: 8px;
+            border: 1px solid transparent; cursor: pointer; transition: all 0.3s;
+            color: var(--text-dim); background: transparent; text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .seg-tab.active {
+            background: var(--ink-dim); color: var(--gold);
+            border-color: rgba(255,255,255,0.1); box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        #countdown {
+            font-family: 'DM Mono', monospace; font-size: 1.25rem; font-weight: 600;
+            color: var(--text-main); letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;
+        }
+        #countdown.warn { color: var(--red); animation: countBlink 0.8s infinite; }
+        @keyframes countBlink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+        .score-pill {
+            background: rgba(212, 160, 23, 0.1); border: 1px solid rgba(212, 160, 23, 0.3);
+            border-radius: 20px; padding: 6px 16px; font-family: 'DM Mono', monospace;
+            font-size: 0.75rem; color: var(--gold); font-weight: 600; letter-spacing: 0.05em;
+        }
+
+        .segment { display: none; min-width: 0; }
+        .segment.active { display: block; animation: fadeUp 0.4s ease-out; }
+
+        /* ─── SEGMENT A: DRAG & DROP ─── */
+        .dnd-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start; }
+        @media (max-width: 800px) { .dnd-layout { grid-template-columns: 1fr; } }
+
+        .tag-palette { background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; }
+        .tag-chip {
+            padding: 14px 18px; margin: 10px; border-radius: 10px;
+            font-family: 'DM Mono', monospace; font-size: 0.9rem; font-weight: 600;
+            cursor: grab; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s; user-select: none;
+            background: rgba(0,0,0,0.4); text-align: center; color: var(--text-main);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .tag-chip:active { cursor: grabbing; transform: scale(1.05); border-color: var(--primary); box-shadow: 0 0 15px rgba(26,82,118,0.4); }
+        .tag-chip.dragging { opacity: 0.4; }
+        .tag-chip.used { opacity: 0.2; cursor: not-allowed; pointer-events: none; border-color: transparent!important; background: rgba(0,0,0,0.2)!important; box-shadow: none; }
+
+        /* Property Specific Styling */
+        .tag-chip[data-tag="title"]  { border-left: 3px solid var(--primary); }
+        .tag-chip[data-tag="head"]   { border-left: 3px solid var(--green); }
+        .tag-chip[data-tag="SEO"]    { border-left: 3px solid var(--gold); }
+        .tag-chip[data-tag="60"]     { border-left: 3px solid var(--red); }
+        .tag-chip[data-tag="|"]      { border-left: 3px solid var(--secondary); }
+
+        .drop-slots { display: flex; flex-direction: column; gap: 16px; min-width: 0;}
+        .drop-card {
+            background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+            padding: 20px 24px; display: grid; grid-template-columns: 1fr auto;
+            gap: 20px; align-items: center; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .drop-card.solved { border-color: rgba(39, 174, 96, 0.5); background: rgba(39, 174, 96, 0.05); transform: scale(1.01); }
+
+        .html-code {
+            font-family: 'DM Mono', monospace; font-size: 0.95rem; color: var(--text-main);
+            background: rgba(0,0,0,0.6); padding: 16px 20px; border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+        }
+        .cm-tag { color: #e06c75; font-weight: 600; }
+        .cm-cmt { color: #676f7d; font-style: italic; }
+
+        .drop-zone {
+            min-width: 90px; height: 34px; border: 2px dashed rgba(255,255,255,0.2);
+            border-radius: 6px; display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; color: var(--text-dim); transition: all 0.2s; background: rgba(0,0,0,0.3);
+            margin: 0 4px; vertical-align: middle; padding: 0 10px;
+        }
+        .drop-zone.over { border-color: var(--primary); background: rgba(26, 82, 118, 0.2); color: var(--primary); box-shadow: 0 0 0 4px rgba(26, 82, 118, 0.15); }
+        .drop-zone.correct { border-color: var(--green); background: rgba(39, 174, 96, 0.15); color: var(--green); border-style: solid; font-weight: 600; }
+        .drop-zone.wrong { border-color: var(--red); background: rgba(192, 57, 43, 0.15); animation: shake 0.4s ease; }
+
+        .live-mini-preview {
+            width: 50px; height: 50px; border-radius: 12px;
+            background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.5s; font-size: 1.2rem; color: var(--text-dim);
+        }
+        .drop-card.solved .live-mini-preview { background: var(--primary); color: #fff; transform: scale(1.1) rotate(5deg); box-shadow: 0 0 15px rgba(26,82,118,0.5); }
+
+        /* ─── SEGMENT B: WIRE CONNECTION ─── */
+        .wire-board-wrap {
+            background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+            padding: 30px; position: relative; overflow: hidden;
+        }
+        .wire-board {
+            display: flex; justify-content: space-between; position: relative;
+            min-height: 350px;
+        }
+        #wire-svg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
+        }
+        .wire-line {
+            stroke: var(--primary); stroke-width: 3; stroke-linecap: round;
+            filter: drop-shadow(0 0 5px rgba(26,82,118,0.5));
+        }
+        .wire-line.temp { stroke: var(--text-dim); stroke-dasharray: 5,5; filter: none; }
+        .wire-line.correct { stroke: var(--green); filter: drop-shadow(0 0 5px rgba(39,174,96,0.5)); }
+
+        .wire-col { display: flex; flex-direction: column; gap: 20px; z-index: 2; width: 40%; }
+        .wire-node-wrap {
+            display: flex; align-items: center; gap: 12px;
+        }
+        .wire-col.right .wire-node-wrap { flex-direction: row-reverse; }
+
+        .wire-label {
+            background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 16px; border-radius: 10px; font-family: 'DM Mono', monospace;
+            font-size: 0.85rem; color: var(--text-main); flex-grow: 1; text-align: center;
+            user-select: none; transition: all 0.3s;
+        }
+        .wire-point {
+            width: 20px; height: 20px; border-radius: 50%; background: var(--ink-dim);
+            border: 3px solid rgba(255,255,255,0.2); cursor: crosshair; transition: all 0.2s;
+            position: relative; flex-shrink: 0;
+        }
+        .wire-point:hover { transform: scale(1.3); border-color: var(--primary); background: var(--primary); }
+        .wire-point.active { border-color: var(--primary); background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+        .wire-point.solved { border-color: var(--green); background: var(--green); pointer-events: none; }
+        .wire-node-wrap.solved .wire-label { border-color: var(--green); background: rgba(39,174,96,0.1); color: var(--green); }
+
+        /* ─── SEGMENT C: CODE CHALLENGE ─── */
+        .code-layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+        @media (max-width: 860px) { .code-layout { grid-template-columns: 1fr; } }
+
+        .editor-panel {
+            background: var(--code-bg); border-radius: 16px; overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); position: relative;
+        }
+        .editor-bar {
+            background: #1e1e1e; border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .dots { display: flex; gap: 6px; }
+        .dot2 { width: 12px; height: 12px; border-radius: 50%; }
+        
+        .code-ta {
+            width: 100%; min-height: 180px; background: transparent; border: none;
+            outline: none; resize: none; font-family: 'DM Mono', monospace; font-size: 0.95rem;
+            color: #f4f4f5; padding: 20px; line-height: 1.7; caret-color: var(--primary);
+        }
+        .code-ta::placeholder { color: rgba(255,255,255,0.2); }
+
+        /* Search Result Mock */
+        .mock-serp-wrap {
+            background: #202124; border-top: 1px solid rgba(255,255,255,0.05); padding: 20px;
+        }
+        .mock-serp-lbl {
+            font-family: 'DM Mono', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.3);
+            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;
+        }
+        .mock-serp {
+            background: #202124; font-family: arial, sans-serif;
+        }
+        .mock-serp .url { font-size: 0.85rem; color: #bdc1c6; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;}
+        .mock-serp .title { font-size: 1.25rem; color: #8ab4f8; text-decoration: none; display: inline-block; margin-bottom: 4px; }
+        .mock-serp .desc { font-size: 0.85rem; color: #bdc1c6; line-height: 1.5; }
+
+        .editor-footer {
+            background: #1e1e1e; padding: 14px 20px; display: flex;
+            justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        #code-log { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--text-dim); }
+
+        /* OBJECTIVES PANEL */
+        .obj-panel {
+            background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        .obj-item {
+            padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex; align-items: center; gap: 14px; transition: all 0.3s;
+        }
+        .obj-item:last-child { border-bottom: none; }
+        .obj-icon {
+            width: 32px; height: 32px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center; font-size: 1rem;
+            flex-shrink: 0; background: rgba(0,0,0,0.5); color: var(--text-dim); transition: all 0.3s;
+        }
+        .obj-item.done { background: rgba(39, 174, 96, 0.05); }
+        .obj-item.done .obj-icon { border-color: var(--green); background: rgba(39, 174, 96, 0.15); color: var(--green); box-shadow: 0 0 15px rgba(39,174,96,0.2); }
+        .obj-text strong { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 2px; }
+        .obj-text span { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--text-dim); }
+
+        /* PROGRESS */
+        .prog-wrap { padding: 16px; background: rgba(0,0,0,0.5); border-top: 1px solid rgba(255,255,255,0.05); }
+        .prog-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-family:'DM Mono',monospace; font-size:0.75rem; color:var(--text-dim); font-weight:600;}
+        .prog-track { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+        .prog-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--yellow)); border-radius: 3px; transition: width 0.4s ease; width: 0%; }
+
+        /* ACTION BUTTONS */
+        .action-btn {
+            background: linear-gradient(135deg, var(--primary), #11364f); border: none;
+            color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.9rem;
+            padding: 10px 24px; border-radius: 10px; cursor: pointer; transition: all 0.3s;
+        }
+        .action-btn:disabled { background: rgba(255,255,255,0.1); color: var(--text-dim); cursor: not-allowed; }
+        .action-btn:not(:disabled):hover { box-shadow: 0 4px 15px rgba(26, 82, 118, 0.3); transform: translateY(-1px); }
+
+        /* ─── PARTICLES ─── */
+        .sparkle {
+            position: fixed; pointer-events: none; border-radius: 50%;
+            background: #fff; box-shadow: 0 0 10px #fff, 0 0 20px var(--primary);
+            animation: sparkleAnim 1s cubic-bezier(0.25, 1, 0.5, 1) forwards; z-index: 9999;
+        }
+        @keyframes sparkleAnim { 0%{opacity:1;transform:scale(0) translate(0,0)} 50%{opacity:1;transform:scale(1.5) translate(var(--tx),var(--ty))} 100%{opacity:0;transform:scale(0) translate(calc(var(--tx)*1.5),calc(var(--ty)*1.5))} }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+        /* ─── RESULT ─── */
+        .result-shell {
+            background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6); padding: 56px 40px; text-align: center;
+            position: relative; overflow: hidden; backdrop-filter: blur(12px);
+        }
+        .result-headline { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(2rem, 5vw, 3.2rem); color: var(--gold-light); margin-bottom: 8px;}
+        .stat-card { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px 12px; }
+        .stat-lbl { font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.05em; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px; }
+        .stat-val { font-family:'Playfair Display',serif; font-weight:700; font-size:2.2rem; }
+
+        .r-btn { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.95rem; padding: 14px 32px; border-radius: 12px; cursor: pointer; transition: all 0.3s; border: 2px solid; }
+        .r-btn-out { background: transparent; border-color: rgba(255,255,255,0.2); color: var(--text-main); }
+        .r-btn-out:hover { border-color: var(--text-dim); }
+        .r-btn-save { background: linear-gradient(135deg, var(--primary), #11364f); border-color: transparent; color: #fff; }
+        .r-btn-save:hover { box-shadow: 0 6px 20px rgba(26,82,118,0.4); transform: translateY(-2px); }
+        .r-btn-save:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+
+        /* TOAST */
+        .toast-msg {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--ink); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px; padding: 14px 20px;
+            font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; color: var(--text-main);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 9999; transform: translateY(80px); opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .toast-msg.show { transform: translateY(0); opacity: 1; }
+    </style>
+
+<link rel="stylesheet" href="../../../../css/fosfle-lesson-bridge.css" />
+<script src="../../../../js/fosfle-lesson-bridge.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <button class="exit-btn" id="btn-exit">
+            <i class="bi bi-arrow-left"></i> Exit Archive
+        </button>
+        <span style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--text-dim);letter-spacing:0.05em;text-transform:uppercase;">
+            // The Archivist's Index · Naming Challenge
+        </span>
+    </div>
+
+    <!-- ═══════════ LOGIN ═══════════ -->
+    <div id="login-screen" class="screen active">
+        <div class="panel login-card">
+            
+            <div class="float-frame ff-1" style="--r:-10deg;"></div>
+            <div class="float-frame ff-2" style="--r:15deg;"></div>
+
+            <div class="mb-3">
+                <i class="bi bi-tags-fill" style="font-size:3.5rem; color:var(--primary); filter: drop-shadow(0 0 20px rgba(26,82,118,0.5));"></i>
+            </div>
+            <div class="studio-title">Index Restoration</div>
+            
+            <div class="briefing-box">
+                <strong>Project Brief:</strong><br>
+                The digital archive is unsearchable! Documents are missing names, browser tabs are blank, and search engines are skipping our records. You have exactly <strong>4 minutes</strong> to restore order.
+                <br><br>
+                Your tasks for the restoration:
+                <br>1. <strong>Assemble:</strong> Drag the correct tags to repair the missing page headers.
+                <br>2. <strong>Connect:</strong> Wire the SEO and formatting concepts to their definitions.
+                <br>3. <strong>Draft:</strong> Hand-code a perfectly formatted <code>&lt;title&gt;</code> tag for our newest exhibit.
+            </div>
+
+            <div style="max-width:380px; margin:0 auto; position:relative; z-index:2;">
+                <input type="text" id="student-name" class="name-input" placeholder="Enter Archivist Name">
+                <button class="go-btn" id="btn-start">
+                    Open the Index <i class="bi bi-arrow-right ms-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════ CHALLENGE ═══════════ -->
+    <div id="challenge-screen" class="screen">
+        <div class="challenge-wrap">
+
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <div class="segment-tabs">
+                    <button class="seg-tab active" data-target="dnd">
+                        <i class="bi bi-puzzle me-1"></i> Assemble Tags
+                    </button>
+                    <button class="seg-tab" data-target="wires">
+                        <i class="bi bi-bezier2 me-1"></i> Connect Logic
+                    </button>
+                    <button class="seg-tab" data-target="code">
+                        <i class="bi bi-code-slash me-1"></i> Draft Title
+                    </button>
+                </div>
+
+                <div id="countdown"><i class="bi bi-stopwatch"></i> 04:00</div>
+
+                <div class="score-pill">
+                    <i class="bi bi-star-fill me-1"></i> <span id="live-score">0</span> pts
+                </div>
+            </div>
+
+            <!-- ── SEGMENT A: DRAG & DROP ── -->
+            <div class="segment active" id="seg-dnd">
+                <div class="dnd-layout">
+                    <!-- TAG PALETTE -->
+                    <div class="tag-palette">
+                        <div class="panel-head">
+                            <span><i class="bi bi-layers me-2"></i>Components</span>
+                            <span>DRAG →</span>
+                        </div>
+                        <div style="padding:10px;" id="dnd-palette">
+                            <!-- Injected by JS to shuffle -->
+                        </div>
+                    </div>
+
+                    <!-- DROP SLOTS -->
+                    <div class="drop-slots" id="dnd-slots">
+                        <!-- Injected by JS to shuffle -->
+                    </div>
+                </div>
+                <div style="text-align:right; margin-top:24px;">
+                    <button class="action-btn" id="btn-next-wires" disabled>
+                        Proceed to Connections <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ── SEGMENT B: WIRE CONNECTION ── -->
+            <div class="segment" id="seg-wires">
+                <div class="wire-board-wrap">
+                    <div class="panel-head mb-4" style="background:transparent; padding:0; border:none;">
+                        <span><i class="bi bi-usb-plug me-2"></i>Concept Switchboard</span>
+                        <span>Drag points to connect terms with their functions</span>
+                    </div>
+                    
+                    <div class="wire-board" id="wire-board">
+                        <svg id="wire-svg"></svg>
+                        <div class="wire-col left" id="wire-col-left">
+                            <!-- Injected by JS -->
+                        </div>
+                        <div class="wire-col right" id="wire-col-right">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align:right; margin-top:24px;">
+                    <button class="action-btn" id="btn-next-code" disabled>
+                        Proceed to Drafting <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ── SEGMENT C: CODE CHALLENGE ── -->
+            <div class="segment" id="seg-code">
+                <div class="code-layout">
+                    <!-- EDITOR -->
+                    <div class="editor-panel">
+                        <div class="editor-bar">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="dots">
+                                    <div class="dot2" style="background:#e06c75"></div>
+                                    <div class="dot2" style="background:#e5c07b"></div>
+                                    <div class="dot2" style="background:#98c379"></div>
+                                </div>
+                                <span style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--text-dim);">index.html</span>
+                            </div>
+                        </div>
+
+                        <textarea id="code-ta" class="code-ta" spellcheck="false" placeholder="<!-- Add a full title tag here -->&#10;<!-- Make it for 'Rare Books' by 'The Archive' -->"></textarea>
+
+                        <div class="mock-serp-wrap">
+                            <div class="mock-serp-lbl">Live Search Result Preview</div>
+                            <div class="mock-serp">
+                                <div class="url">
+                                    <div style="width:20px;height:20px;background:#e8eaed;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#202124;font-size:10px;"><i class="bi bi-globe2"></i></div>
+                                    <div>
+                                        <span style="display:block;font-size:12px;color:#dadce0;">The Archivist's Index</span>
+                                        <span style="display:block;font-size:11px;">https://www.thearchive.com</span>
+                                    </div>
+                                </div>
+                                <div class="title" id="live-serp-title">Untitled Document</div>
+                                <div class="desc">A curated collection of historical texts. This is a simulated meta description providing context to the search engine user.</div>
+                            </div>
+                        </div>
+
+                        <div class="editor-footer">
+                            <span id="code-log">Waiting for valid &lt;title&gt; tag...</span>
+                            <button class="action-btn" id="btn-submit-code" disabled>
+                                Save Index <i class="bi bi-stars ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- OBJECTIVES -->
+                    <div class="obj-panel">
+                        <div class="panel-head">
+                            <span><i class="bi bi-list-check me-2"></i>Drafting Goals</span>
+                            <span id="obj-count" style="color:var(--text-dim)">0 / 4</span>
+                        </div>
+
+                        <div class="obj-item" id="obj-1">
+                            <div class="obj-icon"><i class="bi bi-circle"></i></div>
+                            <div class="obj-text">
+                                <strong>Declare Title Tag</strong>
+                                <span>Open the tag with `&lt;title&gt;`</span>
+                            </div>
+                        </div>
+                        <div class="obj-item" id="obj-2">
+                            <div class="obj-icon"><i class="bi bi-circle"></i></div>
+                            <div class="obj-text">
+                                <strong>Close the Tag</strong>
+                                <span>End with `&lt;/title&gt;`</span>
+                            </div>
+                        </div>
+                        <div class="obj-item" id="obj-3">
+                            <div class="obj-icon"><i class="bi bi-circle"></i></div>
+                            <div class="obj-text">
+                                <strong>Primary Subject</strong>
+                                <span>Include the phrase "Rare Books"</span>
+                            </div>
+                        </div>
+                        <div class="obj-item" id="obj-4">
+                            <div class="obj-icon"><i class="bi bi-circle"></i></div>
+                            <div class="obj-text">
+                                <strong>Brand Separator</strong>
+                                <span>Include the brand "| The Archive"</span>
+                            </div>
+                        </div>
+
+                        <div class="prog-wrap">
+                            <div class="prog-row">
+                                <span style="color:var(--gold)">DRAFT PROGRESS</span>
+                                <span id="code-pct" style="color:var(--gold)">0%</span>
+                            </div>
+                            <div class="prog-track">
+                                <div class="prog-fill" id="code-prog"></div>
+                            </div>
+                        </div>
+
+                        <div class="prog-wrap" style="border-top:1px solid rgba(255,255,255,0.05)">
+                            <div class="prog-row">
+                                <span style="color:var(--primary)">TOTAL PROJECT</span>
+                                <span id="total-count" style="color:var(--primary)">0 / 13</span>
+                            </div>
+                            <div class="prog-track">
+                                <div class="prog-fill" id="total-prog" style="background:linear-gradient(90deg,var(--primary),var(--secondary))"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══════════ RESULT ═══════════ -->
+    <div id="result-screen" class="screen">
+        <div class="result-shell">
+            <div style="font-size:4.5rem;margin-bottom:12px;" id="result-emoji">✨</div>
+            <div class="result-headline" id="result-title"></div>
+            <p style="color:var(--text-dim);font-size:1.1rem;margin-bottom:40px;font-style:italic;" id="result-sub"></p>
+
+            <div class="row g-3 justify-content-center mb-5">
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Assembled & Wired</div>
+                        <div class="stat-val" id="stat-dnd" style="color:var(--primary);">0/9</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Drafted</div>
+                        <div class="stat-val" id="stat-code" style="color:var(--gold);">0/4</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Time Left</div>
+                        <div class="stat-val" id="stat-time" style="color:var(--green);">0s</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-lbl">Final Score</div>
+                        <div class="stat-val" id="stat-score" style="color:var(--text-main);">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <button class="r-btn r-btn-out" id="btn-retry">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i> Recurate
+                </button>
+                <button class="r-btn r-btn-save" id="btn-save">
+                    <i class="bi bi-cloud-upload me-2"></i> Save Record
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast-msg" id="toast"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // ─── STATE ───
+    let timeLeft = 240, timerInterval, studentName = '';
+    let isDone = false, finalScore = 0;
+    
+    // Total 13 Tasks: 5 D&D + 4 Wires + 4 Code
+    let dndSolved = new Set();
+    let wiresSolved = new Set();
+    let codeSolved = new Set();
+    let draggingTag = null;
+
+    const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
+
+    // ─── DATA PREP (SHUFFLING D&D) ───
+    const dndData = [
+        { id: 'dz-1', correct: 'head', icon: 'bi-code-square', code: `<span class="cm-tag">&lt;html&gt;</span><br><span class="cm-tag">&lt;</span><div class="drop-zone" id="dz-1" data-correct="head"><span class="drop-placeholder">tag</span></div><span class="cm-tag">&gt;</span><br>&nbsp;&nbsp;<span class="cm-tag">&lt;title&gt;</span><span class="cm-text">My Page</span><span class="cm-tag">&lt;/title&gt;</span>` },
+        { id: 'dz-2', correct: 'title', icon: 'bi-window', code: `<span class="cm-tag">&lt;head&gt;</span><br>&nbsp;&nbsp;<span class="cm-tag">&lt;</span><div class="drop-zone" id="dz-2" data-correct="title"><span class="drop-placeholder">tag</span></div><span class="cm-tag">&gt;</span><span class="cm-text">Gallery</span><span class="cm-tag">&lt;/title&gt;</span>` },
+        { id: 'dz-3', correct: '|', icon: 'bi-braces', code: `<span class="cm-tag">&lt;title&gt;</span><span class="cm-text">Artifacts </span> <div class="drop-zone" id="dz-3" data-correct="|"><span class="drop-placeholder">sep</span></div> <span class="cm-text"> The Archive</span><span class="cm-tag">&lt;/title&gt;</span>` },
+        { id: 'dz-4', correct: '60', icon: 'bi-cursor-text', code: `<span class="cm-cmt">&lt;!-- Keep titles under --&gt;</span><br><div class="drop-zone" id="dz-4" data-correct="60"><span class="drop-placeholder">number</span></div><span class="cm-cmt"> characters</span>` },
+        { id: 'dz-5', correct: 'SEO', icon: 'bi-search', code: `<span class="cm-cmt">&lt;!-- Good titles improve --&gt;</span><br><div class="drop-zone" id="dz-5" data-correct="SEO"><span class="drop-placeholder">acronym</span></div>` }
+    ];
+    const paletteData = ['title', 'head', '60', 'SEO', '|'];
+
+    function initDnD() {
+        const pContainer = document.getElementById('dnd-palette');
+        shuffleArray(paletteData).forEach(tag => {
+            pContainer.innerHTML += `<div draggable="true" class="tag-chip" data-tag="${tag}">${tag}</div>`;
+        });
+
+        const sContainer = document.getElementById('dnd-slots');
+        shuffleArray(dndData).forEach((item, index) => {
+            sContainer.innerHTML += `
+                <div class="drop-card" id="card-${item.id}">
+                    <div class="html-code">${item.code}</div>
+                    <div class="live-mini-preview" id="prev-${item.id}"><i class="bi ${item.icon}"></i></div>
+                </div>`;
+        });
+    }
+
+    // ─── DATA PREP (SHUFFLING WIRES) ───
+    const wirePairs = [
+        { id: 'w1', left: 'Browser Tab', right: 'Displays the title at the top of the window' },
+        { id: 'w2', left: 'Search Engine', right: 'Uses the title as the clickable blue link' },
+        { id: 'w3', left: 'Bookmarks', right: 'Saves the title as the default page name' },
+        { id: 'w4', left: '<head>', right: 'The parent tag where the title must be placed' }
+    ];
+
+    function initWires() {
+        const leftCol = document.getElementById('wire-col-left');
+        const rightCol = document.getElementById('wire-col-right');
+        
+        let leftArr = [...wirePairs];
+        let rightArr = [...wirePairs];
+        
+        shuffleArray(leftArr).forEach((item, i) => {
+            leftCol.innerHTML += `
+                <div class="wire-node-wrap" data-id="${item.id}" id="left-wrap-${i}">
+                    <div class="wire-label">${item.left}</div>
+                    <div class="wire-point left-point" data-match="${item.id}" id="lp-${i}"></div>
+                </div>`;
+        });
+
+        shuffleArray(rightArr).forEach((item, i) => {
+            rightCol.innerHTML += `
+                <div class="wire-node-wrap" data-id="${item.id}" id="right-wrap-${i}">
+                    <div class="wire-label">${item.right}</div>
+                    <div class="wire-point right-point" data-match="${item.id}" id="rp-${i}"></div>
+                </div>`;
+        });
+    }
+
+    initDnD();
+    initWires();
+
+    // ─── INIT EVENT LISTENERS ───
+    document.getElementById('btn-exit')?.addEventListener('click', () => history.back());
+    document.getElementById('btn-start')?.addEventListener('click', startChallenge);
+    document.getElementById('btn-next-wires')?.addEventListener('click', () => switchSeg('wires'));
+    document.getElementById('btn-next-code')?.addEventListener('click', () => switchSeg('code'));
+    document.getElementById('btn-submit-code')?.addEventListener('click', finishChallenge);
+    document.getElementById('btn-retry')?.addEventListener('click', () => location.reload());
+    document.getElementById('btn-save')?.addEventListener('click', submitToGoogleSheets);
+    
+    document.getElementById('student-name')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') startChallenge();
+    });
+
+    document.querySelectorAll('.seg-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => switchSeg(e.currentTarget.dataset.target));
+    });
+
+    function startChallenge() {
+        const n = document.getElementById('student-name').value.trim();
+        if (!n) return showToast('Enter your name to access the index.', true);
+        studentName = n;
+        sw('login-screen', 'challenge-screen');
+        startTimer();
+    }
+
+    function startTimer() {
+        updateClock();
+        timerInterval = setInterval(() => {
+            if (--timeLeft <= 0) { clearInterval(timerInterval); endGame(false); }
+            updateClock();
+        }, 1000);
+    }
+
+    function updateClock() {
+        const m = String(Math.floor(timeLeft/60)).padStart(2,'0');
+        const s = String(timeLeft%60).padStart(2,'0');
+        const el = document.getElementById('countdown');
+        el.innerHTML = `<i class="bi bi-stopwatch me-1"></i>${m}:${s}`;
+        el.className = timeLeft <= 30 ? 'warn' : '';
+    }
+
+    function switchSeg(name) {
+        document.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
+        document.getElementById(`seg-${name}`).classList.add('active');
+        
+        document.querySelectorAll('.seg-tab').forEach(t => t.classList.remove('active'));
+        document.querySelector(`.seg-tab[data-target="${name}"]`).classList.add('active');
+        
+        if (name === 'code') document.getElementById('code-ta').focus();
+    }
+
+    // ═══════════════════════════════
+    // ─── DRAG & DROP ENGINE ───
+    // ═══════════════════════════════
+    document.querySelectorAll('.tag-chip').forEach(chip => {
+        chip.addEventListener('dragstart', e => {
+            draggingTag = chip.dataset.tag;
+            chip.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', chip.dataset.tag);
+        });
+        chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+    });
+
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.addEventListener('dragover', (e) => {
+            e.preventDefault(); e.dataTransfer.dropEffect = 'move'; zone.classList.add('over');
+        });
+        zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+        zone.addEventListener('drop', (e) => handleDrop(e, zone));
+    });
+
+    function handleDrop(e, zone) {
+        e.preventDefault();
+        zone.classList.remove('over');
+        if (zone.classList.contains('correct')) return;
+
+        const dropped = e.dataTransfer.getData('text/plain') || draggingTag;
+        const correct = zone.dataset.correct;
+
+        if (dropped === correct) {
+            zone.classList.add('correct');
+            zone.innerHTML = dropped; 
+            const card = document.getElementById('card-'+zone.id);
+            card.classList.add('solved');
+
+            const chip = document.querySelector(`.tag-chip[data-tag="${dropped}"]`);
+            if (chip) chip.classList.add('used');
+
+            dndSolved.add(zone.id);
+            spawnSparkles(zone);
+            showToast(`✓ Tag assembled: ${dropped}`);
+            updateTotals();
+
+            if (dndSolved.size === 5) {
+                document.getElementById('btn-next-wires').disabled = false;
+                showToast('🎉 Assembly complete! Move to Connections →');
+            }
+        } else {
+            zone.classList.add('wrong');
+            setTimeout(() => zone.classList.remove('wrong'), 500);
+            showToast(`✗ Component "${dropped}" doesn't fit here.`, true);
+        }
+    }
+
+    // ═══════════════════════════════
+    // ─── WIRE CONNECTION ENGINE ───
+    // ═══════════════════════════════
+    const svg = document.getElementById('wire-svg');
+    const wireBoard = document.getElementById('wire-board');
+    let activeLine = null;
+    let startPoint = null;
+
+    function getCenterCoords(element) {
+        const boardRect = wireBoard.getBoundingClientRect();
+        const elRect = element.getBoundingClientRect();
+        return {
+            x: elRect.left - boardRect.left + elRect.width / 2,
+            y: elRect.top - boardRect.top + elRect.height / 2
+        };
+    }
+
+    document.querySelectorAll('.wire-point').forEach(point => {
+        point.addEventListener('mousedown', (e) => {
+            if (point.classList.contains('solved')) return;
+            startPoint = point;
+            point.classList.add('active');
+            
+            const coords = getCenterCoords(point);
+            activeLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            activeLine.setAttribute('class', 'wire-line temp');
+            activeLine.setAttribute('x1', coords.x);
+            activeLine.setAttribute('y1', coords.y);
+            activeLine.setAttribute('x2', coords.x);
+            activeLine.setAttribute('y2', coords.y);
+            svg.appendChild(activeLine);
+        });
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!activeLine || !startPoint) return;
+        const boardRect = wireBoard.getBoundingClientRect();
+        let x = e.clientX - boardRect.left;
+        let y = e.clientY - boardRect.top;
+        activeLine.setAttribute('x2', x);
+        activeLine.setAttribute('y2', y);
+    });
+
+    document.addEventListener('mouseup', (e) => {
+        if (!activeLine || !startPoint) return;
+        
+        let targetPoint = e.target;
+        if (targetPoint.classList.contains('wire-point') && !targetPoint.classList.contains('solved') && targetPoint !== startPoint) {
+            
+            if (startPoint.dataset.match === targetPoint.dataset.match) {
+                const coords = getCenterCoords(targetPoint);
+                activeLine.setAttribute('x2', coords.x);
+                activeLine.setAttribute('y2', coords.y);
+                activeLine.classList.remove('temp');
+                activeLine.classList.add('correct');
+                
+                startPoint.classList.add('solved');
+                targetPoint.classList.add('solved');
+                startPoint.closest('.wire-node-wrap').classList.add('solved');
+                targetPoint.closest('.wire-node-wrap').classList.add('solved');
+                
+                wiresSolved.add(startPoint.dataset.match);
+                spawnSparkles(targetPoint);
+                showToast('✓ Connection Secured!');
+                updateTotals();
+
+                if (wiresSolved.size === 4) {
+                    document.getElementById('btn-next-code').disabled = false;
+                    showToast('🎉 Connections complete! Move to Drafting →');
+                }
+
+            } else {
+                activeLine.remove();
+                showToast('✗ Mismatched concept.', true);
+            }
+        } else {
+            activeLine.remove();
+        }
+
+        startPoint.classList.remove('active');
+        activeLine = null;
+        startPoint = null;
+    });
+
+
+    // ═══════════════════════════════
+    // ─── CODE VALIDATION ENGINE ───
+    // ═══════════════════════════════
+    const codeArea = document.getElementById('code-ta');
+    const serpTitle = document.getElementById('live-serp-title');
+    
+    codeArea.addEventListener('input', runCodeChecks);
+
+    function extractTitle(str) {
+        const m = str.match(/<title>(.*?)<\/title>/i);
+        return m ? m[1] : null;
+    }
+
+    function runCodeChecks() {
+        if (isDone) return;
+        const raw = codeArea.value;
+        const c = raw.toLowerCase().replace(/\s+/g, ' '); 
+
+        // Update live preview
+        const titleText = extractTitle(raw);
+        if (titleText && titleText.trim() !== "") {
+            serpTitle.textContent = titleText;
+            serpTitle.style.color = '#8ab4f8';
+        } else {
+            serpTitle.textContent = 'Untitled Document';
+            serpTitle.style.color = '#9aa0a6';
+        }
+
+        const obj1 = c.includes('<title>');
+        const obj2 = c.includes('</title>');
+        const obj3 = c.includes('rare books');
+        const obj4 = c.includes('| the archive');
+        
+        const checks = { 'obj-1': obj1, 'obj-2': obj2, 'obj-3': obj3, 'obj-4': obj4 };
+
+        let done = 0;
+        for (const [id, met] of Object.entries(checks)) {
+            const wasAlready = codeSolved.has(id);
+            if (met) {
+                codeSolved.add(id);
+                if (!wasAlready) spawnSparklesId(id);
+            } else {
+                codeSolved.delete(id);
+            }
+            updateObjUI(id, met);
+            if (met) done++;
+        }
+
+        const pct = Math.round(done/4*100);
+        document.getElementById('code-prog').style.width = pct+'%';
+        document.getElementById('code-pct').textContent = pct+'%';
+        document.getElementById('obj-count').textContent = `${done} / 4`;
+
+        const log = document.getElementById('code-log');
+        if (done === 4) {
+            log.innerHTML = `<span style="color:var(--green)">✓ Index title fully drafted!</span>`;
+            document.getElementById('btn-submit-code').disabled = false;
+        } else {
+            log.textContent = `Drafting: ${done}/4 rules valid...`;
+            document.getElementById('btn-submit-code').disabled = true;
+        }
+
+        updateTotals();
+    }
+
+    function updateObjUI(id, met) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const icon = el.querySelector('.obj-icon i');
+        if (met) {
+            el.classList.add('done');
+            icon.className = 'bi bi-check-circle-fill';
+            icon.style.color = 'var(--green)';
+        } else {
+            el.classList.remove('done');
+            icon.className = 'bi bi-circle';
+            icon.style.color = '';
+        }
+    }
+
+    function updateTotals() {
+        const total = dndSolved.size + wiresSolved.size + codeSolved.size;
+        const pct = Math.round(total/13*100);
+        document.getElementById('total-prog').style.width = pct+'%';
+        document.getElementById('total-count').textContent = `${total} / 13`;
+        document.getElementById('live-score').textContent = calcScore();
+    }
+
+    function calcScore() {
+        return (dndSolved.size * 50) + (wiresSolved.size * 50) + (codeSolved.size * 100) + (timeLeft * 5);
+    }
+
+    // ─── FINISH ───
+    function finishChallenge() {
+        clearInterval(timerInterval);
+        isDone = true;
+        endGame(true);
+    }
+
+    function endGame(won) {
+        isDone = true;
+        clearInterval(timerInterval);
+        const total = dndSolved.size + wiresSolved.size + codeSolved.size;
+        finalScore = calcScore();
+
+        sw('challenge-screen', 'result-screen');
+
+        const ranks = [
+            [13, 'Master Archivist — Perfect Index'],
+            [10, 'Senior Librarian — Well Connected'],
+            [6,  'Junior Clerk — Needs Revision'],
+            [0,  'Lost Records — Setup Failed'],
+        ];
+        const [,rankLabel] = ranks.find(([min]) => total >= min);
+
+        document.getElementById('result-emoji').textContent = won ? '🏛️' : '⚠️';
+        document.getElementById('result-title').innerHTML = won
+            ? `<span style="color:var(--gold)">Index Restored!</span>`
+            : `<span style="color:var(--red)">Archive Incomplete</span>`;
+        document.getElementById('result-sub').textContent = won
+            ? `Spectacular work, ${studentName}. ${rankLabel}`
+            : `Time's up, ${studentName}. ${total}/13 tasks complete. ${rankLabel}`;
+
+        document.getElementById('stat-dnd').textContent   = `${dndSolved.size + wiresSolved.size}/9`;
+        document.getElementById('stat-code').textContent  = `${codeSolved.size}/4`;
+        document.getElementById('stat-time').textContent  = won ? `+${timeLeft}s` : '0s';
+        document.getElementById('stat-score').textContent = finalScore;
+
+        if (finalScore === 0) document.getElementById('btn-save').disabled = true;
+    }
+
+    // ─── SUBMIT TO GOOGLE SHEETS ───
+    function submitToGoogleSheets() {
+        const btn = document.getElementById('btn-save');
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Archiving...`;
+        btn.disabled = true;
+        
+        if (typeof GOOGLE_SCRIPT_URL1 === 'undefined') {
+            console.warn("GOOGLE_SCRIPT_URL1 not found. Simulating save.");
+            setTimeout(() => {
+                btn.innerHTML = `<i class="bi bi-check-circle me-2"></i> Record Saved!`;
+                btn.style.background = 'linear-gradient(135deg,#27ae60,#1e8449)';
+            }, 800);
+            return;
+        }
+
+        fetch(GOOGLE_SCRIPT_URL1, {
+            method: 'POST',
+            body: JSON.stringify({ 
+                name: studentName, 
+                score: finalScore, 
+                total: 'HTML TITLES CHALLENGE', 
+                timestamp: new Date().toLocaleString() 
+            }),
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+        }).then(() => {
+            btn.innerHTML = `<i class="bi bi-check-circle me-2"></i> Record Saved!`;
+            btn.style.background = 'linear-gradient(135deg,#27ae60,#1e8449)';
+        }).catch(() => {
+            showToast('Transmission failed. Check network or config.js.', true);
+            btn.innerHTML = `<i class="bi bi-cloud-upload me-2"></i> Save Record`;
+            btn.disabled = false;
+        });
+    }
+
+    // ─── PARTICLES (SPARKLES) ───
+    function spawnSparkles(anchor) {
+        const rect = anchor.getBoundingClientRect();
+        const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+        for (let i = 0; i < 8; i++) {
+            const p = document.createElement('div');
+            p.className = 'sparkle';
+            const sz = 3 + Math.random()*5;
+            p.style.cssText = `width:${sz}px;height:${sz}px;left:${cx}px;top:${cy}px;
+                --tx:${(Math.random()-.5)*150}px;--ty:${(Math.random()-.5)*150}px;`;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 1000);
+        }
+    }
+    function spawnSparklesId(id) {
+        const el = document.getElementById(id);
+        if (el) spawnSparkles(el);
+    }
+
+    // ─── TOAST ───
+    let toastTimer;
+    function showToast(msg, isErr=false) {
+        const t = document.getElementById('toast');
+        t.innerHTML = msg;
+        t.style.borderColor = isErr ? 'var(--red)' : 'var(--primary)';
+        t.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ─── UTILS ───
+    function sw(a, b) {
+        document.getElementById(a).classList.remove('active');
+        document.getElementById(b).classList.add('active');
+    }
+
+});
+</script>
+<script src="/js/config.js"></script>
+</body>
+</html>
